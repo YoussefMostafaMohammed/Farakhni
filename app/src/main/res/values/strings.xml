@@ -1,3 +1,23 @@
 <resources>
     <string name="app_name">Farakhni</string>
+    <string name="welcome_back">Welcome Back</string>
+    <string name="hint_email">Email Address</string>
+    <string name="hint_password">Password</string>
+    <string name="forgot_password">Forgot Password?</string>
+    <string name="login">Start Nourishing</string>
+    <string name="signup_prompt">New to Farakhni? <font color="#FF4CAF50">Sign Up</font></string>
+    <string name="error_email">Please enter a valid email</string>
+    <string name="error_password">Password must be 6+ characters</string>
+    <string name="app_logo">Farakhni App Logo</string>
+    <string name="utensils_icon">Utensils icon</string>
+    <string name="create_account">Create Your Account</string>
+    <string name="hint_full_name">Full Name</string>
+    <string name="hint_confirm_password">Confirm Password</string>
+    <string name="signup">Create Account</string>
+    <string name="already_have_account">Already have an account? <font color="#FF4CAF50">Log In</font></string>
+    <string name="register">Create Account</string>
+    <string name="loginbtn">Sign In</string>
+    <string name="or">OR</string>
+    <string name="terms_agreement">By continuing, you agree to our\nTerms of Service and Privacy Policy</string>
+    <color name="social_ripple">#20000000</color>
 </resources>
