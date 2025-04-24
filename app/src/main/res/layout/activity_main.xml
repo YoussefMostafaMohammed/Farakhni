@@ -9,7 +9,6 @@
     android:paddingHorizontal="32dp"
     android:paddingVertical="40dp">
 
-    <!-- App Logo -->
     <ImageView
         android:layout_width="96dp"
         android:layout_height="96dp"
@@ -35,10 +34,11 @@
         app:cornerRadius="12dp"
         app:elevation="1dp"
         app:icon="@drawable/ic_person_outline"
+        app:iconTint="@color/on_primary"
         app:iconGravity="textEnd"
         app:iconPadding="8dp"
         app:iconSize="20dp"
-        app:rippleColor="@color/primary_pressed"
+        app:rippleColor="@color/on_primary"
         app:shapeAppearanceOverlay="@style/ShapeAppearance.MediumRounded" />
 
     <!-- Divider -->
@@ -76,7 +76,7 @@
         style="@style/Widget.Material3.Button.OutlinedButton"
         android:layout_width="match_parent"
         android:layout_height="60dp"
-        android:layout_marginBottom="32dp"
+        android:layout_marginBottom="16dp"
         android:letterSpacing="0.03"
         android:text="@string/loginbtn"
         android:textColor="@color/primary"
@@ -89,9 +89,46 @@
         app:rippleColor="@color/primary_container"
         app:shapeAppearanceOverlay="@style/ShapeAppearance.MediumRounded"
         app:strokeColor="@color/primary"
-        app:strokeWidth="1dp" />
+        app:strokeWidth="1dp"
+        />
 
-    <!-- Bottom Spacer with Legal Text -->
+    <!-- Continue with Google -->
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnGoogle"
+        style="@style/Widget.Material3.Button.OutlinedButton"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_marginBottom="8dp"
+        android:text="@string/continue_with_google"
+        android:textColor="@color/primary"
+        android:textSize="16sp"
+        app:cornerRadius="12dp"
+        app:icon="@drawable/ic_google"
+        app:iconGravity="textEnd"
+        app:iconPadding="12dp"
+        app:iconSize="24dp"
+        app:rippleColor="@color/primary_container"
+        app:strokeColor="@color/primary"
+        app:strokeWidth="1dp"/>
+
+    <!-- Continue as Guest -->
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnGuest"
+        style="@style/Widget.Material3.Button.TextButton"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        app:icon="@drawable/ic_guest"
+        android:text="@string/continue_as_guest"
+        android:textColor="@color/primary"
+        android:textSize="16sp"
+        app:cornerRadius="12dp"
+        app:iconGravity="textEnd"
+        app:iconPadding="12dp"
+        app:iconSize="24dp"
+        app:strokeColor="@color/primary"
+        app:strokeWidth="1dp"
+        app:rippleColor="@color/primary_container" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"

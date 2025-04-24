@@ -14,7 +14,7 @@ import com.bumptech.glide.Glide;
 @SuppressLint("CustomSplashScreen")
 public class SplashScreen extends AppCompatActivity {
 
-    private static final long SPLASH_DURATION_MS = 13000; // 13 seconds
+    private static final long SPLASH_DURATION_MS = 4000; // 13 seconds
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,7 +25,7 @@ public class SplashScreen extends AppCompatActivity {
 
         Glide.with(this)
                 .asGif()
-                .load(R.raw.splash_screen) // Make sure this is the correct file name in res/raw/
+                .load(R.raw.splashscreen) // Make sure this is the correct file name in res/raw/
                 .into(splashView);
 
         new Handler(Looper.getMainLooper()).postDelayed(() -> {

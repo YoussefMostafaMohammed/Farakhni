@@ -176,16 +176,17 @@
         android:orientation="horizontal">
 
         <com.google.android.material.button.MaterialButton
+            android:id="@+id/txtLogin"
+            style="@style/Widget.Material3.Button.TextButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/already_have_account"
             android:textColor="@color/primary"
             app:icon="@drawable/ic_login"
-            app:iconTint="@color/primary"
             app:iconGravity="textStart"
-            app:iconSize="20dp"
             app:iconPadding="8dp"
-            style="@style/Widget.Material3.Button.TextButton"/>
+            app:iconSize="20dp"
+            app:iconTint="@color/primary" />
 
     </LinearLayout>
 

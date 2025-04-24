@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -12,6 +14,14 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Farakhni"
         tools:targetApi="31">
+        <activity
+            android:name=".app_screen"
+            android:exported="false"
+            android:label="@string/title_activity_app_screen"
+            android:theme="@style/Theme.Farakhni.NoActionBar" />
+        <activity
+            android:name=".AppScreen"
+            android:exported="false" />
         <activity
             android:name=".SignupScreen"
             android:exported="false" />
@@ -29,7 +39,7 @@
         </activity>
         <activity
             android:name=".MainActivity"
-            android:exported="true"></activity>
+            android:exported="true" />
     </application>
 
 </manifest>
