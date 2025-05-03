@@ -32,7 +32,15 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
     private final Context context;
     private final List<Category> categoryList;
     private final MealRepository mealRepository;
+    private List<Meal> favoriteMeals = new ArrayList<>();
 
+
+    public void setFavoriteMeals(List<Meal> favMeals) {
+        favoriteMeals.clear();
+        if (favMeals != null) {
+            favoriteMeals.addAll(favMeals);
+        }
+    }
     public CategoryAdapter(Context context, List<Category> categoryList) {
         this.context = context;
         this.categoryList = categoryList != null ? categoryList : new ArrayList<>();
@@ -128,8 +136,14 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
             mealRepository.getMealById(m.getId(), new NetworkCallBack<List<Meal>>() {
                 @Override public void onSuccessResult(List<Meal> detailed) {
                     if (!detailed.isEmpty()) {
-                        fullMeals.add(detailed.get(0));
-                    }
+                        Meal detailedMeal = detailed.get(0);
+                        for (Meal meal : favoriteMeals) {
+                            if (meal.getId().equals(detailedMeal.getId())) {
+                                detailedMeal.setFavorite(true);
+                                break;
+                            }
+                        }
+                        fullMeals.add(detailedMeal);                        }
                     if (fullMeals.size() == total) {
                         navigateToCategoryFragment(fullMeals);
                     }

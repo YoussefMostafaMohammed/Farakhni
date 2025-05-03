@@ -11,6 +11,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.farakhni.R;
 import com.example.farakhni.model.Meal;
+
+import java.util.ArrayList;
 import java.util.List;
 
 public class MealAdapter extends RecyclerView.Adapter<MealAdapter.MealViewHolder> {
@@ -18,7 +20,15 @@ public class MealAdapter extends RecyclerView.Adapter<MealAdapter.MealViewHolder
     private List<Meal> mealList;
     private OnMealClickListener mealClickListener;
     private OnFavoriteToggleListener favoriteToggleListener;
+    private List<Meal> favoriteMeals = new ArrayList<>();
 
+
+    public void setFavoriteMeals(List<Meal> favMeals) {
+        favoriteMeals.clear();
+        if (favMeals != null) {
+            favoriteMeals.addAll(favMeals);
+        }
+    }
     public MealAdapter(Context context, List<Meal> mealList) {
         this.context = context;
         this.mealList = mealList;
@@ -49,24 +59,27 @@ public class MealAdapter extends RecyclerView.Adapter<MealAdapter.MealViewHolder
     public void onBindViewHolder(@NonNull MealViewHolder holder, int position) {
         Meal meal = mealList.get(position);
 
-        // Set meal name
         holder.mealName.setText(meal.getName() != null ? meal.getName() : "Unknown Meal");
 
-        // Truncate description
         String instr = meal.getInstructions() != null ? meal.getInstructions() : "No description available";
         holder.mealDescription.setText(instr.length() > 100 ? instr.substring(0, 100) + "…" : instr);
 
-        // Placeholder for nutrients
         holder.calories.setText("N/A Calories");
         holder.protein.setText("N/A Protein");
         holder.carbs.setText("N/A Carbs");
 
-        // Load image
         Glide.with(context)
                 .load(meal.getMealThumb())
                 .placeholder(R.drawable.app_logo)
                 .error(R.drawable.app_logo)
                 .into(holder.mealImage);
+
+        for (Meal favMeal : favoriteMeals) {
+            if (favMeal.getId().equals(meal.getId())) {
+                meal.setFavorite(true);
+                break;
+            }
+        }
 
         holder.mealImage.setOnClickListener(v -> {
             if (mealClickListener != null) {

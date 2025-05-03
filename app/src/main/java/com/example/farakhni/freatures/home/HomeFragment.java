@@ -83,6 +83,10 @@ public class HomeFragment extends Fragment implements HomeContract.View {
         binding.areasList.setAdapter(areaAdapter);
 
         IngredientRepositoryImpl ingredientRepository = IngredientRepositoryImpl.getInstance();
+        mealRepository.getFavoriteMeals().observe(getViewLifecycleOwner(), favMeals -> {
+            ingredientAdapter.setFavoriteMeals(favMeals); // pass the favorite meals to the adapter
+
+        });
         CategoryRepositoryImpl categoryRepository = CategoryRepositoryImpl.getInstance();
         AreaRepositoryImpl areaRepository=AreaRepositoryImpl.getInstance();
         presenter = new HomePresenter(new HomeModel(mealRepository, ingredientRepository, categoryRepository,areaRepository));

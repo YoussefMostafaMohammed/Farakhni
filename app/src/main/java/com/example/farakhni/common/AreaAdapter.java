@@ -34,7 +34,15 @@ public class AreaAdapter extends RecyclerView.Adapter<AreaAdapter.AreaViewHolder
     private final Context context;
     private final List<Area> areaList;
     private final MealRepository mealRepository;
+    private List<Meal> favoriteMeals = new ArrayList<>();
 
+
+    public void setFavoriteMeals(List<Meal> favMeals) {
+        favoriteMeals.clear();
+        if (favMeals != null) {
+            favoriteMeals.addAll(favMeals);
+        }
+    }
     private final Map<String, String> areaToCountryCodeMap = new HashMap<String, String>() {{
         put("American", "US");
         put("British", "GB");
@@ -169,8 +177,14 @@ public class AreaAdapter extends RecyclerView.Adapter<AreaAdapter.AreaViewHolder
             mealRepository.getMealById(m.getId(), new NetworkCallBack<List<Meal>>() {
                 @Override public void onSuccessResult(List<Meal> detailed) {
                     if (!detailed.isEmpty()) {
-                        fullMeals.add(detailed.get(0));
-                    }
+                            Meal detailedMeal = detailed.get(0);
+                            for (Meal meal : favoriteMeals) {
+                                if (meal.getId().equals(detailedMeal.getId())) {
+                                    detailedMeal.setFavorite(true);
+                                    break;
+                                }
+                            }
+                            fullMeals.add(detailedMeal);                    }
                     if (fullMeals.size() == total) {
                         navigateToAreaFragment(fullMeals);
                     }
