@@ -12,13 +12,17 @@ import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.example.farakhni.R;
+import com.example.farakhni.common.AreaAdapter;
 import com.example.farakhni.common.CategoryAdapter;
 import com.example.farakhni.common.IngredientAdapter;
 import com.example.farakhni.common.MealAdapter;
+import com.example.farakhni.data.repositories.AreaRepository;
+import com.example.farakhni.data.repositories.AreaRepositoryImpl;
 import com.example.farakhni.data.repositories.CategoryRepositoryImpl;
 import com.example.farakhni.data.repositories.IngredientRepositoryImpl;
 import com.example.farakhni.data.repositories.MealRepositoryImpl;
 import com.example.farakhni.databinding.FragmentHomeBinding;
+import com.example.farakhni.model.Area;
 import com.example.farakhni.model.Category;
 import com.example.farakhni.model.Ingredient;
 import com.example.farakhni.model.Meal;
@@ -30,6 +34,8 @@ public class HomeFragment extends Fragment implements HomeContract.View {
     private MealAdapter mealAdapter;
     private IngredientAdapter ingredientAdapter;
     private CategoryAdapter categoryAdapter;
+    private AreaAdapter areaAdapter;
+
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -38,6 +44,7 @@ public class HomeFragment extends Fragment implements HomeContract.View {
         mealAdapter       = new MealAdapter(requireContext(), new ArrayList<>());
         ingredientAdapter = new IngredientAdapter(requireContext(), new ArrayList<>());
         categoryAdapter   = new CategoryAdapter(requireContext(), new ArrayList<>());
+        areaAdapter = new AreaAdapter(requireContext(),new ArrayList<>());
         MealRepositoryImpl mealRepository = MealRepositoryImpl.getInstance(requireContext());
 
         mealAdapter.setOnFavoriteToggleListener(meal -> {
@@ -71,9 +78,14 @@ public class HomeFragment extends Fragment implements HomeContract.View {
                 new LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false));
         binding.categoriesList.setAdapter(categoryAdapter);
 
+        binding.areasList.setLayoutManager(
+                new LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false));
+        binding.areasList.setAdapter(areaAdapter);
+
         IngredientRepositoryImpl ingredientRepository = IngredientRepositoryImpl.getInstance();
         CategoryRepositoryImpl categoryRepository = CategoryRepositoryImpl.getInstance();
-        presenter = new HomePresenter(new HomeModel(mealRepository, ingredientRepository, categoryRepository));
+        AreaRepositoryImpl areaRepository=AreaRepositoryImpl.getInstance();
+        presenter = new HomePresenter(new HomeModel(mealRepository, ingredientRepository, categoryRepository,areaRepository));
         presenter.attachView(this);
         presenter.loadHomeData();
 
@@ -93,6 +105,11 @@ public class HomeFragment extends Fragment implements HomeContract.View {
     @Override
     public void showCategories(List<Category> categories) {
         categoryAdapter.updateCategories(categories);
+    }
+
+    @Override
+    public void showAreas(List<Area> areas) {
+        areaAdapter.updateAreas(areas);
     }
 
     @Override

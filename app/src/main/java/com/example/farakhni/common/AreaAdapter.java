@@ -26,12 +26,51 @@ import com.example.farakhni.model.Area;
 import com.example.farakhni.model.Meal;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class AreaAdapter extends RecyclerView.Adapter<AreaAdapter.AreaViewHolder> {
     private final Context context;
     private final List<Area> areaList;
     private final MealRepository mealRepository;
+
+    private final Map<String, String> areaToCountryCodeMap = new HashMap<String, String>() {{
+        put("American", "US");
+        put("British", "GB");
+        put("Canadian", "CA");
+        put("Chinese", "CN");
+        put("Croatian", "HR");
+        put("Dutch", "NL");
+        put("Egyptian", "EG");
+        put("French", "FR");
+        put("Greek", "GR");
+        put("Indian", "IN");
+        put("Irish", "IE");
+        put("Italian", "IT");
+        put("Jamaican", "JM");
+        put("Japanese", "JP");
+        put("Kenyan", "KE");
+        put("Malaysian", "MY");
+        put("Mexican", "MX");
+        put("Moroccan", "MA");
+        put("Polish", "PL");
+        put("Portuguese", "PT");
+        put("Russian", "RU");
+        put("Spanish", "ES");
+        put("Thai", "TH");
+        put("Tunisian", "TN");
+        put("Turkish", "TR");
+        put("Vietnamese", "VN");
+    }};
+
+
+    private String getFlagUrlForArea(String areaName) {
+        String code = areaToCountryCodeMap.get(areaName);
+        return code != null ? "https://flagcdn.com/w320/" + code.toLowerCase() + ".png" : null;
+    }
+
+
 
     public AreaAdapter(Context context, List<Area> areaList) {
         this.context = context;
@@ -52,10 +91,16 @@ public class AreaAdapter extends RecyclerView.Adapter<AreaAdapter.AreaViewHolder
         String areaName = area.getArea();
 
         holder.areaName.setText(areaName != null ? areaName : "Unknown Area");
-        String ThumbNail="www.themealdb.com/images/ingredients/lime-small.png";
-        Glide.with(context)
-                .load(ThumbNail)
-                .into(holder.areaImage);
+        String flagUrl = getFlagUrlForArea(areaName);
+        if (flagUrl != null) {
+            Glide.with(context)
+                    .load(flagUrl)
+                    .placeholder(R.drawable.app_logo)
+                    .into(holder.areaImage);
+        } else {
+            holder.areaImage.setImageResource(R.drawable.app_logo);
+        }
+
 
         holder.areaImage.setOnClickListener(v -> {
             mealRepository.filterByArea(areaName, new NetworkCallBack<List<Meal>>() {
@@ -91,7 +136,7 @@ public class AreaAdapter extends RecyclerView.Adapter<AreaAdapter.AreaViewHolder
                         View popupView = LayoutInflater.from(context)
                                 .inflate(R.layout.popup_layout, null, false);
                         TextView desc = popupView.findViewById(R.id.popupIngredientDescription);
-                        desc.setText("This is a country located in ");
+                        desc.setText("This is a country ...");
 
                         popupView.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
 
@@ -120,7 +165,6 @@ public class AreaAdapter extends RecyclerView.Adapter<AreaAdapter.AreaViewHolder
     private void fetchDetailsAndNavigate(List<Meal> simpleMeals) {
         List<Meal> fullMeals = new ArrayList<>();
         int total = simpleMeals.size();
-
         for (Meal m : simpleMeals) {
             mealRepository.getMealById(m.getId(), new NetworkCallBack<List<Meal>>() {
                 @Override public void onSuccessResult(List<Meal> detailed) {

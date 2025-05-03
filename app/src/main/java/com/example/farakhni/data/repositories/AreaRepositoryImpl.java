@@ -2,27 +2,27 @@ package com.example.farakhni.data.repositories;
 
 import com.example.farakhni.data.network.NetworkCallBack;
 import com.example.farakhni.data.network.area.AreasRemoteDataSoruce;
+import com.example.farakhni.data.network.area.AreasRemoteDataSourceImpl;
 import com.example.farakhni.model.Area;
 import java.util.List;
 
 public class AreaRepositoryImpl implements AreaRepository {
-    private final AreasRemoteDataSoruce remoteDataSource;
+    private final AreasRemoteDataSourceImpl areasRemoteDataSource;
     private static AreaRepositoryImpl instance;
 
-    private AreaRepositoryImpl(AreasRemoteDataSoruce remoteDataSource) {
-        this.remoteDataSource = remoteDataSource;
+    private AreaRepositoryImpl(AreasRemoteDataSourceImpl remoteDataSource) {
+        this.areasRemoteDataSource = remoteDataSource;
     }
 
-    public static synchronized AreaRepositoryImpl getInstance(
-            AreasRemoteDataSoruce remoteDataSource) {
+    public static synchronized AreaRepositoryImpl getInstance() {
         if (instance == null) {
-            instance = new AreaRepositoryImpl(remoteDataSource);
+            instance = new AreaRepositoryImpl(AreasRemoteDataSourceImpl.getInstance());
         }
         return instance;
     }
 
     @Override
     public void getAllAreas(NetworkCallBack<List<Area>> callback) {
-        remoteDataSource.makeNetworkCall(callback);
+        areasRemoteDataSource.makeNetworkCall(callback);
     }
 }

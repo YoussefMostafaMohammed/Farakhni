@@ -1,5 +1,6 @@
 package com.example.farakhni.freatures.home;
 
+import com.example.farakhni.model.Area;
 import com.example.farakhni.model.Category;
 import com.example.farakhni.model.Ingredient;
 import com.example.farakhni.model.Meal;
@@ -12,6 +13,7 @@ public interface HomeContract {
         void showRandomMeals(List<Meal> meals);
         void showIngredients(List<Ingredient> ingredients);
         void showCategories(List<Category> categories);
+        void showAreas(List<Area> areas);
         void showError(String message);
     }
 
@@ -25,5 +27,6 @@ public interface HomeContract {
         void getRandomMeal(NetworkCallBack<List<Meal>> callback);
         void getAllIngredients(NetworkCallBack<List<Ingredient>> callback);
         void getAllCategories(NetworkCallBack<List<Category>> callback);
+        void getAllAreas(NetworkCallBack<List<Area>> callback);
     }
 }

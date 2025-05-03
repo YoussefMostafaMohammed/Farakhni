@@ -1,6 +1,7 @@
 package com.example.farakhni.freatures.home;
 
 import com.example.farakhni.data.network.NetworkCallBack;
+import com.example.farakhni.model.Area;
 import com.example.farakhni.model.Category;
 import com.example.farakhni.model.Ingredient;
 import com.example.farakhni.model.Meal;
@@ -27,6 +28,39 @@ public class HomePresenter implements HomeContract.Presenter {
 
     @Override
     public void loadHomeData() {
+
+        model.getAllAreas(new NetworkCallBack<List<Area>>() {
+            @Override
+            public void onSuccessResult(List<Area> result) {
+                if(view!=null) view.showAreas(result);
+            }
+
+            @Override
+            public void onFailureResult(String failureMessage) {
+                if (view != null) view.showError(failureMessage);
+            }
+
+            @Override
+            public void onLoading() {
+
+            }
+
+            @Override
+            public void onNetworkError(String errorMessage) {
+
+            }
+
+            @Override
+            public void onEmptyData() {
+
+            }
+
+            @Override
+            public void onProgress(int progress) {
+
+            }
+        });
+
         model.getRandomMeal(new NetworkCallBack<List<Meal>>() {
             @Override
             public void onSuccessResult(List<Meal> result) {
