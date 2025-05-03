@@ -15,12 +15,8 @@
         android:padding="16dp"
         android:spacing="16dp">
 
-        <!-- Back Arrow at the very top -->
-
-
-        <!-- Card Container -->
+        <!-- Meal Image Card -->
         <com.google.android.material.card.MaterialCardView
-
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:cardCornerRadius="16dp"
@@ -28,10 +24,9 @@
             android:layout_marginBottom="16dp">
 
             <FrameLayout
-
                 android:layout_width="match_parent"
                 android:layout_height="280dp">
-                <!-- Meal Image -->
+
                 <ImageView
                     android:id="@+id/mealImage"
                     android:layout_width="match_parent"
@@ -41,13 +36,11 @@
                     android:src="@drawable/app_logo"
                     android:clipToOutline="true" />
 
-                <!-- Gradient Overlay -->
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:background="@drawable/gradient_overlay_dark" />
 
-                <!-- Title & Nutrition -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -77,8 +70,7 @@
                             android:layout_weight="1"
                             android:text="240 kcal"
                             android:textColor="#FFEE58"
-                            android:textSize="14sp"
-                            android:textStyle="normal" />
+                            android:textSize="14sp" />
 
                         <TextView
                             android:id="@+id/protein"
@@ -87,8 +79,7 @@
                             android:layout_weight="1"
                             android:text="19g Protein"
                             android:textColor="#FFEB3B"
-                            android:textSize="14sp"
-                            android:textStyle="normal" />
+                            android:textSize="14sp" />
 
                         <TextView
                             android:id="@+id/carbs"
@@ -97,8 +88,7 @@
                             android:layout_weight="1"
                             android:text="5g Carbs"
                             android:textColor="#FFF176"
-                            android:textSize="14sp"
-                            android:textStyle="normal" />
+                            android:textSize="14sp" />
                     </LinearLayout>
                 </LinearLayout>
             </FrameLayout>
@@ -142,5 +132,25 @@
             android:textSize="16sp"
             android:lineSpacingExtra="4dp" />
 
+        <!-- Embedded Video Section -->
+        <!-- In your layout XML -->
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp">
+
+            <FrameLayout
+                android:id="@+id/video_container"
+                android:layout_width="match_parent"
+                android:layout_height="200dp">
+
+                <WebView
+                    android:id="@+id/videoWebView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"/>
+
+            </FrameLayout>
+        </com.google.android.material.card.MaterialCardView>
     </LinearLayout>
 </androidx.core.widget.NestedScrollView>
