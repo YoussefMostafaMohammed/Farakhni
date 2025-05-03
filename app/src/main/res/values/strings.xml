@@ -1,0 +1,54 @@
+<resources>
+    <string name="app_name">Farakhni</string>
+    <string name="welcome_back">Welcome Back</string>
+    <string name="hint_email">Email Address</string>
+    <string name="hint_password">Password</string>
+    <string name="forgot_password">Forgot Password?</string>
+    <string name="login">Start Nourishing</string>
+    <string name="signup_prompt">New to Farakhni? <font color="#FF4CAF50">Sign Up</font></string>
+    <string name="error_email">Please enter a valid email</string>
+    <string name="error_password">Password must be 6+ characters</string>
+    <string name="app_logo">Farakhni App Logo</string>
+    <string name="utensils_icon">Utensils icon</string>
+    <string name="create_account">Create Your Account</string>
+    <string name="hint_full_name">Full Name</string>
+    <string name="hint_confirm_password">Confirm Password</string>
+    <string name="signup">Create Account</string>
+    <string name="already_have_account">Already have an account? <font color="#FF4CAF50">Log In</font></string>
+    <string name="register">Create Account</string>
+    <string name="loginbtn">Sign In</string>
+    <string name="or">OR</string>
+    <string name="terms_agreement">By continuing, you agree to our\nTerms of Service and Privacy Policy</string>
+    <string name="continue_as_guest">continue as a guest</string>
+    <string name="continue_with_google">continue with google</string>
+    <color name="social_ripple">#20000000</color>
+    <string name="title_activity_app_screen">app_screen</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">Android Studio</string>
+    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="action_settings">Settings</string>
+    <string name="meal_image">Meal Image</string>
+    <string name="add_to_favorites">Add to Favorites</string>
+    <string name="menu_home">Home</string>
+    <string name="menu_gallery">Gallery</string>
+    <string name="menu_slideshow">Slideshow</string>
+    <string name="default_web_client_id">304070505402-eu7j8hcfd7dn9t720gknq32sd674v30u.apps.googleusercontent.com</string>
+    <string name="change_password">Change Password</string>
+    <string name="confirm_new_password">Confirms New Password</string>
+    <string name="new_password">New Password</string>
+    <string name="current_password">Current Password</string>
+    <string name="update_password">Update Password</string>
+    <string name="back_to_login">Back to Login</string>
+    <string name="security_icon">Security Icon</string>
+    <string name="heart_icon_description">heart icon\n</string>
+    <string name="meal_image_description">meal image discription\n</string>
+    <string name="FoodPlanningApp">Food Planning App</string>
+    <string name="ingredient_image_description">ingredient image\n</string>
+    <string name="category_image_description">category image discription\n</string>
+    <string name="back_arrow_description">back arrow discription</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="menu_ingredientMeals">Fragment Meals</string>
+</resources>

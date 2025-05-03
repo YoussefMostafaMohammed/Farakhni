@@ -1,0 +1,56 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+    <style name="Base.Theme.Farakhni" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="colorPrimary">@color/primary</item>
+        <item name="colorOnPrimary">@color/on_primary</item>
+        <item name="colorPrimaryContainer">@color/primary_container</item>
+        <item name="colorSurface">@color/surface</item>
+        <item name="colorSurfaceVariant">@color/surface_variant</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="textAppearanceTitleLarge">@style/TextAppearance.TitleLarge</item>
+        <item name="materialButtonStyle">@style/Widget.Farakhni.Button.Elevated</item>
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">12dp</item>
+    </style>
+
+    <style name="Theme.Farakhni" parent="Base.Theme.Farakhni" />
+
+    <!-- Shape Styles -->
+    <style name="ShapeAppearance.Circle" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">50%</item>
+    </style>
+
+    <style name="ShapeAppearance.MediumRounded" parent="ShapeAppearance.Material3.MediumComponent">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">16dp</item>
+    </style>
+
+    <!-- Text Appearances -->
+    <style name="TextAppearance.TitleLarge" parent="TextAppearance.Material3.TitleLarge">
+        <item name="android:fontFamily">@font/poppins_semibold</item>
+        <item name="android:textSize">28sp</item>
+        <item name="android:letterSpacing">-0.03</item>
+    </style>
+
+    <!-- Button Styles -->
+    <style name="Widget.Farakhni.Button.Elevated" parent="Widget.Material3.Button.ElevatedButton">
+        <item name="android:stateListAnimator">@animator/button_state_animator</item>
+        <item name="shapeAppearance">@style/ShapeAppearance.Farakhni.Button</item>
+    </style>
+
+    <style name="ShapeAppearance.Farakhni.Button" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">20dp</item>
+    </style>
+
+    <style name="Theme.Farakhni.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="Theme.Farakhni.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="Theme.Farakhni.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+</resources>

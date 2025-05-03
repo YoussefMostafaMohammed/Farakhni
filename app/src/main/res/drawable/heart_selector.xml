@@ -1,0 +1,8 @@
+<!-- res/drawable/heart_selector.xml -->
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- when view.isSelected()==true -->
+    <item android:state_selected="true"
+        android:drawable="@drawable/ic_heart_filled"/>
+    <!-- default -->
+    <item android:drawable="@drawable/ic_heart_outline"/>
+</selector>
