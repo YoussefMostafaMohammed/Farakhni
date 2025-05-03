@@ -11,13 +11,13 @@ import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.farakhni.AppScreen;
-import com.example.farakhni.DB.FavoriteMealDataBase;
+import com.example.farakhni.data.DB.AppDataBase;
+import com.example.farakhni.data.DB.AppDataBase;
 import com.example.farakhni.R;
 import com.example.farakhni.model.User;
 import com.example.farakhni.signup.SignupScreen;
 import com.example.farakhni.firebase.login.LoginContract;
 import com.example.farakhni.firebase.login.LoginPresenter;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 public class LoginScreen extends AppCompatActivity  implements LoginContract.View{
@@ -84,7 +84,7 @@ public class LoginScreen extends AppCompatActivity  implements LoginContract.Vie
 
     @Override
     public void onLoginSuccess(FirebaseUser user) {
-        FavoriteMealDataBase db = FavoriteMealDataBase.getInstance(this);
+        AppDataBase db = AppDataBase.getInstance(this);
         User localUser = new User();
         localUser.setUserId(user.getUid());
         localUser.setUsername( user.getDisplayName());

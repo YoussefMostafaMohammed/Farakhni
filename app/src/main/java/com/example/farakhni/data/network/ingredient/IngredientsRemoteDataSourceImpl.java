@@ -1,17 +1,15 @@
-package com.example.farakhni.network.ingredient;
+package com.example.farakhni.data.network.ingredient;
 
 import com.example.farakhni.model.IngredientListResponse;
 import com.example.farakhni.model.Ingredient;
-import com.example.farakhni.network.NetworkCallBack;
-import com.example.farakhni.network.RetrofitClient;
+import com.example.farakhni.data.network.NetworkCallBack;
+import com.example.farakhni.data.network.RetrofitClient;
 
 import java.util.ArrayList;
 import java.util.List;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 public class IngredientsRemoteDataSourceImpl implements IngredientsRemoteDataSoruce{
     private static IngredientService  ingredientService =null;

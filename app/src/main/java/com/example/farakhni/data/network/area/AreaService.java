@@ -1,4 +1,4 @@
-package com.example.farakhni.network.area;
+package com.example.farakhni.data.network.area;
 
 
 import com.example.farakhni.model.AreaListResponse;

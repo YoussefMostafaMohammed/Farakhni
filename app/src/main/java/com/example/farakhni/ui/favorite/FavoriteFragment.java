@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -14,8 +13,8 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.farakhni.DB.FavoriteMealDAO;
-import com.example.farakhni.DB.FavoriteMealDataBase;
+import com.example.farakhni.data.DB.FavoriteMealDAO;
+import com.example.farakhni.data.DB.AppDataBase;
 import com.example.farakhni.databinding.FragmentFavoriteBinding;
 import com.example.farakhni.model.Meal;
 import com.example.farakhni.ui.home.MealAdapter;
@@ -29,7 +28,7 @@ public class FavoriteFragment extends Fragment {
     private FragmentFavoriteBinding binding;
     private MealAdapter mealAdapter;
     private RecyclerView favoriteMealsRecyclerView;
-    FavoriteMealDataBase favoriteMealDataBase;
+    AppDataBase favoriteMealDataBase;
     List<Meal> mealList = new ArrayList<>();
     FavoriteMealDAO favoriteMealDAO;
 
@@ -38,7 +37,7 @@ public class FavoriteFragment extends Fragment {
         binding = FragmentFavoriteBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
         mealAdapter = new MealAdapter(requireContext(), mealList);
-        favoriteMealDataBase = FavoriteMealDataBase.getInstance(this.getContext());
+        favoriteMealDataBase = AppDataBase.getInstance(this.getContext());
         favoriteMealDAO=favoriteMealDataBase.getFavoriteMealDAO();
         favoriteMealsRecyclerView=binding.mealsList;
         favoriteMealsRecyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
@@ -63,7 +62,7 @@ public class FavoriteFragment extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        FavoriteMealDataBase.getInstance(getContext()).forceCheckpoint();
+        AppDataBase.getInstance(getContext()).forceCheckpoint();
         binding = null;
     }
 

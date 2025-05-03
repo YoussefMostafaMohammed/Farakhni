@@ -1,6 +1,6 @@
-package com.example.farakhni.network.area;
+package com.example.farakhni.data.network.area;
 import com.example.farakhni.model.Area;
-import com.example.farakhni.network.NetworkCallBack;
+import com.example.farakhni.data.network.NetworkCallBack;
 
 import java.util.List;
 

@@ -1,4 +1,4 @@
-package com.example.farakhni.network.meal;
+package com.example.farakhni.data.network.meal;
 import com.example.farakhni.model.MealListResponse;
 import retrofit2.Call;
 import retrofit2.http.GET;

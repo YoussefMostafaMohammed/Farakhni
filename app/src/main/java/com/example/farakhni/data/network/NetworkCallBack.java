@@ -1,4 +1,4 @@
-package com.example.farakhni.network;
+package com.example.farakhni.data.network;
 
 import com.example.farakhni.model.Category;
 

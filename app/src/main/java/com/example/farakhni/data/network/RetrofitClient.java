@@ -1,4 +1,4 @@
-package com.example.farakhni.network;
+package com.example.farakhni.data.network;
 
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;

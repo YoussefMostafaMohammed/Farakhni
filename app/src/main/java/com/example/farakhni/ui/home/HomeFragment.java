@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -12,15 +11,15 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.farakhni.DB.FavoriteMealDataBase;
+import com.example.farakhni.data.DB.AppDataBase;
 import com.example.farakhni.databinding.FragmentHomeBinding;
 import com.example.farakhni.model.Category;
 import com.example.farakhni.model.Ingredient;
 import com.example.farakhni.model.Meal;
-import com.example.farakhni.network.NetworkCallBack;
-import com.example.farakhni.network.category.CategoryRemoteDataSourceImpl;
-import com.example.farakhni.network.ingredient.IngredientsRemoteDataSourceImpl;
-import com.example.farakhni.network.meal.MealsRemoteDataSourceImpl;
+import com.example.farakhni.data.network.NetworkCallBack;
+import com.example.farakhni.data.network.category.CategoryRemoteDataSourceImpl;
+import com.example.farakhni.data.network.ingredient.IngredientsRemoteDataSourceImpl;
+import com.example.farakhni.data.network.meal.MealsRemoteDataSourceImpl;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -108,7 +107,7 @@ public class HomeFragment extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        FavoriteMealDataBase.getInstance(getContext()).forceCheckpoint();
+        AppDataBase.getInstance(getContext()).forceCheckpoint();
         binding = null;
     }
 }

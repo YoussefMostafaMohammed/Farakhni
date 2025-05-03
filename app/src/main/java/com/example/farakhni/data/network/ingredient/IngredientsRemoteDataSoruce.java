@@ -1,7 +1,7 @@
-package com.example.farakhni.network.ingredient;
+package com.example.farakhni.data.network.ingredient;
 
 import com.example.farakhni.model.Ingredient;
-import com.example.farakhni.network.NetworkCallBack;
+import com.example.farakhni.data.network.NetworkCallBack;
 
 import java.util.List;
 

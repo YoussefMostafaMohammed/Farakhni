@@ -1,11 +1,10 @@
-package com.example.farakhni.network.category;
+package com.example.farakhni.data.network.category;
 
 
 import com.example.farakhni.model.CategoryListResponse;
 import com.example.farakhni.model.Category;
-import com.example.farakhni.network.NetworkCallBack;
-import com.example.farakhni.network.RetrofitClient;
-import com.example.farakhni.network.ingredient.IngredientService;
+import com.example.farakhni.data.network.NetworkCallBack;
+import com.example.farakhni.data.network.RetrofitClient;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,8 +12,6 @@ import java.util.List;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 public class CategoryRemoteDataSourceImpl implements CategoryRemoteDataSoruce {
     private static CategoryService  categoryService =null;

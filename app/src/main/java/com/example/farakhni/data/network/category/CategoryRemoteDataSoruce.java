@@ -1,7 +1,7 @@
-package com.example.farakhni.network.category;
+package com.example.farakhni.data.network.category;
 
 import com.example.farakhni.model.Category;
-import com.example.farakhni.network.NetworkCallBack;
+import com.example.farakhni.data.network.NetworkCallBack;
 import java.util.List;
 
 public interface CategoryRemoteDataSoruce {

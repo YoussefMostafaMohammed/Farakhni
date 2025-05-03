@@ -1,18 +1,16 @@
-package com.example.farakhni.network.area;
+package com.example.farakhni.data.network.area;
 
 
 import com.example.farakhni.model.AreaListResponse;
 import com.example.farakhni.model.Area;
-import com.example.farakhni.network.NetworkCallBack;
-import com.example.farakhni.network.RetrofitClient;
+import com.example.farakhni.data.network.NetworkCallBack;
+import com.example.farakhni.data.network.RetrofitClient;
 
 import java.util.ArrayList;
 import java.util.List;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 public class AreasRemoteDataSourceImpl implements AreasRemoteDataSoruce{
     private static AreaService  areaService = null;

@@ -1,17 +1,14 @@
-package com.example.farakhni.network.meal;
+package com.example.farakhni.data.network.meal;
 
 import com.example.farakhni.model.MealListResponse;
 import com.example.farakhni.model.Meal;
-import com.example.farakhni.network.NetworkCallBack;
-import com.example.farakhni.network.RetrofitClient;
+import com.example.farakhni.data.network.NetworkCallBack;
+import com.example.farakhni.data.network.RetrofitClient;
 
-import java.util.ArrayList;
 import java.util.List;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 // 2. Updated Remote Data Source
 public class MealsRemoteDataSourceImpl implements MealsRemoteDataSoruce {
@@ -119,6 +116,43 @@ public class MealsRemoteDataSourceImpl implements MealsRemoteDataSoruce {
             }
         });
     }
+
+    @Override
+    public void makeNetworkCallFilterByCategory(String category, NetworkCallBack<List<Meal>> networkCallBack) {
+        mealService.filterByCategory(category).enqueue(new Callback<MealListResponse>() {
+            @Override
+            public void onResponse(Call<MealListResponse> call, Response<MealListResponse> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    networkCallBack.onSuccessResult(response.body().getAllMeals());
+                } else {
+                    networkCallBack.onFailureResult("No meals found with this ingredient");
+                }
+            }
+            @Override
+            public void onFailure(Call<MealListResponse> call, Throwable t) {
+                networkCallBack.onFailureResult(t.getMessage());
+            }
+        });
+    }
+
+    @Override
+    public void makeNetworkCallFilterByArea(String area, NetworkCallBack<List<Meal>> networkCallBack) {
+        mealService.filterByArea(area).enqueue(new Callback<MealListResponse>() {
+            @Override
+            public void onResponse(Call<MealListResponse> call, Response<MealListResponse> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    networkCallBack.onSuccessResult(response.body().getAllMeals());
+                } else {
+                    networkCallBack.onFailureResult("No meals found with this ingredient");
+                }
+            }
+            @Override
+            public void onFailure(Call<MealListResponse> call, Throwable t) {
+                networkCallBack.onFailureResult(t.getMessage());
+            }
+        });
+    }
+
 
 
 
