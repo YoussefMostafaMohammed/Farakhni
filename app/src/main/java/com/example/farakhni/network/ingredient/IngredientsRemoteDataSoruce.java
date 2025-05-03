@@ -6,5 +6,5 @@ import com.example.farakhni.network.NetworkCallBack;
 import java.util.List;
 
 public interface IngredientsRemoteDataSoruce {
-    void makeNetworkCall(String strIngredient, NetworkCallBack<List<Ingredient>> networkCallBack);
+    void makeNetworkCall(NetworkCallBack<List<Ingredient>> networkCallBack);
 }

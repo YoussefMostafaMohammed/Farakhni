@@ -5,5 +5,5 @@ import com.example.farakhni.network.NetworkCallBack;
 import java.util.List;
 
 public interface AreasRemoteDataSoruce {
-    void makeNetworkCall(String strArea, NetworkCallBack<List<Area>> networkCallBack);
+    void makeNetworkCall(NetworkCallBack<List<Area>> networkCallBack);
 }

@@ -6,31 +6,55 @@
 
     <application
         android:allowBackup="true"
+        android:configChanges="orientation|screenSize"
         android:dataExtractionRules="@xml/data_extraction_rules"
+        android:enableOnBackInvokedCallback="true"
         android:fullBackupContent="@xml/backup_rules"
         android:icon="@mipmap/ic_launcher_logo"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
+        android:screenOrientation="portrait"
         android:supportsRtl="true"
         android:theme="@style/Theme.Farakhni"
-        tools:targetApi="31">
+        tools:targetApi="33">
         <activity
-            android:name=".app_screen"
+            android:name=".MealsFilterActivity"
+            android:exported="false" />
+        <activity
+            android:name=".mealdetails.MealDetailsActivity"
+            android:configChanges="orientation|screenSize"
             android:exported="false"
-            android:label="@string/title_activity_app_screen"
-            android:theme="@style/Theme.Farakhni.NoActionBar" />
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".changepassword.ChangePasswordScreen"
+            android:configChanges="orientation|screenSize"
+            android:exported="false"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".AppScreen"
-            android:exported="false" />
+            android:exported="false"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize" />
         <activity
-            android:name=".SignupScreen"
-            android:exported="false" />
+            android:name=".signup.SignupScreen"
+            android:configChanges="orientation|screenSize"
+            android:exported="false"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize" />
         <activity
-            android:name=".LoginScreen"
-            android:exported="false" />
+            android:name=".login.LoginScreen"
+            android:configChanges="orientation|screenSize"
+            android:exported="false"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize" />
         <activity
-            android:name=".SplashScreen"
-            android:exported="true">
+            android:name=".splashscreen.SplashScreen"
+            android:configChanges="orientation|screenSize"
+            android:exported="true"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -39,7 +63,10 @@
         </activity>
         <activity
             android:name=".MainActivity"
-            android:exported="true" />
+            android:configChanges="orientation|screenSize"
+            android:exported="true"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize" />
     </application>
 
 </manifest>

@@ -1,11 +1,14 @@
 package com.example.farakhni.model;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.util.List;
 
 public class IngredientListResponse {
-    private List<Ingredient> Ingredients;
+    @SerializedName("meals")
+    private List<Ingredient> ingredients;
 
-    public List<Ingredient>  getProducts() {
-        return Ingredients;
+    public List<Ingredient>  getALlIngredients() {
+        return ingredients;
     }
 }

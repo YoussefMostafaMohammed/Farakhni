@@ -34,4 +34,21 @@
     <string name="menu_home">Home</string>
     <string name="menu_gallery">Gallery</string>
     <string name="menu_slideshow">Slideshow</string>
+    <string name="default_web_client_id">304070505402-eu7j8hcfd7dn9t720gknq32sd674v30u.apps.googleusercontent.com</string>
+    <string name="change_password">Change Password</string>
+    <string name="confirm_new_password">Confirms New Password</string>
+    <string name="new_password">New Password</string>
+    <string name="current_password">Current Password</string>
+    <string name="update_password">Update Password</string>
+    <string name="back_to_login">Back to Login</string>
+    <string name="security_icon">Security Icon</string>
+    <string name="heart_icon_description">heart icon\n</string>
+    <string name="meal_image_description">meal image discription\n</string>
+    <string name="FoodPlanningApp">Food Planning App</string>
+    <string name="ingredient_image_description">ingredient image\n</string>
+    <string name="category_image_description">category image discription\n</string>
+    <string name="back_arrow_description">back arrow discription</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="menu_ingredientMeals">Fragment Meals</string>
 </resources>

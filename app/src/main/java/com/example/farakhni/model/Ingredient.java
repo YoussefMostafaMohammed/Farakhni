@@ -11,9 +11,17 @@ public class Ingredient {
 
     @SerializedName("strDescription")
     private String description;
-
+    private String measure;
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getMeasure() {
+        return measure;
+    }
+
+    public void setMeasure(String measure) {
+        this.measure = measure;
     }
 
     public void setIngredient(String ingredient) {

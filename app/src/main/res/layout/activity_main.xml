@@ -1,144 +1,146 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/surface"
-    android:gravity="center_horizontal"
-    android:orientation="vertical"
-    android:paddingHorizontal="32dp"
-    android:paddingVertical="40dp">
+    android:fillViewport="true"
+    android:fitsSystemWindows="true">
 
-    <ImageView
-        android:layout_width="96dp"
-        android:layout_height="96dp"
-        android:layout_marginBottom="40dp"
-        android:backgroundTint="@color/primary_container"
-        android:contentDescription="@string/app_logo"
-        android:elevation="2dp"
-        android:src="@drawable/app_logo"
-        app:shapeAppearanceOverlay="@style/ShapeAppearance.Circle" />
-
-    <!-- Register Button -->
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/btnSignup"
-        style="@style/Widget.Material3.Button.ElevatedButton"
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:layout_marginBottom="24dp"
-        android:letterSpacing="0.03"
-        android:text="@string/register"
-        android:textColor="@color/on_primary"
-        android:textSize="16sp"
-        app:backgroundTint="@color/primary"
-        app:cornerRadius="12dp"
-        app:elevation="1dp"
-        app:icon="@drawable/ic_person_outline"
-        app:iconTint="@color/on_primary"
-        app:iconGravity="textEnd"
-        app:iconPadding="8dp"
-        app:iconSize="20dp"
-        app:rippleColor="@color/on_primary"
-        app:shapeAppearanceOverlay="@style/ShapeAppearance.MediumRounded" />
-
-    <!-- Divider -->
     <LinearLayout
+        android:id="@+id/main"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center"
-        android:orientation="horizontal"
-        android:paddingVertical="24dp">
+        android:orientation="vertical"
+        android:gravity="center_horizontal"
+        android:paddingHorizontal="32dp"
+        android:paddingVertical="40dp">
 
-        <View
-            android:layout_width="0dp"
-            android:layout_height="1dp"
-            android:layout_weight="1"
-            android:background="@color/outline" />
+        <ImageView
+            android:layout_width="96dp"
+            android:layout_height="96dp"
+            android:layout_marginBottom="40dp"
+            android:backgroundTint="@color/primary_container"
+            android:contentDescription="@string/app_logo"
+            android:elevation="2dp"
+            android:src="@drawable/app_logo"
+            app:shapeAppearanceOverlay="@style/ShapeAppearance.Circle" />
 
-        <TextView
-            android:layout_width="wrap_content"
+        <!-- Register Button -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnSignup"
+            style="@style/Widget.Material3.Button.ElevatedButton"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_marginBottom="24dp"
+            android:letterSpacing="0.03"
+            android:text="@string/register"
+            android:textColor="@color/on_primary"
+            android:textSize="16sp"
+            app:backgroundTint="@color/primary"
+            app:cornerRadius="12dp"
+            app:elevation="1dp"
+            app:icon="@drawable/ic_person_outline"
+            app:iconTint="@color/on_primary"
+            app:iconGravity="textEnd"
+            app:iconPadding="8dp"
+            app:iconSize="20dp"
+            app:rippleColor="@color/on_primary"
+            app:shapeAppearanceOverlay="@style/ShapeAppearance.MediumRounded" />
+
+        <!-- Divider -->
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingHorizontal="8dp"
-            android:text="@string/or"
-            android:textColor="@color/text_secondary"
-            android:textSize="14sp" />
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:paddingVertical="24dp">
 
-        <View
-            android:layout_width="0dp"
-            android:layout_height="1dp"
-            android:layout_weight="1"
-            android:background="@color/outline" />
-    </LinearLayout>
+            <View
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_weight="1"
+                android:background="@color/outline" />
 
-    <!-- Login Button -->
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/btnLogin"
-        style="@style/Widget.Material3.Button.OutlinedButton"
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:layout_marginBottom="16dp"
-        android:letterSpacing="0.03"
-        android:text="@string/loginbtn"
-        android:textColor="@color/primary"
-        android:textSize="16sp"
-        app:cornerRadius="12dp"
-        app:icon="@drawable/ic_login"
-        app:iconGravity="textEnd"
-        app:iconPadding="8dp"
-        app:iconSize="20dp"
-        app:rippleColor="@color/primary_container"
-        app:shapeAppearanceOverlay="@style/ShapeAppearance.MediumRounded"
-        app:strokeColor="@color/primary"
-        app:strokeWidth="1dp"
-        />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingHorizontal="8dp"
+                android:text="@string/or"
+                android:textColor="@color/text_secondary"
+                android:textSize="14sp" />
 
-    <!-- Continue with Google -->
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/btnGoogle"
-        style="@style/Widget.Material3.Button.OutlinedButton"
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:layout_marginBottom="8dp"
-        android:text="@string/continue_with_google"
-        android:textColor="@color/primary"
-        android:textSize="16sp"
-        app:cornerRadius="12dp"
-        app:icon="@drawable/ic_google"
-        app:iconGravity="textEnd"
-        app:iconPadding="12dp"
-        app:iconSize="24dp"
-        app:rippleColor="@color/primary_container"
-        app:strokeColor="@color/primary"
-        app:strokeWidth="1dp"/>
+            <View
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_weight="1"
+                android:background="@color/outline" />
+        </LinearLayout>
 
-    <!-- Continue as Guest -->
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/btnGuest"
-        style="@style/Widget.Material3.Button.TextButton"
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
-        app:icon="@drawable/ic_guest"
-        android:text="@string/continue_as_guest"
-        android:textColor="@color/primary"
-        android:textSize="16sp"
-        app:cornerRadius="12dp"
-        app:iconGravity="textEnd"
-        app:iconPadding="12dp"
-        app:iconSize="24dp"
-        app:strokeColor="@color/primary"
-        app:strokeWidth="1dp"
-        app:rippleColor="@color/primary_container" />
+        <!-- Login Button -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnLogin"
+            style="@style/Widget.Material3.Button.OutlinedButton"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_marginBottom="16dp"
+            android:letterSpacing="0.03"
+            android:text="@string/loginbtn"
+            android:textColor="@color/primary"
+            android:textSize="16sp"
+            app:cornerRadius="12dp"
+            app:icon="@drawable/ic_login"
+            app:iconGravity="textEnd"
+            app:iconPadding="8dp"
+            app:iconSize="20dp"
+            app:rippleColor="@color/primary_container"
+            app:shapeAppearanceOverlay="@style/ShapeAppearance.MediumRounded"
+            app:strokeColor="@color/primary"
+            app:strokeWidth="1dp" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:gravity="center|bottom"
-        android:paddingBottom="40dp">
+        <!-- Continue with Google -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnGoogle"
+            style="@style/Widget.Material3.Button.OutlinedButton"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_marginBottom="8dp"
+            android:text="@string/continue_with_google"
+            android:textColor="@color/primary"
+            android:textSize="16sp"
+            app:cornerRadius="12dp"
+            app:icon="@drawable/ic_google"
+            app:iconGravity="textEnd"
+            app:iconPadding="12dp"
+            app:iconSize="24dp"
+            app:rippleColor="@color/primary_container"
+            app:strokeColor="@color/primary"
+            app:strokeWidth="1dp" />
 
+        <!-- Continue as Guest -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnGuest"
+            style="@style/Widget.Material3.Button.TextButton"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:text="@string/continue_as_guest"
+            android:textColor="@color/primary"
+            android:textSize="16sp"
+            app:cornerRadius="12dp"
+            app:icon="@drawable/ic_guest"
+            app:iconGravity="textEnd"
+            app:iconPadding="12dp"
+            app:iconSize="24dp"
+            app:strokeColor="@color/primary"
+            app:strokeWidth="1dp"
+            app:rippleColor="@color/primary_container" />
+
+        <!-- Terms -->
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
             android:gravity="center"
             android:lineSpacingExtra="4sp"
             android:paddingHorizontal="24dp"
@@ -146,5 +148,4 @@
             android:textColor="@color/text_secondary"
             android:textSize="12sp" />
     </LinearLayout>
-
-</LinearLayout>
+</ScrollView>

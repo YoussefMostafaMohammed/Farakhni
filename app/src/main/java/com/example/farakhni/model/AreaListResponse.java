@@ -1,11 +1,13 @@
 package com.example.farakhni.model;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.util.List;
 
 public class AreaListResponse {
-    private List<Area> Areas;
-
-    public List<Area>  getProducts() {
-        return Areas;
+    @SerializedName("meals")
+    private List<Area> areas;
+    public List<Area>  getAllAreas() {
+        return areas;
     }
 }

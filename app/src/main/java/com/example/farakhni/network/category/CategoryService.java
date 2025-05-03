@@ -7,6 +7,6 @@ import retrofit2.http.GET;
 import retrofit2.http.Query;
 
 public interface CategoryService {
-    @GET("list.php")
-    Call<CategoryListResponse> getCategories(@Query("c") String strCategory); // Returns ProductResponse instead of List
+    @GET("categories.php")
+    Call<CategoryListResponse> getCategories(); // Returns ProductResponse instead of List
 }

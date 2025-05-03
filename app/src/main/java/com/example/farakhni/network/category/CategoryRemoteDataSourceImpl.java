@@ -17,7 +17,6 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class CategoryRemoteDataSourceImpl implements CategoryRemoteDataSoruce {
-    private static final String BASE_URL="www.themealdb.com/api/json/v1/1/";
     private static CategoryService  categoryService =null;
 
     private static CategoryRemoteDataSourceImpl categoryRemoteDataSource;
@@ -32,15 +31,15 @@ public class CategoryRemoteDataSourceImpl implements CategoryRemoteDataSoruce {
         return categoryRemoteDataSource;
     }
     @Override
-    public void makeNetworkCall(String strCategory, NetworkCallBack<List<Category>> networkCallBack) {
+    public void makeNetworkCall( NetworkCallBack<List<Category>> networkCallBack) {
         List<Category> result = new ArrayList<>();
-        Call<CategoryListResponse> call=  categoryService.getCategories(strCategory);
+        Call<CategoryListResponse> call=  categoryService.getCategories();
         call.enqueue(new Callback<CategoryListResponse>() {
             @Override
             public void onResponse(Call<CategoryListResponse> call, Response<CategoryListResponse> response) {
                 if (response.isSuccessful() && response.body() != null) {
-                    result.addAll(response.body().getProducts());
-                    networkCallBack.onSuccessResult(response.body().getProducts());
+                    result.addAll(response.body().getAllCategories());
+                    networkCallBack.onSuccessResult(response.body().getAllCategories());
                 }
             }
             @Override
