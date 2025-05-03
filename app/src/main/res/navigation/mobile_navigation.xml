@@ -10,11 +10,13 @@
         android:name="com.example.farakhni.freatures.home.HomeFragment"
         android:label="@string/menu_home"
         tools:layout="@layout/fragment_home">
-
-        <!-- Added action from nav_home to nav_ingredient -->
         <action
             android:id="@+id/action_nav_home_to_nav_ingredient"
             app:destination="@id/nav_ingredient" />
+
+        <action
+            android:id="@+id/action_nav_home_to_meal_details"
+            app:destination="@id/nav_meal_details"/>
     </fragment>
 
     <fragment
@@ -31,11 +33,21 @@
 
     <fragment
         android:id="@+id/nav_ingredient"
-        android:name="com.example.farakhni.FilterByIngredientFragment"
+        android:name="com.example.farakhni.freatures.FilterBy.FilterByFragment"
         android:label="Meals">
         <argument
             android:name="meals"
             app:argType="com.example.farakhni.model.Meal[]" />
+    </fragment>
+
+
+    <fragment
+        android:id="@+id/nav_meal_details"
+        android:name="com.example.farakhni.freatures.mealdetails.MealDetailsFragment"
+        android:label="Meal Details">
+        <argument
+            android:name="arg_meal"
+            app:argType="com.example.farakhni.model.Meal" />
     </fragment>
 
 </navigation>

@@ -68,7 +68,6 @@ public class MealAdapter extends RecyclerView.Adapter<MealAdapter.MealViewHolder
                 .error(R.drawable.app_logo)
                 .into(holder.mealImage);
 
-        // Use ONLY callback for navigation
         holder.mealImage.setOnClickListener(v -> {
             if (mealClickListener != null) {
                 mealClickListener.onMealClicked(meal);

@@ -8,13 +8,14 @@ import com.example.farakhni.data.network.NetworkCallBack;
 import com.example.farakhni.data.network.meal.MealsRemoteDataSoruce;
 import com.example.farakhni.data.network.meal.MealsRemoteDataSourceImpl;
 import com.example.farakhni.model.Meal;
+
+import java.util.ArrayList;
 import java.util.List;
 
 public class MealRepositoryImpl implements MealRepository {
     private final MealsRemoteDataSourceImpl remoteDataSource;
     private final FavoriteMealsLocalDataSourceImpl localDataSource;
     private static MealRepositoryImpl instance;
-
     private MealRepositoryImpl(MealsRemoteDataSourceImpl remoteDataSource,
                                FavoriteMealsLocalDataSourceImpl localDataSource) {
         this.remoteDataSource = remoteDataSource;

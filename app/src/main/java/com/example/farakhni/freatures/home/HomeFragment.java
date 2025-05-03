@@ -1,16 +1,17 @@
 package com.example.farakhni.freatures.home;
-
-import android.content.Intent;
+import android.app.Activity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import com.example.farakhni.R;
 import com.example.farakhni.common.CategoryAdapter;
 import com.example.farakhni.common.IngredientAdapter;
 import com.example.farakhni.common.MealAdapter;
@@ -18,40 +19,62 @@ import com.example.farakhni.data.repositories.CategoryRepositoryImpl;
 import com.example.farakhni.data.repositories.IngredientRepositoryImpl;
 import com.example.farakhni.data.repositories.MealRepositoryImpl;
 import com.example.farakhni.databinding.FragmentHomeBinding;
-import com.example.farakhni.freatures.mealdetails.MealDetailsActivity;
 import com.example.farakhni.model.Category;
 import com.example.farakhni.model.Ingredient;
 import com.example.farakhni.model.Meal;
-
+import java.util.ArrayList;
 import java.util.List;
-
 public class HomeFragment extends Fragment implements HomeContract.View {
     private FragmentHomeBinding binding;
     private HomeContract.Presenter presenter;
+    private MealAdapter mealAdapter;
+    private IngredientAdapter ingredientAdapter;
+    private CategoryAdapter categoryAdapter;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentHomeBinding.inflate(inflater, container, false);
+        mealAdapter       = new MealAdapter(requireContext(), new ArrayList<>());
+        ingredientAdapter = new IngredientAdapter(requireContext(), new ArrayList<>());
+        categoryAdapter   = new CategoryAdapter(requireContext(), new ArrayList<>());
+        MealRepositoryImpl mealRepository = MealRepositoryImpl.getInstance(requireContext());
 
-        MealRepositoryImpl mealRepo = MealRepositoryImpl.getInstance(getContext());
-        IngredientRepositoryImpl ingRepo = IngredientRepositoryImpl.getInstance();
-        CategoryRepositoryImpl catRepo = CategoryRepositoryImpl.getInstance();
+        mealAdapter.setOnFavoriteToggleListener(meal -> {
+            if (meal.isFavorite()) {
+                mealRepository.insertFavoriteMeal(meal);
+            } else {
+                mealRepository.deleteFavoriteMeal(meal);
+            }
+            Toast.makeText(requireContext(),
+                    meal.getName() + (meal.isFavorite() ? " added" : " removed"),
+                    Toast.LENGTH_SHORT).show();
+        });
 
-        HomeContract.Model model = new HomeModel(mealRepo, ingRepo, catRepo);
-        presenter = new HomePresenter(model);
-        presenter.attachView(this);
+        mealAdapter.setOnMealClickListener(meal -> {
+            NavController nav = Navigation.findNavController((Activity)getContext(), R.id.nav_host_fragment_content_app_screen);
+            Bundle args = new Bundle();
+            args.putSerializable("arg_meal", meal);
+            nav.navigate(R.id.nav_meal_details, args);
+
+        });
 
         binding.randomMealRecyclerView.setLayoutManager(
-                new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false)
-        );
-        binding.ingredientsList.setLayoutManager(
-                new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false)
-        );
-        binding.categoriesList.setLayoutManager(
-                new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false)
-        );
+                new LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false));
+        binding.randomMealRecyclerView.setAdapter(mealAdapter);
 
+        binding.ingredientsList.setLayoutManager(
+                new LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false));
+        binding.ingredientsList.setAdapter(ingredientAdapter);
+
+        binding.categoriesList.setLayoutManager(
+                new LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false));
+        binding.categoriesList.setAdapter(categoryAdapter);
+
+        IngredientRepositoryImpl ingredientRepository = IngredientRepositoryImpl.getInstance();
+        CategoryRepositoryImpl categoryRepository = CategoryRepositoryImpl.getInstance();
+        presenter = new HomePresenter(new HomeModel(mealRepository, ingredientRepository, categoryRepository));
+        presenter.attachView(this);
         presenter.loadHomeData();
 
         return binding.getRoot();
@@ -59,33 +82,22 @@ public class HomeFragment extends Fragment implements HomeContract.View {
 
     @Override
     public void showRandomMeals(List<Meal> meals) {
-        MealAdapter adapter = new MealAdapter(requireContext(), meals);
-        adapter.setOnMealClickListener(meal -> {
-            Intent i = new Intent(requireContext(), MealDetailsActivity.class);
-            i.putExtra("extra_meal", meal);
-            startActivity(i);
-        });
-        adapter.setOnFavoriteToggleListener(meal -> {
-            Toast.makeText(getContext(), meal.getName() + " favorite toggled", Toast.LENGTH_SHORT).show();
-        });
-        binding.randomMealRecyclerView.setAdapter(adapter);
+        mealAdapter.setMealList(meals);
     }
 
     @Override
     public void showIngredients(List<Ingredient> ingredients) {
-        IngredientAdapter adapter = new IngredientAdapter(requireContext(), ingredients);
-        binding.ingredientsList.setAdapter(adapter);
+        ingredientAdapter.setIngredientList(ingredients);
     }
 
     @Override
     public void showCategories(List<Category> categories) {
-        CategoryAdapter adapter = new CategoryAdapter(requireContext(), categories);
-        binding.categoriesList.setAdapter(adapter);
+        categoryAdapter.updateCategories(categories);
     }
 
     @Override
     public void showError(String message) {
-        Toast.makeText(getContext(), "Error: " + message, Toast.LENGTH_SHORT).show();
+        Toast.makeText(requireContext(), "Error: " + message, Toast.LENGTH_SHORT).show();
     }
 
     @Override

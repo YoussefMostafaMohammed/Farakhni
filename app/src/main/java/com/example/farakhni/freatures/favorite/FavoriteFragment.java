@@ -1,5 +1,6 @@
 package com.example.farakhni.freatures.favorite;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,11 +9,13 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import com.example.farakhni.R;
 import com.example.farakhni.common.MealAdapter;
 import com.example.farakhni.databinding.FragmentFavoriteBinding;
-import com.example.farakhni.freatures.mealdetails.MealDetailsActivity;
 import com.example.farakhni.model.Meal;
 
 import java.util.List;
@@ -29,7 +32,6 @@ public class FavoriteFragment extends Fragment implements FavoriteContract.View 
                              ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentFavoriteBinding.inflate(inflater, container, false);
 
-        // MVP setup
         presenter = new FavoritePresenter(new FavoriteModel(requireContext()));
         presenter.attachView(this);
 
@@ -37,21 +39,20 @@ public class FavoriteFragment extends Fragment implements FavoriteContract.View 
                 new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false)
         );
         adapter = new MealAdapter(requireContext(), List.of());
-
         adapter.setOnMealClickListener(meal -> {
-            Intent i = new Intent(requireContext(), MealDetailsActivity.class);
-            i.putExtra("extra_meal", meal);
-            startActivity(i);
+            NavController nav = Navigation.findNavController((Activity)getContext(), R.id.nav_host_fragment_content_app_screen);
+            Bundle args = new Bundle();
+            args.putSerializable("arg_meal", meal);
+            nav.navigate(R.id.nav_meal_details, args);
         });
-
         adapter.setOnFavoriteToggleListener(meal -> {
             presenter.removeFavorite(meal);
+            Toast.makeText(requireContext(),
+                    meal.getName() + (meal.isFavorite() ? " added" : " removed"),
+                    Toast.LENGTH_SHORT).show();
         });
-
         binding.mealsList.setAdapter(adapter);
-
         presenter.loadFavorites(getViewLifecycleOwner());
-
         return binding.getRoot();
     }
 

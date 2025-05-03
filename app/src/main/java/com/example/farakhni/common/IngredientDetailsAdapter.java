@@ -1,4 +1,4 @@
-package com.example.farakhni.freatures.mealdetails;
+package com.example.farakhni.common;
 
 import android.content.Context;
 import android.view.LayoutInflater;

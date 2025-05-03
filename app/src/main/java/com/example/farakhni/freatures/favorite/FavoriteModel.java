@@ -17,7 +17,6 @@ public class FavoriteModel implements FavoriteContract.Model {
 
     @Override
     public LiveData<List<Meal>> fetchFavorites() {
-        // Return the LiveData directly
         return dao.getFavoriteMealsForUser();
     }
 
