@@ -22,47 +22,46 @@ import com.example.farakhni.R;
 import com.example.farakhni.data.network.NetworkCallBack;
 import com.example.farakhni.data.repositories.MealRepository;
 import com.example.farakhni.data.repositories.MealRepositoryImpl;
-import com.example.farakhni.model.Category;
+import com.example.farakhni.model.Area;
 import com.example.farakhni.model.Meal;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.CategoryViewHolder> {
+public class AreaAdapter extends RecyclerView.Adapter<AreaAdapter.AreaViewHolder> {
     private final Context context;
-    private final List<Category> categoryList;
+    private final List<Area> areaList;
     private final MealRepository mealRepository;
 
-    public CategoryAdapter(Context context, List<Category> categoryList) {
+    public AreaAdapter(Context context, List<Area> areaList) {
         this.context = context;
-        this.categoryList = categoryList != null ? categoryList : new ArrayList<>();
+        this.areaList = areaList != null ? areaList : new ArrayList<>();
         this.mealRepository = MealRepositoryImpl.getInstance(context);
     }
 
     @NonNull
     @Override
-    public CategoryViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public AreaViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(context).inflate(R.layout.card_item, parent, false);
-        return new CategoryViewHolder(view);
+        return new AreaViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull CategoryViewHolder holder, int position) {
-        Category category = categoryList.get(position);
-        String categoryName = category.getCategory();
+    public void onBindViewHolder(@NonNull AreaViewHolder holder, int position) {
+        Area area = areaList.get(position);
+        String areaName = area.getArea();
 
-        holder.categoryName.setText(categoryName != null ? categoryName : "Unknown Category");
-
+        holder.areaName.setText(areaName != null ? areaName : "Unknown Area");
+        String ThumbNail="www.themealdb.com/images/ingredients/lime-small.png";
         Glide.with(context)
-                .load(category.getCategoryThumb())
-                .into(holder.categoryImage);
+                .load(ThumbNail)
+                .into(holder.areaImage);
 
-        holder.categoryImage.setOnClickListener(v -> {
-            // Fetch meals by category
-            mealRepository.filterByCategory(categoryName, new NetworkCallBack<List<Meal>>() {
+        holder.areaImage.setOnClickListener(v -> {
+            mealRepository.filterByArea(areaName, new NetworkCallBack<List<Meal>>() {
                 @Override public void onSuccessResult(List<Meal> meals) {
                     if (meals.isEmpty()) {
-                        Toast.makeText(context, "No meals for " + categoryName, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context, "No meals for " + areaName, Toast.LENGTH_SHORT).show();
                     } else {
                         fetchDetailsAndNavigate(meals);
                     }
@@ -92,9 +91,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
                         View popupView = LayoutInflater.from(context)
                                 .inflate(R.layout.popup_layout, null, false);
                         TextView desc = popupView.findViewById(R.id.popupIngredientDescription);
-                        desc.setText(category.getCategoryDescription() != null
-                                ? category.getCategoryDescription()
-                                : "No description available.");
+                        desc.setText("This is a country located in ");
 
                         popupView.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
 
@@ -131,13 +128,13 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
                         fullMeals.add(detailed.get(0));
                     }
                     if (fullMeals.size() == total) {
-                        navigateToCategoryFragment(fullMeals);
+                        navigateToAreaFragment(fullMeals);
                     }
                 }
 
                 @Override public void onFailureResult(String message) {
                     if (fullMeals.size() == total) {
-                        navigateToCategoryFragment(fullMeals);
+                        navigateToAreaFragment(fullMeals);
                     }
                 }
 
@@ -152,7 +149,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
         }
     }
 
-    private void navigateToCategoryFragment(List<Meal> meals) {
+    private void navigateToAreaFragment(List<Meal> meals) {
         Bundle bundle = new Bundle();
         bundle.putSerializable("meals", meals.toArray(new Meal[0]));
 
@@ -160,28 +157,28 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
                 (Activity) context,
                 R.id.nav_host_fragment_content_app_screen
         );
-        navController.navigate(R.id.nav_meals, bundle); // Replace with correct destination ID
+        navController.navigate(R.id.nav_meals, bundle); // Use correct destination ID
     }
 
     @Override
     public int getItemCount() {
-        return categoryList.size();
+        return areaList.size();
     }
 
-    public void updateCategories(List<Category> newCategories) {
-        categoryList.clear();
-        categoryList.addAll(newCategories);
+    public void updateAreas(List<Area> newAreas) {
+        areaList.clear();
+        areaList.addAll(newAreas);
         notifyDataSetChanged();
     }
 
-    public static class CategoryViewHolder extends RecyclerView.ViewHolder {
-        ImageView categoryImage;
-        TextView categoryName;
+    public static class AreaViewHolder extends RecyclerView.ViewHolder {
+        ImageView areaImage;
+        TextView areaName;
 
-        public CategoryViewHolder(@NonNull View itemView) {
+        public AreaViewHolder(@NonNull View itemView) {
             super(itemView);
-            categoryImage = itemView.findViewById(R.id.itemImage);
-            categoryName = itemView.findViewById(R.id.itemName);
+            areaImage = itemView.findViewById(R.id.itemImage);
+            areaName = itemView.findViewById(R.id.itemName);
         }
     }
 }

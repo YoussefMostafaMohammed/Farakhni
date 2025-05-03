@@ -21,21 +21,21 @@
 
         <!-- Category Image -->
         <ImageView
-            android:id="@+id/ingredientImage"
+            android:id="@+id/itemImage"
             android:layout_width="80dp"
             android:layout_height="80dp"
-            android:contentDescription="@string/category_image_description"
             android:scaleType="centerCrop"
-            android:src="@drawable/app_logo" />
+            android:src="@drawable/app_logo"
+            android:contentDescription="@string/category_image_description" />
 
         <!-- Category Name -->
         <TextView
-            android:id="@+id/ingredientName"
+            android:id="@+id/itemName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:gravity="center"
-            android:text="extra virgin olive oil"
+            android:text="Item Name"
             android:textColor="#212121"
             android:textSize="14sp"
             android:textStyle="bold" />

@@ -12,7 +12,7 @@
         tools:layout="@layout/fragment_home">
         <action
             android:id="@+id/action_nav_home_to_nav_ingredient"
-            app:destination="@id/nav_ingredient" />
+            app:destination="@id/nav_meals" />
 
         <action
             android:id="@+id/action_nav_home_to_meal_details"
@@ -23,7 +23,7 @@
         android:id="@+id/nav_gallery"
         android:name="com.example.farakhni.freatures.favorite.FavoriteFragment"
         android:label="@string/menu_gallery"
-        tools:layout="@layout/fragment_favorite" />
+        tools:layout="@layout/fragment_meals" />
 
     <fragment
         android:id="@+id/nav_slideshow"
@@ -32,14 +32,13 @@
         tools:layout="@layout/fragment_slideshow" />
 
     <fragment
-        android:id="@+id/nav_ingredient"
+        android:id="@+id/nav_meals"
         android:name="com.example.farakhni.freatures.FilterBy.FilterByFragment"
         android:label="Meals">
         <argument
             android:name="meals"
             app:argType="com.example.farakhni.model.Meal[]" />
     </fragment>
-
 
     <fragment
         android:id="@+id/nav_meal_details"

@@ -25,7 +25,6 @@ import com.example.farakhni.data.repositories.MealRepositoryImpl;
 import com.example.farakhni.model.Ingredient;
 import com.example.farakhni.model.Meal;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -47,7 +46,7 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.In
     @NonNull @Override
     public IngredientViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(context)
-                .inflate(R.layout.ingredient_item, parent, false);
+                .inflate(R.layout.card_item, parent, false);
         return new IngredientViewHolder(v);
     }
 
@@ -173,7 +172,7 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.In
                 (Activity) context,
                 R.id.nav_host_fragment_content_app_screen
         );
-        navController.navigate(R.id.nav_ingredient, bundle);
+        navController.navigate(R.id.nav_meals, bundle);
     }
 
     @Override public int getItemCount() {
@@ -185,8 +184,8 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.In
         TextView  ingredientInfo;
         IngredientViewHolder(@NonNull View itemView) {
             super(itemView);
-            ingredientImage = itemView.findViewById(R.id.ingredientImage);
-            ingredientInfo  = itemView.findViewById(R.id.ingredientName);
+            ingredientImage = itemView.findViewById(R.id.itemImage);
+            ingredientInfo  = itemView.findViewById(R.id.itemName);
         }
     }
 }

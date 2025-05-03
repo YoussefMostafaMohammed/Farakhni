@@ -17,7 +17,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.example.farakhni.R;
 import com.example.farakhni.common.MealAdapter;
-import com.example.farakhni.databinding.FragmentIngredientBinding;
+import com.example.farakhni.databinding.FragmentMealsBinding;
 import com.example.farakhni.model.Meal;
 
 import java.util.ArrayList;
@@ -27,7 +27,7 @@ import java.util.List;
 public class FilterByFragment extends Fragment implements FilterByContract.View {
     private static final String ARG_MEALS = "meals";
 
-    private FragmentIngredientBinding binding;
+    private FragmentMealsBinding binding;
     private MealAdapter adapter;
     private FilterByContract.Presenter presenter;
 
@@ -43,7 +43,7 @@ public class FilterByFragment extends Fragment implements FilterByContract.View 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container,
                              Bundle savedInstanceState) {
-        binding = FragmentIngredientBinding.inflate(inflater, container, false);
+        binding = FragmentMealsBinding.inflate(inflater, container, false);
 
         // 1) MVP wiring
         presenter = new FilterByPresenter(new FilterByModel(requireContext()));
