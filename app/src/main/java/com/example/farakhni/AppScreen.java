@@ -4,8 +4,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.Menu;
 
-import com.example.farakhni.DB.FavoriteMealDAO;
-import com.example.farakhni.DB.FavoriteMealDataBase;
+import com.example.farakhni.data.DB.AppDataBase;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.navigation.NavigationView;
 
@@ -20,10 +19,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.farakhni.databinding.ActivityAppScreenBinding;
 
 public class AppScreen extends AppCompatActivity {
-
     private AppBarConfiguration mAppBarConfiguration;
     private ActivityAppScreenBinding binding;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,7 +42,6 @@ public class AppScreen extends AppCompatActivity {
                 R.id.nav_home, R.id.nav_gallery, R.id.nav_slideshow)
                 .setOpenableLayout(drawer)
                 .build();
-
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_app_screen);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
@@ -67,7 +63,7 @@ public class AppScreen extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
-        FavoriteMealDataBase.getInstance(this).forceCheckpoint();
+        AppDataBase.getInstance(this).forceCheckpoint();
     }
 
     @Override

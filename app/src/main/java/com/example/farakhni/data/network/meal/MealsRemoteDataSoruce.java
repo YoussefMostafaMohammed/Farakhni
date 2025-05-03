@@ -1,8 +1,8 @@
-package com.example.farakhni.network.meal;
+package com.example.farakhni.data.network.meal;
 
 
 import com.example.farakhni.model.Meal;
-import com.example.farakhni.network.NetworkCallBack;
+import com.example.farakhni.data.network.NetworkCallBack;
 
 import java.util.List;
 
@@ -13,4 +13,7 @@ public interface MealsRemoteDataSoruce {
 
     public void makeNetworkCallgetMealByFirstLetter(String charFirstLetter,NetworkCallBack<List<Meal>> networkCallBack);
     public void makeNetworkCallFilterByIngredient(String ingredient, NetworkCallBack<List<Meal>> networkCallBack);
+    public void makeNetworkCallFilterByCategory(String category, NetworkCallBack<List<Meal>> networkCallBack);
+    public void makeNetworkCallFilterByArea(String area, NetworkCallBack<List<Meal>> networkCallBack);
+
 }

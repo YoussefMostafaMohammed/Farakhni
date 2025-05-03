@@ -16,13 +16,13 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-import com.example.farakhni.DB.FavoriteMealDataBase;
+import com.example.farakhni.data.DB.AppDataBase;
 import com.example.farakhni.firebase.login.LoginContract;
 import com.example.farakhni.firebase.login.LoginPresenter;
 import com.example.farakhni.login.LoginScreen;
 import com.example.farakhni.model.Ingredient;
-import com.example.farakhni.network.NetworkCallBack;
-import com.example.farakhni.network.ingredient.IngredientsRemoteDataSourceImpl;
+import com.example.farakhni.data.network.NetworkCallBack;
+import com.example.farakhni.data.network.ingredient.IngredientsRemoteDataSourceImpl;
 import com.example.farakhni.signup.SignupScreen;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -179,11 +179,11 @@ public class MainActivity extends AppCompatActivity implements LoginContract.Vie
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        FavoriteMealDataBase.getInstance(this).forceCheckpoint();
+        AppDataBase.getInstance(this).forceCheckpoint();
     }
     @Override
     protected void onPause() {
         super.onPause();
-        FavoriteMealDataBase.getInstance(this).forceCheckpoint();
+        AppDataBase.getInstance(this).forceCheckpoint();
     }
 }

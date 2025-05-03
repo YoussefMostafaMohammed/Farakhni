@@ -1,4 +1,4 @@
-package com.example.farakhni.DB;
+package com.example.farakhni.data.DB;
 
 import androidx.lifecycle.LiveData;
 import androidx.room.Dao;

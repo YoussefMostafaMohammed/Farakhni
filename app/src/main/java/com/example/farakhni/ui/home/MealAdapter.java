@@ -1,7 +1,5 @@
 package com.example.farakhni.ui.home;
 
-import static java.security.AccessController.getContext;
-
 import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
@@ -15,14 +13,11 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.example.farakhni.AppScreen;
-import com.example.farakhni.DB.FavoriteMealDAO;
-import com.example.farakhni.DB.FavoriteMealDataBase;
-import com.example.farakhni.login.LoginScreen;
+import com.example.farakhni.data.DB.AppDataBase;
+import com.example.farakhni.data.DB.FavoriteMealDAO;
 import com.example.farakhni.mealdetails.MealDetailsActivity;
 import com.example.farakhni.model.Meal;
 import com.example.farakhni.R;
-import com.example.farakhni.model.User;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -31,7 +26,6 @@ import java.util.List;
 public class MealAdapter extends RecyclerView.Adapter<MealAdapter.MealViewHolder> {
     private Context context;
     private FirebaseAuth firebaseAuth=FirebaseAuth.getInstance();    // ← add this
-
     public void setMealList(List<Meal> mealList) {
         this.mealList = mealList;
     }
@@ -83,7 +77,7 @@ public class MealAdapter extends RecyclerView.Adapter<MealAdapter.MealViewHolder
             boolean newState = !meal.isFavorite();
             meal.setFavorite(newState);
             v.setSelected(newState);
-            FavoriteMealDataBase db = FavoriteMealDataBase.getInstance(context);
+            AppDataBase db = AppDataBase.getInstance(context);
             FavoriteMealDAO dao = db.getFavoriteMealDAO();
             if (newState) {
                 new Thread(() -> dao.insertMeal(meal)).start();
@@ -105,7 +99,7 @@ public class MealAdapter extends RecyclerView.Adapter<MealAdapter.MealViewHolder
         ImageView mealImage, heartIcon;
         TextView mealName, mealDescription, calories, protein, carbs;
         ImageView heart;
-        FavoriteMealDataBase favoriteMealDataBase;
+        AppDataBase favoriteMealDataBase;
         FavoriteMealDAO favoriteMealDAO;
         public MealViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -116,7 +110,7 @@ public class MealAdapter extends RecyclerView.Adapter<MealAdapter.MealViewHolder
             protein = itemView.findViewById(R.id.protein);
             carbs = itemView.findViewById(R.id.carbs);
             heartIcon = itemView.findViewById(R.id.heartIcon);
-            favoriteMealDataBase = FavoriteMealDataBase.getInstance(itemView.getContext());
+            favoriteMealDataBase = AppDataBase.getInstance(itemView.getContext());
             favoriteMealDAO=favoriteMealDataBase.getFavoriteMealDAO();
 
         }

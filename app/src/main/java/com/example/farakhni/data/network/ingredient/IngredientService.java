@@ -1,4 +1,4 @@
-package com.example.farakhni.network.ingredient;
+package com.example.farakhni.data.network.ingredient;
 
 import com.example.farakhni.model.IngredientListResponse;
 
