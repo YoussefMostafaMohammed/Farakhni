@@ -97,6 +97,26 @@ public class WelcomeScreen extends AppCompatActivity implements LoginContract.Vi
             public void onFailureResult(String errorMessage) {
                 Log.e(TAG, "Error: " + errorMessage);
             }
+
+            @Override
+            public void onLoading() {
+
+            }
+
+            @Override
+            public void onNetworkError(String errorMessage) {
+
+            }
+
+            @Override
+            public void onEmptyData() {
+
+            }
+
+            @Override
+            public void onProgress(int progress) {
+
+            }
         });
 
         btnGoogle.setOnClickListener(new View.OnClickListener() {

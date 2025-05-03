@@ -31,7 +31,7 @@
 
     <fragment
         android:id="@+id/nav_ingredient"
-        android:name="com.example.farakhni.IngredientFragment"
+        android:name="com.example.farakhni.FilterByIngredientFragment"
         android:label="Meals">
         <argument
             android:name="meals"

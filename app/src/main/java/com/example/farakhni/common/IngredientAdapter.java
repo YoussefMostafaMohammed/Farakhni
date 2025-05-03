@@ -18,7 +18,7 @@ import com.example.farakhni.model.Ingredient;
 import com.example.farakhni.model.Meal;
 import com.example.farakhni.data.network.NetworkCallBack;
 import com.example.farakhni.data.network.meal.MealsRemoteDataSourceImpl;
-import com.example.farakhni.IngredientFragment;
+import com.example.farakhni.FilterByIngredientFragment;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -64,13 +64,31 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.In
                 public void onFailureResult(String error) {
                     Toast.makeText(context, "Error: " + error, Toast.LENGTH_SHORT).show();
                 }
+
+                @Override
+                public void onLoading() {
+
+                }
+
+                @Override
+                public void onNetworkError(String errorMessage) {
+
+                }
+
+                @Override
+                public void onEmptyData() {
+
+                }
+
+                @Override
+                public void onProgress(int progress) {
+
+                }
             });
         });
 
-        // Handle long press (popup showing ingredient description)
         holder.itemView.setOnTouchListener(new View.OnTouchListener() {
             PopupWindow popup;
-
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 switch (event.getActionMasked()) {
@@ -130,12 +148,32 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.In
                         navigateToIngredientFragment(fullMeals);
                     }
                 }
+
+                @Override
+                public void onLoading() {
+
+                }
+
+                @Override
+                public void onNetworkError(String errorMessage) {
+
+                }
+
+                @Override
+                public void onEmptyData() {
+
+                }
+
+                @Override
+                public void onProgress(int progress) {
+
+                }
             });
         }
     }
 
     private void navigateToIngredientFragment(List<Meal> meals) {
-        IngredientFragment fragment = new IngredientFragment();
+        FilterByIngredientFragment fragment = new FilterByIngredientFragment();
         Bundle bundle = new Bundle();
         bundle.putSerializable("meals", (Serializable) meals);
         fragment.setArguments(bundle);

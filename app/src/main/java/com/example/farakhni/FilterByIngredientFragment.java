@@ -17,17 +17,17 @@ import com.example.farakhni.common.MealAdapter;
 
 import java.util.ArrayList;
 
-public class IngredientFragment extends Fragment {
+public class FilterByIngredientFragment extends Fragment {
     private static final String ARG_MEALS = "meals_list";
 
     private FragmentIngredientBinding binding;
     private MealAdapter mealAdapter;
     private ArrayList<Meal> mealsList;
 
-    public IngredientFragment() {}
+    public FilterByIngredientFragment() {}
 
-    public static IngredientFragment newInstance(ArrayList<Meal> meals) {
-        IngredientFragment fragment = new IngredientFragment();
+    public static FilterByIngredientFragment newInstance(ArrayList<Meal> meals) {
+        FilterByIngredientFragment fragment = new FilterByIngredientFragment();
         Bundle args = new Bundle();
         args.putSerializable(ARG_MEALS, meals);
         fragment.setArguments(args);

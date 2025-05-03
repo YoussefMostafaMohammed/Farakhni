@@ -36,6 +36,26 @@ public class HomePresenter implements HomeContract.Presenter {
             public void onFailureResult(String errorMessage) {
                 if (view != null) view.showError(errorMessage);
             }
+
+            @Override
+            public void onLoading() {
+
+            }
+
+            @Override
+            public void onNetworkError(String errorMessage) {
+
+            }
+
+            @Override
+            public void onEmptyData() {
+
+            }
+
+            @Override
+            public void onProgress(int progress) {
+
+            }
         });
         model.getAllIngredients(new NetworkCallBack<List<Ingredient>>() {
             @Override
@@ -45,6 +65,26 @@ public class HomePresenter implements HomeContract.Presenter {
             @Override
             public void onFailureResult(String errorMessage) {
                 if (view != null) view.showError(errorMessage);
+            }
+
+            @Override
+            public void onLoading() {
+
+            }
+
+            @Override
+            public void onNetworkError(String errorMessage) {
+
+            }
+
+            @Override
+            public void onEmptyData() {
+
+            }
+
+            @Override
+            public void onProgress(int progress) {
+
             }
         });
 
@@ -56,6 +96,26 @@ public class HomePresenter implements HomeContract.Presenter {
             @Override
             public void onFailureResult(String errorMessage) {
                 if (view != null) view.showError(errorMessage);
+            }
+
+            @Override
+            public void onLoading() {
+
+            }
+
+            @Override
+            public void onNetworkError(String errorMessage) {
+
+            }
+
+            @Override
+            public void onEmptyData() {
+
+            }
+
+            @Override
+            public void onProgress(int progress) {
+
             }
         });
     }
