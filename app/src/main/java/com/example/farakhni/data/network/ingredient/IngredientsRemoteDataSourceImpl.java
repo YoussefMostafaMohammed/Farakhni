@@ -11,7 +11,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class IngredientsRemoteDataSourceImpl implements IngredientsRemoteDataSoruce{
+public class IngredientsRemoteDataSourceImpl implements IngredientsRemoteDataSource{
     private static IngredientService  ingredientService =null;
 
     private static IngredientsRemoteDataSourceImpl productsRemoteDataSource;

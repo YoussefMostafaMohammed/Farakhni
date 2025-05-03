@@ -16,7 +16,7 @@ public class MealsRemoteDataSourceImpl implements MealsRemoteDataSoruce {
     private static MealsRemoteDataSourceImpl instance;
 
 
-    public MealsRemoteDataSourceImpl() {
+    private MealsRemoteDataSourceImpl() {
         mealService = RetrofitClient.getService(MealService.class);
     }
     public static synchronized MealsRemoteDataSourceImpl getInstance() {

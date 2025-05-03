@@ -13,17 +13,17 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class CategoryRemoteDataSourceImpl implements CategoryRemoteDataSoruce {
+public class CategoryRemoteDataSoruceImpl implements CategoryRemoteDataSoruce {
     private static CategoryService  categoryService =null;
 
-    private static CategoryRemoteDataSourceImpl categoryRemoteDataSource;
-    private CategoryRemoteDataSourceImpl(){
+    private static CategoryRemoteDataSoruceImpl categoryRemoteDataSource;
+    private CategoryRemoteDataSoruceImpl(){
         categoryService = RetrofitClient.getService(CategoryService.class);
     }
 
-    public static CategoryRemoteDataSourceImpl getInstance(){
+    public static CategoryRemoteDataSoruceImpl getInstance(){
         if(categoryService==null){
-            categoryRemoteDataSource= new CategoryRemoteDataSourceImpl();
+            categoryRemoteDataSource= new CategoryRemoteDataSoruceImpl();
         }
         return categoryRemoteDataSource;
     }

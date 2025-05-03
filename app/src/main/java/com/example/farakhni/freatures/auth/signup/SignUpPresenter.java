@@ -1,4 +1,4 @@
-package com.example.farakhni.firebase.signup;
+package com.example.farakhni.freatures.auth.signup;
 
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;

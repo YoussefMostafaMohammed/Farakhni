@@ -10,9 +10,9 @@ import android.widget.ImageView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.bumptech.glide.Glide;
-import com.example.farakhni.AppScreen;
-import com.example.farakhni.FirstPage;
+import com.example.farakhni.WelcomeScreen;
 import com.example.farakhni.R;
+import com.example.farakhni.freatures.mainapp.view.AppActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -27,7 +27,7 @@ public class SplashScreen extends AppCompatActivity {
         FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
         if (currentUser != null) {
             // User already signed in → skip straight to main
-            startActivity(new Intent(this, AppScreen.class));
+            startActivity(new Intent(this, AppActivity.class));
             finish();
             return;
         }
@@ -38,7 +38,7 @@ public class SplashScreen extends AppCompatActivity {
                 .load(R.raw.splashscreen)
                 .into(splashView);
         new Handler(Looper.getMainLooper()).postDelayed(() -> {
-            startActivity(new Intent(SplashScreen.this, FirstPage.class));
+            startActivity(new Intent(SplashScreen.this, WelcomeScreen.class));
             finish();
         }, SPLASH_DURATION_MS);
     }

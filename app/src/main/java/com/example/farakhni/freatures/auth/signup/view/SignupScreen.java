@@ -1,4 +1,4 @@
-package com.example.farakhni.freatures.auth.signup;
+package com.example.farakhni.freatures.auth.signup.view;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,15 +9,14 @@ import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-
-import com.example.farakhni.AppScreen;
 import com.example.farakhni.R;
-import com.example.farakhni.firebase.signup.SignUpContract;
-import com.example.farakhni.firebase.signup.SignUpPresenter;
-import com.example.farakhni.freatures.auth.login.LoginScreen;
+import com.example.farakhni.freatures.auth.login.view.LoginScreen;
+import com.example.farakhni.freatures.auth.signup.SignUpContract;
+import com.example.farakhni.freatures.auth.signup.SignUpPresenter;
+import com.example.farakhni.freatures.mainapp.view.AppActivity;
 import com.google.firebase.auth.FirebaseUser;
 
-public class SignupScreen extends AppCompatActivity implements SignUpContract.View{
+public class SignupScreen extends AppCompatActivity implements SignUpContract.View {
 
     TextView editFullName;
     TextView editSignupEmail;
@@ -83,7 +82,7 @@ public class SignupScreen extends AppCompatActivity implements SignUpContract.Vi
 
     @Override
     public void onSignUpSuccess(FirebaseUser user) {
-        Intent intent = new Intent(SignupScreen.this, AppScreen.class);
+        Intent intent = new Intent(SignupScreen.this, AppActivity.class);
         startActivity(intent);
     }
 

@@ -1,21 +1,21 @@
 package com.example.farakhni.data.repositories;
 import com.example.farakhni.data.network.NetworkCallBack;
 import com.example.farakhni.data.network.category.CategoryRemoteDataSoruce;
+import com.example.farakhni.data.network.category.CategoryRemoteDataSoruceImpl;
 import com.example.farakhni.model.Category;
 import java.util.List;
 
 public class CategoryRepositoryImpl implements CategoryRepository {
-    private final CategoryRemoteDataSoruce remoteDataSource;
+    private final CategoryRemoteDataSoruceImpl remoteDataSource;
     private static CategoryRepositoryImpl instance;
 
-    private CategoryRepositoryImpl(CategoryRemoteDataSoruce remoteDataSource) {
+    private CategoryRepositoryImpl(CategoryRemoteDataSoruceImpl remoteDataSource) {
         this.remoteDataSource = remoteDataSource;
     }
 
-    public static synchronized CategoryRepositoryImpl getInstance(
-            CategoryRemoteDataSoruce remoteDataSource) {
+    public static synchronized CategoryRepositoryImpl getInstance(){
         if (instance == null) {
-            instance = new CategoryRepositoryImpl(remoteDataSource);
+            instance = new CategoryRepositoryImpl(CategoryRemoteDataSoruceImpl.getInstance());
         }
         return instance;
     }

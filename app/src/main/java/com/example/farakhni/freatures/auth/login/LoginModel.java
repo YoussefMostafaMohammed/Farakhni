@@ -1,4 +1,4 @@
-package com.example.farakhni.firebase.login;
+package com.example.farakhni.freatures.auth.login;
 
 import androidx.annotation.NonNull;
 
@@ -13,7 +13,6 @@ import com.google.firebase.auth.SignInMethodQueryResult;
 
 public class LoginModel implements LoginContract.Model {
     private final FirebaseAuth mAuth = FirebaseAuth.getInstance();
-
     @Override
     public void login(String email, String password, OnLoginListener listener) {
         mAuth.signInWithEmailAndPassword(email, password)

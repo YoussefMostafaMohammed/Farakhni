@@ -1,4 +1,4 @@
-package com.example.farakhni.firebase.login;
+package com.example.farakhni.freatures.auth.login;
 
 import android.content.Intent;
 

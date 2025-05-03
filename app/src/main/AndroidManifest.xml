@@ -33,18 +33,18 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize" />
         <activity
-            android:name=".AppScreen"
+            android:name=".freatures.mainapp.view.AppActivity"
             android:exported="false"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize" />
         <activity
-            android:name=".freatures.auth.signup.SignupScreen"
+            android:name=".freatures.auth.signup.view.SignupScreen"
             android:configChanges="orientation|screenSize"
             android:exported="false"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize" />
         <activity
-            android:name=".freatures.auth.login.LoginScreen"
+            android:name=".freatures.auth.login.view.LoginScreen"
             android:configChanges="orientation|screenSize"
             android:exported="false"
             android:screenOrientation="portrait"
@@ -62,7 +62,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".FirstPage"
+            android:name=".WelcomeScreen"
             android:configChanges="orientation|screenSize"
             android:exported="true"
             android:screenOrientation="portrait"

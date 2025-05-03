@@ -1,4 +1,4 @@
-package com.example.farakhni.firebase.login;
+package com.example.farakhni.freatures.auth.login;
 
 import android.content.Intent;
 import com.google.firebase.auth.FirebaseUser;
@@ -8,23 +8,13 @@ public interface LoginContract {
     interface View {
         void showProgress();
         void hideProgress();
-
-        // Login callbacks
         void onLoginSuccess(FirebaseUser user);
         void onLoginFailure(String errorMessage);
-
-        // Google Sign-In
         void launchGoogleSignInIntent();
-
-        // Email verification
         void onEmailVerified(boolean exists);
         void onEmailVerificationFailed(String errorMessage);
-
-        // Password-reset (link)
         void onResetEmailSent();
         void onResetEmailFailed(String errorMessage);
-
-        // **New**: In-app password change
         void onPasswordChangeSuccess();
         void onPasswordChangeFailure(String errorMessage);
     }

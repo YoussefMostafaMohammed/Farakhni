@@ -10,9 +10,9 @@ import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.farakhni.R;
-import com.example.farakhni.firebase.login.LoginContract;
-import com.example.farakhni.firebase.login.LoginPresenter;
-import com.example.farakhni.freatures.auth.login.LoginScreen;
+import com.example.farakhni.freatures.auth.login.LoginContract;
+import com.example.farakhni.freatures.auth.login.LoginPresenter;
+import com.example.farakhni.freatures.auth.login.view.LoginScreen;
 import com.google.firebase.auth.FirebaseUser;
 
 public class ChangePasswordScreen extends AppCompatActivity implements LoginContract.View {

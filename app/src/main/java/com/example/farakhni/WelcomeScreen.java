@@ -17,13 +17,14 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.farakhni.data.DB.AppDataBase;
-import com.example.farakhni.firebase.login.LoginContract;
-import com.example.farakhni.firebase.login.LoginPresenter;
-import com.example.farakhni.freatures.auth.login.LoginScreen;
+import com.example.farakhni.freatures.auth.login.LoginContract;
+import com.example.farakhni.freatures.auth.login.LoginPresenter;
+import com.example.farakhni.freatures.auth.login.view.LoginScreen;
+import com.example.farakhni.freatures.mainapp.view.AppActivity;
 import com.example.farakhni.model.Ingredient;
 import com.example.farakhni.data.network.NetworkCallBack;
 import com.example.farakhni.data.network.ingredient.IngredientsRemoteDataSourceImpl;
-import com.example.farakhni.freatures.auth.signup.SignupScreen;
+import com.example.farakhni.freatures.auth.signup.view.SignupScreen;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
@@ -32,7 +33,7 @@ import com.google.firebase.auth.FirebaseUser;
 
 import java.util.List;
 
-public class FirstPage extends AppCompatActivity implements LoginContract.View {
+public class WelcomeScreen extends AppCompatActivity implements LoginContract.View {
     private GoogleSignInClient googleClient;
     private LoginContract.Presenter presenter;
 
@@ -48,7 +49,7 @@ public class FirstPage extends AppCompatActivity implements LoginContract.View {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user != null) {
             // Already signed in
-            startActivity(new Intent(this, AppScreen.class));
+            startActivity(new Intent(this, AppActivity.class));
             finish();
             return;
         }
@@ -68,7 +69,7 @@ public class FirstPage extends AppCompatActivity implements LoginContract.View {
         btnRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(FirstPage.this, SignupScreen.class);
+                Intent intent = new Intent(WelcomeScreen.this, SignupScreen.class);
                 startActivity(intent);
             }
         });
@@ -76,7 +77,7 @@ public class FirstPage extends AppCompatActivity implements LoginContract.View {
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(FirstPage.this, LoginScreen.class);
+                Intent intent = new Intent(WelcomeScreen.this, LoginScreen.class);
                 startActivity(intent);
             }
         });
@@ -108,7 +109,7 @@ public class FirstPage extends AppCompatActivity implements LoginContract.View {
         btnGuest.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(FirstPage.this, AppScreen.class);
+                Intent intent = new Intent(WelcomeScreen.this, AppActivity.class);
                 startActivity(intent);
             }
         });
@@ -123,7 +124,7 @@ public class FirstPage extends AppCompatActivity implements LoginContract.View {
 
     @Override
     public void onLoginSuccess(FirebaseUser user) {
-        Intent intent = new Intent(FirstPage.this, AppScreen.class);
+        Intent intent = new Intent(WelcomeScreen.this, AppActivity.class);
         startActivity(intent);
     }
 

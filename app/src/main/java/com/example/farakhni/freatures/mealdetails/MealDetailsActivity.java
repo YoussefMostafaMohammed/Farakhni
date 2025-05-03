@@ -23,7 +23,6 @@ public class MealDetailsActivity extends AppCompatActivity {
     private TextView protein;
     private TextView carbs;
     private TextView instructions;
-
     private RecyclerView ingredientsRecycler;
     private IngredientDetailsAdapter ingredientAdapter;
 

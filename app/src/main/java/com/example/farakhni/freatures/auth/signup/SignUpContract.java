@@ -1,4 +1,4 @@
-package com.example.farakhni.firebase.signup;
+package com.example.farakhni.freatures.auth.signup;
 
 import com.google.firebase.auth.FirebaseUser;
 
@@ -9,6 +9,7 @@ public interface SignUpContract {
         void onSignUpSuccess(FirebaseUser user);
         void onSignUpFailure(String errorMessage);
     }
+
     interface Presenter {
         void doSignUp(String email, String password,String fullName);
         void onDestroy();

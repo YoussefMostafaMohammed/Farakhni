@@ -1,4 +1,4 @@
-package com.example.farakhni.freatures.auth.login;
+package com.example.farakhni.freatures.auth.login.view;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,14 +9,13 @@ import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-
-import com.example.farakhni.AppScreen;
 import com.example.farakhni.data.DB.AppDataBase;
 import com.example.farakhni.R;
+import com.example.farakhni.freatures.mainapp.view.AppActivity;
 import com.example.farakhni.model.User;
-import com.example.farakhni.freatures.auth.signup.SignupScreen;
-import com.example.farakhni.firebase.login.LoginContract;
-import com.example.farakhni.firebase.login.LoginPresenter;
+import com.example.farakhni.freatures.auth.signup.view.SignupScreen;
+import com.example.farakhni.freatures.auth.login.LoginContract;
+import com.example.farakhni.freatures.auth.login.LoginPresenter;
 import com.google.firebase.auth.FirebaseUser;
 
 public class LoginScreen extends AppCompatActivity  implements LoginContract.View{
@@ -87,10 +86,8 @@ public class LoginScreen extends AppCompatActivity  implements LoginContract.Vie
         User localUser = new User();
         localUser.setUserId(user.getUid());
         localUser.setUsername( user.getDisplayName());
-
         new Thread(() -> db.getUserDAO().insertUser(localUser)).start();
-
-        Intent intent = new Intent(LoginScreen.this, AppScreen.class);
+        Intent intent = new Intent(LoginScreen.this, AppActivity.class);
         startActivity(intent);
     }
 

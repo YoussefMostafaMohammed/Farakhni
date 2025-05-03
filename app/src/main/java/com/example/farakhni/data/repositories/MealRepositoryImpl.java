@@ -1,27 +1,30 @@
 package com.example.farakhni.data.repositories;
+import android.content.Context;
+
 import androidx.lifecycle.LiveData;
 import com.example.farakhni.data.DB.FavoriteMealsLocalDataSource;
+import com.example.farakhni.data.DB.FavoriteMealsLocalDataSourceImpl;
 import com.example.farakhni.data.network.NetworkCallBack;
 import com.example.farakhni.data.network.meal.MealsRemoteDataSoruce;
+import com.example.farakhni.data.network.meal.MealsRemoteDataSourceImpl;
 import com.example.farakhni.model.Meal;
 import java.util.List;
 
 public class MealRepositoryImpl implements MealRepository {
-    private final MealsRemoteDataSoruce remoteDataSource;
-    private final FavoriteMealsLocalDataSource localDataSource;
+    private final MealsRemoteDataSourceImpl remoteDataSource;
+    private final FavoriteMealsLocalDataSourceImpl localDataSource;
     private static MealRepositoryImpl instance;
 
-    private MealRepositoryImpl(MealsRemoteDataSoruce remoteDataSource,
-                               FavoriteMealsLocalDataSource localDataSource) {
+    private MealRepositoryImpl(MealsRemoteDataSourceImpl remoteDataSource,
+                               FavoriteMealsLocalDataSourceImpl localDataSource) {
         this.remoteDataSource = remoteDataSource;
         this.localDataSource = localDataSource;
     }
 
-    public static synchronized MealRepositoryImpl getInstance(
-            MealsRemoteDataSoruce remoteDataSource,
-            FavoriteMealsLocalDataSource localDataSource) {
-        if (instance == null) {
-            instance = new MealRepositoryImpl(remoteDataSource, localDataSource);
+    public static synchronized MealRepositoryImpl getInstance(Context context) {
+
+    if (instance == null) {
+            instance = new MealRepositoryImpl(MealsRemoteDataSourceImpl.getInstance(), FavoriteMealsLocalDataSourceImpl.getInstance(context));
         }
         return instance;
     }
