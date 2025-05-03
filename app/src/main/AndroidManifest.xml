@@ -21,13 +21,13 @@
             android:name=".MealsFilterActivity"
             android:exported="false" />
         <activity
-            android:name=".mealdetails.MealDetailsActivity"
+            android:name=".freatures.mealdetails.MealDetailsActivity"
             android:configChanges="orientation|screenSize"
             android:exported="false"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize" />
         <activity
-            android:name=".changepassword.ChangePasswordScreen"
+            android:name=".freatures.auth.changepassword.ChangePasswordScreen"
             android:configChanges="orientation|screenSize"
             android:exported="false"
             android:screenOrientation="portrait"
@@ -38,19 +38,19 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize" />
         <activity
-            android:name=".signup.SignupScreen"
+            android:name=".freatures.auth.signup.SignupScreen"
             android:configChanges="orientation|screenSize"
             android:exported="false"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize" />
         <activity
-            android:name=".login.LoginScreen"
+            android:name=".freatures.auth.login.LoginScreen"
             android:configChanges="orientation|screenSize"
             android:exported="false"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize" />
         <activity
-            android:name=".splashscreen.SplashScreen"
+            android:name=".freatures.splashscreen.SplashScreen"
             android:configChanges="orientation|screenSize"
             android:exported="true"
             android:screenOrientation="portrait"
@@ -62,7 +62,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".MainActivity"
+            android:name=".FirstPage"
             android:configChanges="orientation|screenSize"
             android:exported="true"
             android:screenOrientation="portrait"

@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/nav_home"
-        android:name="com.example.farakhni.ui.home.HomeFragment"
+        android:name="com.example.farakhni.freatures.home.HomeFragment"
         android:label="@string/menu_home"
         tools:layout="@layout/fragment_home">
 
@@ -19,13 +19,13 @@
 
     <fragment
         android:id="@+id/nav_gallery"
-        android:name="com.example.farakhni.ui.favorite.FavoriteFragment"
+        android:name="com.example.farakhni.freatures.favorite.FavoriteFragment"
         android:label="@string/menu_gallery"
         tools:layout="@layout/fragment_favorite" />
 
     <fragment
         android:id="@+id/nav_slideshow"
-        android:name="com.example.farakhni.ui.slideshow.SlideshowFragment"
+        android:name="com.example.farakhni.freatures.slideshow.SlideshowFragment"
         android:label="@string/menu_slideshow"
         tools:layout="@layout/fragment_slideshow" />
 

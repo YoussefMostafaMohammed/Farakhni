@@ -12,8 +12,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.example.farakhni.databinding.FragmentIngredientBinding;
 import com.example.farakhni.model.Meal;
-import com.example.farakhni.ui.favorite.FavoriteViewModel;
-import com.example.farakhni.ui.home.MealAdapter;
+import com.example.farakhni.freatures.favorite.FavoriteViewModel;
+import com.example.farakhni.common.MealAdapter;
 
 import java.util.ArrayList;
 
