@@ -9,4 +9,17 @@
         <item name="cornerFamily">rounded</item>
         <item name="cornerSize">34dp</item>
     </style>
+
+    <!-- Overlay applied to the date picker to give it 12dp rounded corners -->
+    <style name="ThemeOverlay.Farakhni.DatePicker" parent="ThemeOverlay.MaterialComponents.MaterialCalendar">
+        <!-- Use your app’s primary surface colors -->
+        <item name="materialCalendarFullscreenTheme">@style/Theme.Farakhni</item>
+        <!-- Hook in a custom shape with 12dp corners -->
+        <item name="shapeAppearanceMediumComponent">@style/ShapeAppearance.Farakhni.Medium</item>
+    </style>
+
+    <style name="ShapeAppearance.Farakhni.Medium" parent="ShapeAppearance.MaterialComponents.MediumComponent">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">12dp</item>
+    </style>
 </resources>

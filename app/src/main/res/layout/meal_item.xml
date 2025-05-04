@@ -31,18 +31,42 @@
             android:layout_height="match_parent"
             android:background="@drawable/gradient_overlay" />
         <!-- Heart Icon -->
-        <ImageView
-            android:id="@+id/heartIcon"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
-            android:src="@drawable/heart_selector"
+        <!-- ... (existing MaterialCardView and FrameLayout) -->
+
+        <!-- Icons Container -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_gravity="top|end"
-            android:layout_margin="16dp"
-            android:clickable="true"
-            android:focusable="true"
-            android:foreground="?attr/selectableItemBackgroundBorderless"
-            android:contentDescription="@string/heart_icon_description" />
-        <!-- Text Overlay -->
+            android:orientation="vertical"
+            android:layout_margin="16dp">
+
+            <!-- Heart Icon (existing) -->
+            <ImageView
+                android:id="@+id/heartIcon"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:src="@drawable/heart_selector"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="@string/heart_icon_description" />
+
+            <!-- Calendar Icon (new) -->
+            <ImageView
+                android:id="@+id/calendarIcon"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:src="@drawable/calendar_add_on"
+                android:layout_marginTop="8dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="@string/calendar_icon_description" />
+
+        </LinearLayout>
+
+        <!-- ... (remaining existing elements) -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -65,36 +89,6 @@
                 android:textColor="#E0E0E0"
                 android:textSize="14sp"
                 android:layout_marginTop="4dp" />
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginTop="8dp">
-                <TextView
-                    android:id="@+id/calories"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="290 Calories"
-                    android:textColor="#E0E0E0"
-                    android:textSize="12sp" />
-                <TextView
-                    android:id="@+id/protein"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="16gr Protein"
-                    android:textColor="#E0E0E0"
-                    android:textSize="12sp" />
-                <TextView
-                    android:id="@+id/carbs"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="56gr Carbs"
-                    android:textColor="#E0E0E0"
-                    android:textSize="12sp" />
-            </LinearLayout>
         </LinearLayout>
     </FrameLayout>
 </com.google.android.material.card.MaterialCardView>

@@ -4,24 +4,26 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
+import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.farakhni.R;
 import com.example.farakhni.model.Meal;
+import com.google.android.material.datepicker.MaterialDatePicker;
 
 import java.util.ArrayList;
 import java.util.List;
-
 public class MealAdapter extends RecyclerView.Adapter<MealAdapter.MealViewHolder> {
     private final Context context;
     private List<Meal> mealList;
+    private List<Meal> favoriteMeals = new ArrayList<>();
     private OnMealClickListener mealClickListener;
     private OnFavoriteToggleListener favoriteToggleListener;
-    private List<Meal> favoriteMeals = new ArrayList<>();
-
+    private OnCalendarClickListener calendarClickListener;
     public void setFavoriteMeals(List<Meal> favMeals) {
         favoriteMeals.clear();
         if (favMeals != null) {
@@ -40,6 +42,9 @@ public class MealAdapter extends RecyclerView.Adapter<MealAdapter.MealViewHolder
         notifyDataSetChanged();
     }
 
+    public void setOnCalendarClickListener(OnCalendarClickListener listener) {
+        this.calendarClickListener = listener;
+    }
     public void setOnMealClickListener(OnMealClickListener listener) {
         this.mealClickListener = listener;
     }
@@ -64,10 +69,6 @@ public class MealAdapter extends RecyclerView.Adapter<MealAdapter.MealViewHolder
 
         String instr = meal.getInstructions() != null ? meal.getInstructions() : "No description available";
         holder.mealDescription.setText(instr.length() > 100 ? instr.substring(0, 100) + "…" : instr);
-
-        holder.calories.setText("N/A Calories");
-        holder.protein.setText("N/A Protein");
-        holder.carbs.setText("N/A Carbs");
 
         Glide.with(context)
                 .load(meal.getMealThumb())
@@ -98,26 +99,44 @@ public class MealAdapter extends RecyclerView.Adapter<MealAdapter.MealViewHolder
                 favoriteToggleListener.onFavoriteToggled(meal);
             }
         });
+        holder.calendarIcon.setSelected(meal.isScheduled());
+        holder.calendarIcon.setOnClickListener(v -> showDatePicker(meal, holder.calendarIcon));
     }
+    private void showDatePicker(Meal meal, ImageView calendarIcon) {
+        boolean scheduled = !meal.isScheduled();
+        meal.setScheduled(scheduled);
+        calendarIcon.setSelected(scheduled);
+        calendarIcon.startAnimation(AnimationUtils.loadAnimation(context, R.anim.calendar_bounce));
 
+        // build and show picker
+        MaterialDatePicker<Long> picker = MaterialDatePicker.Builder.datePicker()
+                .setTitleText("Choose a date")
+                .setTheme(R.style.ThemeOverlay_Farakhni_DatePicker)
+                .build();
+        picker.show(((FragmentActivity) context).getSupportFragmentManager(), "MEAL_DATE_PICKER");
+
+        picker.addOnPositiveButtonClickListener(selection -> {
+            if (calendarClickListener != null) {
+                calendarClickListener.onCalendarIconClicked(meal, selection);
+            }
+        });
+    }
     @Override
     public int getItemCount() {
         return mealList != null ? mealList.size() : 0;
     }
 
     static class MealViewHolder extends RecyclerView.ViewHolder {
-        ImageView mealImage, heartIcon;
-        TextView mealName, mealDescription, calories, protein, carbs;
+        ImageView mealImage, heartIcon,calendarIcon;
+        TextView mealName, mealDescription;
 
         MealViewHolder(@NonNull View itemView) {
             super(itemView);
             mealImage = itemView.findViewById(R.id.mealImage);
             mealName = itemView.findViewById(R.id.mealName);
             mealDescription = itemView.findViewById(R.id.mealDescription);
-            calories = itemView.findViewById(R.id.calories);
-            protein = itemView.findViewById(R.id.protein);
-            carbs = itemView.findViewById(R.id.carbs);
             heartIcon = itemView.findViewById(R.id.heartIcon);
+            calendarIcon=itemView.findViewById(R.id.calendarIcon);
         }
     }
 
@@ -127,5 +146,9 @@ public class MealAdapter extends RecyclerView.Adapter<MealAdapter.MealViewHolder
 
     public interface OnFavoriteToggleListener {
         void onFavoriteToggled(Meal meal);
+    }
+
+    public interface OnCalendarClickListener {
+        void onCalendarIconClicked(Meal meal, long selectedDateEpochMillis);
     }
 }

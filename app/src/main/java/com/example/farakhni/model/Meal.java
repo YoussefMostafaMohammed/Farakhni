@@ -22,6 +22,15 @@ public class Meal implements Serializable {
     @SerializedName("idMeal")
     private String id;
     private boolean isFavorite=false;
+    private  boolean isScheduled=false;
+
+    public void setScheduled(boolean scheduled) {
+        isScheduled = scheduled;
+    }
+
+    public boolean isScheduled() {
+        return isScheduled;
+    }
 
     public boolean isFavorite() {
         return isFavorite;

@@ -24,4 +24,6 @@
     <!-- Extended Colors -->
     <color name="outline">#FFB1C7B2</color>
     <color name="outline_variant">#FFD8E5D9</color>
+    <color name="light_green">#66BB6A</color> <!-- light green -->
+    <color name="dark_gray">#424242</color>  <!-- dark gray -->
 </resources>

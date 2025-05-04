@@ -51,4 +51,5 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="menu_ingredientMeals">Fragment Meals</string>
+    <string name="calendar_icon_description">Calendar Icon\n</string>
 </resources>
