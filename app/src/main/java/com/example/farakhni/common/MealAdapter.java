@@ -22,13 +22,14 @@ public class MealAdapter extends RecyclerView.Adapter<MealAdapter.MealViewHolder
     private OnFavoriteToggleListener favoriteToggleListener;
     private List<Meal> favoriteMeals = new ArrayList<>();
 
-
     public void setFavoriteMeals(List<Meal> favMeals) {
         favoriteMeals.clear();
         if (favMeals != null) {
             favoriteMeals.addAll(favMeals);
         }
+        notifyDataSetChanged();
     }
+
     public MealAdapter(Context context, List<Meal> mealList) {
         this.context = context;
         this.mealList = mealList;
@@ -74,6 +75,7 @@ public class MealAdapter extends RecyclerView.Adapter<MealAdapter.MealViewHolder
                 .error(R.drawable.app_logo)
                 .into(holder.mealImage);
 
+        meal.setFavorite(false);
         for (Meal favMeal : favoriteMeals) {
             if (favMeal.getId().equals(meal.getId())) {
                 meal.setFavorite(true);
@@ -92,7 +94,6 @@ public class MealAdapter extends RecyclerView.Adapter<MealAdapter.MealViewHolder
             boolean newFav = !meal.isFavorite();
             meal.setFavorite(newFav);
             holder.heartIcon.setSelected(newFav);
-
             if (favoriteToggleListener != null) {
                 favoriteToggleListener.onFavoriteToggled(meal);
             }
@@ -110,13 +111,13 @@ public class MealAdapter extends RecyclerView.Adapter<MealAdapter.MealViewHolder
 
         MealViewHolder(@NonNull View itemView) {
             super(itemView);
-            mealImage       = itemView.findViewById(R.id.mealImage);
-            mealName        = itemView.findViewById(R.id.mealName);
+            mealImage = itemView.findViewById(R.id.mealImage);
+            mealName = itemView.findViewById(R.id.mealName);
             mealDescription = itemView.findViewById(R.id.mealDescription);
-            calories        = itemView.findViewById(R.id.calories);
-            protein         = itemView.findViewById(R.id.protein);
-            carbs           = itemView.findViewById(R.id.carbs);
-            heartIcon       = itemView.findViewById(R.id.heartIcon);
+            calories = itemView.findViewById(R.id.calories);
+            protein = itemView.findViewById(R.id.protein);
+            carbs = itemView.findViewById(R.id.carbs);
+            heartIcon = itemView.findViewById(R.id.heartIcon);
         }
     }
 

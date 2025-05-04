@@ -1,4 +1,5 @@
 package com.example.farakhni.freatures.home;
+
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -16,7 +17,6 @@ import com.example.farakhni.common.AreaAdapter;
 import com.example.farakhni.common.CategoryAdapter;
 import com.example.farakhni.common.IngredientAdapter;
 import com.example.farakhni.common.MealAdapter;
-import com.example.farakhni.data.repositories.AreaRepository;
 import com.example.farakhni.data.repositories.AreaRepositoryImpl;
 import com.example.farakhni.data.repositories.CategoryRepositoryImpl;
 import com.example.farakhni.data.repositories.IngredientRepositoryImpl;
@@ -26,8 +26,10 @@ import com.example.farakhni.model.Area;
 import com.example.farakhni.model.Category;
 import com.example.farakhni.model.Ingredient;
 import com.example.farakhni.model.Meal;
+
 import java.util.ArrayList;
 import java.util.List;
+
 public class HomeFragment extends Fragment implements HomeContract.View {
     private FragmentHomeBinding binding;
     private HomeContract.Presenter presenter;
@@ -36,15 +38,14 @@ public class HomeFragment extends Fragment implements HomeContract.View {
     private CategoryAdapter categoryAdapter;
     private AreaAdapter areaAdapter;
 
-
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentHomeBinding.inflate(inflater, container, false);
-        mealAdapter       = new MealAdapter(requireContext(), new ArrayList<>());
+        mealAdapter = new MealAdapter(requireContext(), new ArrayList<>());
         ingredientAdapter = new IngredientAdapter(requireContext(), new ArrayList<>());
-        categoryAdapter   = new CategoryAdapter(requireContext(), new ArrayList<>());
-        areaAdapter = new AreaAdapter(requireContext(),new ArrayList<>());
+        categoryAdapter = new CategoryAdapter(requireContext(), new ArrayList<>());
+        areaAdapter = new AreaAdapter(requireContext(), new ArrayList<>());
         MealRepositoryImpl mealRepository = MealRepositoryImpl.getInstance(requireContext());
 
         mealAdapter.setOnFavoriteToggleListener(meal -> {
@@ -59,11 +60,10 @@ public class HomeFragment extends Fragment implements HomeContract.View {
         });
 
         mealAdapter.setOnMealClickListener(meal -> {
-            NavController nav = Navigation.findNavController((Activity)getContext(), R.id.nav_host_fragment_content_app_screen);
+            NavController nav = Navigation.findNavController((Activity) getContext(), R.id.nav_host_fragment_content_app_screen);
             Bundle args = new Bundle();
             args.putSerializable("arg_meal", meal);
             nav.navigate(R.id.nav_meal_details, args);
-
         });
 
         binding.randomMealRecyclerView.setLayoutManager(
@@ -82,14 +82,13 @@ public class HomeFragment extends Fragment implements HomeContract.View {
                 new LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false));
         binding.areasList.setAdapter(areaAdapter);
 
-        IngredientRepositoryImpl ingredientRepository = IngredientRepositoryImpl.getInstance();
         mealRepository.getFavoriteMeals().observe(getViewLifecycleOwner(), favMeals -> {
-            ingredientAdapter.setFavoriteMeals(favMeals); // pass the favorite meals to the adapter
-
+            mealAdapter.setFavoriteMeals(favMeals);
         });
+
         CategoryRepositoryImpl categoryRepository = CategoryRepositoryImpl.getInstance();
-        AreaRepositoryImpl areaRepository=AreaRepositoryImpl.getInstance();
-        presenter = new HomePresenter(new HomeModel(mealRepository, ingredientRepository, categoryRepository,areaRepository));
+        AreaRepositoryImpl areaRepository = AreaRepositoryImpl.getInstance();
+        presenter = new HomePresenter(new HomeModel(mealRepository, IngredientRepositoryImpl.getInstance(), categoryRepository, areaRepository));
         presenter.attachView(this);
         presenter.loadHomeData();
 

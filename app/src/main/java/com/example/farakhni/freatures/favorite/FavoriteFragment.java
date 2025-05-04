@@ -59,6 +59,7 @@ public class FavoriteFragment extends Fragment implements FavoriteContract.View 
     @Override
     public void showFavorites(List<Meal> favorites) {
         adapter.setMealList(favorites);
+        adapter.setFavoriteMeals(favorites);
     }
 
     @Override
