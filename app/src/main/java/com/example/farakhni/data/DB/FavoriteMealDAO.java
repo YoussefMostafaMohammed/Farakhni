@@ -1,19 +1,25 @@
 package com.example.farakhni.data.DB;
+
 import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
-import com.example.farakhni.model.Meal;
+import com.example.farakhni.model.FavoriteMeal;
 import java.util.List;
 
 @Dao
 public interface FavoriteMealDAO {
-    @Query("SELECT * FROM fav_meals_table")
-    public LiveData<List<Meal>> getFavoriteMealsForUser();
+    @Query("SELECT * FROM favorite_meals_table")
+    LiveData<List<FavoriteMeal>> getFavoriteMealsForUser();
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    public void insertMeal(Meal meal);
+    void insertMeal(FavoriteMeal meal);
+
     @Delete
-    public void deleteMeal(Meal meal);
+    void deleteMeal(FavoriteMeal meal);
+
+    @Query("SELECT EXISTS(SELECT 1 FROM favorite_meals_table WHERE id = :mealId)")
+    boolean isFavorite(String mealId);
 }

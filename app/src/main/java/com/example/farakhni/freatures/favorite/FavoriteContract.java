@@ -1,9 +1,11 @@
 package com.example.farakhni.freatures.favorite;
 
-
-import androidx.lifecycle.LiveData;
 import androidx.lifecycle.LifecycleOwner;
+import androidx.lifecycle.LiveData;
+
+import com.example.farakhni.model.FavoriteMeal;
 import com.example.farakhni.model.Meal;
+
 import java.util.List;
 
 public interface FavoriteContract {
@@ -16,11 +18,11 @@ public interface FavoriteContract {
         void attachView(View view);
         void detachView();
         void loadFavorites(LifecycleOwner owner);
-        void removeFavorite(Meal meal);
+        void removeFavorite(FavoriteMeal meal);
     }
 
     interface Model {
-        LiveData<List<Meal>> fetchFavorites();
-        void deleteFavorite(Meal meal);
+        LiveData<List<FavoriteMeal>> fetchFavorites();
+        void deleteFavorite(FavoriteMeal meal);
     }
 }

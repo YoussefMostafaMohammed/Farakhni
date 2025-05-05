@@ -1,12 +1,16 @@
 package com.example.farakhni.data.repositories;
+
 import androidx.lifecycle.LiveData;
 
 import com.example.farakhni.data.network.NetworkCallBack;
+import com.example.farakhni.model.FavoriteMeal;
 import com.example.farakhni.model.Meal;
+import com.example.farakhni.model.PlannedMeal;
+
 import java.util.List;
 
 public interface MealRepository {
-    LiveData<List<Meal>> getFavoriteMeals();
+    LiveData<List<FavoriteMeal>> getFavoriteMeals();
     void getMealById(String mealId, NetworkCallBack<List<Meal>> callback);
     void searchMealsByName(String mealName, NetworkCallBack<List<Meal>> callback);
     void getRandomMeal(NetworkCallBack<List<Meal>> callback);
@@ -14,7 +18,11 @@ public interface MealRepository {
     void filterByIngredient(String ingredient, NetworkCallBack<List<Meal>> callback);
     void filterByCategory(String category, NetworkCallBack<List<Meal>> callback);
     void filterByArea(String area, NetworkCallBack<List<Meal>> callback);
-    void insertFavoriteMeal(Meal meal);
-    void deleteFavoriteMeal(Meal meal);
+    void insertFavoriteMeal(FavoriteMeal meal);
+    void deleteFavoriteMeal(FavoriteMeal meal);
+    boolean isFavorite(String mealId);
+    LiveData<List<PlannedMeal>> getAllPlannedMeals();
+    void insertPlannedMeal(PlannedMeal plannedMeal);
+    void deletePlannedMeal(PlannedMeal plannedMeal);
+    boolean isMealPlanned(String mealId, String date);
 }
-

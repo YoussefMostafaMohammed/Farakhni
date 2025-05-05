@@ -4,12 +4,14 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 import androidx.lifecycle.LiveData;
-import com.example.farakhni.data.DB.FavoriteMealsLocalDataSource;
+
 import com.example.farakhni.data.DB.FavoriteMealsLocalDataSourceImpl;
+import com.example.farakhni.data.DB.PlannedMealsLocalDataSourceImpl;
 import com.example.farakhni.data.network.NetworkCallBack;
-import com.example.farakhni.data.network.meal.MealsRemoteDataSoruce;
 import com.example.farakhni.data.network.meal.MealsRemoteDataSourceImpl;
+import com.example.farakhni.model.FavoriteMeal;
 import com.example.farakhni.model.Meal;
+import com.example.farakhni.model.PlannedMeal;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -23,30 +25,36 @@ import java.util.Locale;
 public class MealRepositoryImpl implements MealRepository {
     private final Context context;
     private final MealsRemoteDataSourceImpl remoteDataSource;
-    private final FavoriteMealsLocalDataSourceImpl localDataSource;
+    private final FavoriteMealsLocalDataSourceImpl favoriteDataSource;
+    private final PlannedMealsLocalDataSourceImpl plannedDataSource;
     private static MealRepositoryImpl instance;
     private static final String PREF_NAME = "meal_of_the_day_prefs";
     private static final String KEY_MEALS_JSON = "meals_json";
     private static final String KEY_DATE = "date";
 
     private MealRepositoryImpl(Context context, MealsRemoteDataSourceImpl remoteDataSource,
-                               FavoriteMealsLocalDataSourceImpl localDataSource) {
+                               FavoriteMealsLocalDataSourceImpl favoriteDataSource,
+                               PlannedMealsLocalDataSourceImpl plannedDataSource) {
         this.context = context.getApplicationContext();
         this.remoteDataSource = remoteDataSource;
-        this.localDataSource = localDataSource;
+        this.favoriteDataSource = favoriteDataSource;
+        this.plannedDataSource = plannedDataSource;
     }
 
     public static synchronized MealRepositoryImpl getInstance(Context context) {
         if (instance == null) {
             Context appContext = context.getApplicationContext();
-            instance = new MealRepositoryImpl(appContext, MealsRemoteDataSourceImpl.getInstance(), FavoriteMealsLocalDataSourceImpl.getInstance(appContext));
+            instance = new MealRepositoryImpl(appContext,
+                    MealsRemoteDataSourceImpl.getInstance(),
+                    FavoriteMealsLocalDataSourceImpl.getInstance(appContext),
+                    PlannedMealsLocalDataSourceImpl.getInstance(appContext));
         }
         return instance;
     }
 
     @Override
-    public LiveData<List<Meal>> getFavoriteMeals() {
-        return localDataSource.getFavoriteMeals();
+    public LiveData<List<FavoriteMeal>> getFavoriteMeals() {
+        return favoriteDataSource.getFavoriteMeals();
     }
 
     @Override
@@ -139,12 +147,37 @@ public class MealRepositoryImpl implements MealRepository {
     }
 
     @Override
-    public void insertFavoriteMeal(Meal meal) {
-        localDataSource.insertMeal(meal);
+    public void insertFavoriteMeal(FavoriteMeal meal) {
+        favoriteDataSource.insertMeal(meal);
     }
 
     @Override
-    public void deleteFavoriteMeal(Meal meal) {
-        localDataSource.deleteMeal(meal);
+    public void deleteFavoriteMeal(FavoriteMeal meal) {
+        favoriteDataSource.deleteMeal(meal);
+    }
+
+    @Override
+    public boolean isFavorite(String mealId) {
+        return favoriteDataSource.isFavorite(mealId);
+    }
+
+    @Override
+    public LiveData<List<PlannedMeal>> getAllPlannedMeals() {
+        return plannedDataSource.getAllPlannedMeals();
+    }
+
+    @Override
+    public void insertPlannedMeal(PlannedMeal plannedMeal) {
+        plannedDataSource.insertPlannedMeal(plannedMeal);
+    }
+
+    @Override
+    public void deletePlannedMeal(PlannedMeal plannedMeal) {
+        plannedDataSource.deletePlannedMeal(plannedMeal);
+    }
+
+    @Override
+    public boolean isMealPlanned(String mealId, String date) {
+        return plannedDataSource.isMealPlanned(mealId, date);
     }
 }

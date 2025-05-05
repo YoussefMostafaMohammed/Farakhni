@@ -7,44 +7,58 @@ import android.view.ViewGroup;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.bumptech.glide.Glide;
 import com.example.farakhni.R;
+import com.example.farakhni.model.FavoriteMeal;
 import com.example.farakhni.model.Meal;
 import com.google.android.material.datepicker.MaterialDatePicker;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+
 public class MealAdapter extends RecyclerView.Adapter<MealAdapter.MealViewHolder> {
     private final Context context;
     private List<Meal> mealList;
-    private List<Meal> favoriteMeals = new ArrayList<>();
+    private Set<String> favoriteMealIds;
     private OnMealClickListener mealClickListener;
     private OnFavoriteToggleListener favoriteToggleListener;
     private OnCalendarClickListener calendarClickListener;
-    public void setFavoriteMeals(List<Meal> favMeals) {
-        favoriteMeals.clear();
-        if (favMeals != null) {
-            favoriteMeals.addAll(favMeals);
+
+    public MealAdapter(Context context, List<Meal> mealList) {
+        this.context = context;
+        this.mealList = mealList != null ? new ArrayList<>(mealList) : new ArrayList<>();
+        this.favoriteMealIds = new HashSet<>();
+    }
+
+    public void setMealList(List<Meal> meals) {
+        this.mealList.clear();
+        if (meals != null) {
+            this.mealList.addAll(meals);
         }
         notifyDataSetChanged();
     }
 
-    public MealAdapter(Context context, List<Meal> mealList) {
-        this.context = context;
-        this.mealList = mealList;
-    }
-
-    public void setMealList(List<Meal> meals) {
-        this.mealList = meals;
+    public void setFavoriteMeals(List<FavoriteMeal> favMeals) {
+        favoriteMealIds.clear();
+        if (favMeals != null) {
+            for (FavoriteMeal fav : favMeals) {
+                favoriteMealIds.add(fav.getId());
+            }
+        }
         notifyDataSetChanged();
     }
 
     public void setOnCalendarClickListener(OnCalendarClickListener listener) {
         this.calendarClickListener = listener;
     }
+
     public void setOnMealClickListener(OnMealClickListener listener) {
         this.mealClickListener = listener;
     }
@@ -56,8 +70,7 @@ public class MealAdapter extends RecyclerView.Adapter<MealAdapter.MealViewHolder
     @NonNull
     @Override
     public MealViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context)
-                .inflate(R.layout.meal_item, parent, false);
+        View view = LayoutInflater.from(context).inflate(R.layout.meal_item, parent, false);
         return new MealViewHolder(view);
     }
 
@@ -66,8 +79,7 @@ public class MealAdapter extends RecyclerView.Adapter<MealAdapter.MealViewHolder
         Meal meal = mealList.get(position);
 
         holder.mealName.setText(meal.getName() != null ? meal.getName() : "Unknown Meal");
-
-        String instr = meal.getInstructions() != null ? meal.getInstructions() : "No description available";
+        String instr = meal.getInstructions() != null ? meal.getInstructions() : "Tap to see full description";
         holder.mealDescription.setText(instr.length() > 100 ? instr.substring(0, 100) + "…" : instr);
 
         Glide.with(context)
@@ -76,13 +88,9 @@ public class MealAdapter extends RecyclerView.Adapter<MealAdapter.MealViewHolder
                 .error(R.drawable.app_logo)
                 .into(holder.mealImage);
 
-        meal.setFavorite(false);
-        for (Meal favMeal : favoriteMeals) {
-            if (favMeal.getId().equals(meal.getId())) {
-                meal.setFavorite(true);
-                break;
-            }
-        }
+        boolean isFav = favoriteMealIds.contains(meal.getId());
+        meal.setFavorite(isFav);
+        holder.heartIcon.setSelected(isFav);
 
         holder.mealImage.setOnClickListener(v -> {
             if (mealClickListener != null) {
@@ -90,7 +98,6 @@ public class MealAdapter extends RecyclerView.Adapter<MealAdapter.MealViewHolder
             }
         });
 
-        holder.heartIcon.setSelected(meal.isFavorite());
         holder.heartIcon.setOnClickListener(v -> {
             boolean newFav = !meal.isFavorite();
             meal.setFavorite(newFav);
@@ -99,16 +106,17 @@ public class MealAdapter extends RecyclerView.Adapter<MealAdapter.MealViewHolder
                 favoriteToggleListener.onFavoriteToggled(meal);
             }
         });
+
         holder.calendarIcon.setSelected(meal.isScheduled());
         holder.calendarIcon.setOnClickListener(v -> showDatePicker(meal, holder.calendarIcon));
     }
+
     private void showDatePicker(Meal meal, ImageView calendarIcon) {
         boolean scheduled = !meal.isScheduled();
         meal.setScheduled(scheduled);
         calendarIcon.setSelected(scheduled);
         calendarIcon.startAnimation(AnimationUtils.loadAnimation(context, R.anim.calendar_bounce));
 
-        // build and show picker
         MaterialDatePicker<Long> picker = MaterialDatePicker.Builder.datePicker()
                 .setTitleText("Choose a date")
                 .setTheme(R.style.ThemeOverlay_Farakhni_DatePicker)
@@ -119,15 +127,17 @@ public class MealAdapter extends RecyclerView.Adapter<MealAdapter.MealViewHolder
             if (calendarClickListener != null) {
                 calendarClickListener.onCalendarIconClicked(meal, selection);
             }
+            notifyDataSetChanged();
         });
     }
+
     @Override
     public int getItemCount() {
-        return mealList != null ? mealList.size() : 0;
+        return mealList.size();
     }
 
     static class MealViewHolder extends RecyclerView.ViewHolder {
-        ImageView mealImage, heartIcon,calendarIcon;
+        ImageView mealImage, heartIcon, calendarIcon;
         TextView mealName, mealDescription;
 
         MealViewHolder(@NonNull View itemView) {
@@ -136,7 +146,7 @@ public class MealAdapter extends RecyclerView.Adapter<MealAdapter.MealViewHolder
             mealName = itemView.findViewById(R.id.mealName);
             mealDescription = itemView.findViewById(R.id.mealDescription);
             heartIcon = itemView.findViewById(R.id.heartIcon);
-            calendarIcon=itemView.findViewById(R.id.calendarIcon);
+            calendarIcon = itemView.findViewById(R.id.calendarIcon);
         }
     }
 

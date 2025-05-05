@@ -21,8 +21,8 @@ import com.bumptech.glide.Glide;
 import com.example.farakhni.R;
 import com.example.farakhni.common.IngredientDetailsAdapter;
 import com.example.farakhni.databinding.FragmentMealDetailsBinding;
+import com.example.farakhni.model.FavoriteMeal;
 import com.example.farakhni.model.Ingredient;
-import com.example.farakhni.model.Meal;
 
 import java.util.List;
 
@@ -31,7 +31,7 @@ public class MealDetailsFragment extends Fragment {
     private FragmentMealDetailsBinding binding;
     private IngredientDetailsAdapter ingredientAdapter;
 
-    public static MealDetailsFragment newInstance(Meal meal) {
+    public static MealDetailsFragment newInstance(FavoriteMeal meal) {
         MealDetailsFragment f = new MealDetailsFragment();
         Bundle args = new Bundle();
         args.putSerializable(ARG_MEAL, meal);
@@ -52,7 +52,7 @@ public class MealDetailsFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        Meal meal = getMealFromArguments();
+        FavoriteMeal meal = getMealFromArguments();
         if (meal == null) return;
 
         setupMealDetails(meal);
@@ -60,9 +60,9 @@ public class MealDetailsFragment extends Fragment {
         setupIngredientsList(meal);
     }
 
-    private Meal getMealFromArguments() {
+    private FavoriteMeal getMealFromArguments() {
         if (getArguments() == null) return null;
-        Meal meal = (Meal) getArguments().getSerializable(ARG_MEAL);
+        FavoriteMeal meal = (FavoriteMeal) getArguments().getSerializable(ARG_MEAL);
         if (meal == null) {
             Toast.makeText(requireContext(), "Failed to load meal details.", Toast.LENGTH_SHORT).show();
             requireActivity().onBackPressed();
@@ -70,11 +70,10 @@ public class MealDetailsFragment extends Fragment {
         return meal;
     }
 
-    private void setupMealDetails(Meal meal) {
+    private void setupMealDetails(FavoriteMeal meal) {
         binding.mealName.setText(meal.getName() != null ? meal.getName() : "Unknown Meal");
         binding.instructions.setText(meal.getInstructions() != null ? meal.getInstructions() : "No instructions available");
 
-        // Set default values for nutrition info
         binding.calories.setText("N/A Calories");
         binding.protein.setText("N/A Protein");
         binding.carbs.setText("N/A Carbs");
@@ -86,7 +85,7 @@ public class MealDetailsFragment extends Fragment {
                 .into(binding.mealImage);
     }
 
-    private void setupWebView(Meal meal) {
+    private void setupWebView(FavoriteMeal meal) {
         if (!isInternetAvailable()) {
             removeWebView();
             Toast.makeText(requireContext(), "No internet connection.", Toast.LENGTH_SHORT).show();
@@ -96,7 +95,7 @@ public class MealDetailsFragment extends Fragment {
         initializeWebView(meal);
     }
 
-    private void initializeWebView(Meal meal) {
+    private void initializeWebView(FavoriteMeal meal) {
         WebView webView = binding.videoWebView;
         webView.getSettings().setJavaScriptEnabled(true);
         webView.getSettings().setDomStorageEnabled(true);
@@ -128,15 +127,13 @@ public class MealDetailsFragment extends Fragment {
     }
 
     private void removeWebView() {
-        // Get the video container's parent (MaterialCardView)
         ViewGroup videoCard = (ViewGroup) binding.videoContainer.getParent();
         if (videoCard != null && videoCard.getParent() != null) {
-            // Remove the entire video card from its parent (main LinearLayout)
             ((ViewGroup) videoCard.getParent()).removeView(videoCard);
         }
     }
 
-    private void setupIngredientsList(Meal meal) {
+    private void setupIngredientsList(FavoriteMeal meal) {
         List<Ingredient> ingredients = meal.getIngredientsList();
         ingredientAdapter = new IngredientDetailsAdapter(requireContext(), ingredients);
         binding.ingredientsList.setLayoutManager(

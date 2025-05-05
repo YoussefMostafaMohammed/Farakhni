@@ -46,7 +46,7 @@
         android:label="Meal Details">
         <argument
             android:name="arg_meal"
-            app:argType="com.example.farakhni.model.Meal" />
+            app:argType="com.example.farakhni.model.FavoriteMeal" />
     </fragment>
 
 </navigation>

@@ -1,5 +1,6 @@
 package com.example.farakhni.freatures.FilterBy;
 
+import com.example.farakhni.model.FavoriteMeal;
 import com.example.farakhni.model.Meal;
 import java.util.List;
 
@@ -10,15 +11,14 @@ public interface FilterByContract {
     }
 
     interface Presenter {
-        void attachView(View v);
+        void attachView(View view);
+
         void detachView();
-        void loadMeals(Meal[] mealsArray);
-        void onMealSelected(Meal meal);
+        void loadMeals(List<Meal> meals);
         void onFavoriteToggled(Meal meal);
     }
 
     interface Model {
-        void saveFavorite(Meal meal);
-        void deleteFavorite(Meal meal);
+        void toggleFavorite(Meal meal);
     }
 }

@@ -1,7 +1,7 @@
 package com.example.farakhni.data.network.meal;
 
-import com.example.farakhni.model.MealListResponse;
 import com.example.farakhni.model.Meal;
+import com.example.farakhni.model.MealListResponse;
 import com.example.farakhni.data.network.NetworkCallBack;
 import com.example.farakhni.data.network.RetrofitClient;
 
@@ -10,15 +10,14 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-// 2. Updated Remote Data Source
-public class MealsRemoteDataSourceImpl implements MealsRemoteDataSoruce {
+public class MealsRemoteDataSourceImpl implements MealsRemoteDataSource {
     private static MealService mealService = null;
     private static MealsRemoteDataSourceImpl instance;
-
 
     private MealsRemoteDataSourceImpl() {
         mealService = RetrofitClient.getService(MealService.class);
     }
+
     public static synchronized MealsRemoteDataSourceImpl getInstance() {
         if (instance == null) {
             instance = new MealsRemoteDataSourceImpl();
@@ -63,6 +62,7 @@ public class MealsRemoteDataSourceImpl implements MealsRemoteDataSoruce {
             }
         });
     }
+
     @Override
     public void makeNetworkCallgetRandomMeal(NetworkCallBack<List<Meal>> networkCallBack) {
         mealService.getRandomMeal().enqueue(new Callback<MealListResponse>() {
@@ -81,6 +81,7 @@ public class MealsRemoteDataSourceImpl implements MealsRemoteDataSoruce {
             }
         });
     }
+
     @Override
     public void makeNetworkCallgetMealByFirstLetter(String charFirstLetter, NetworkCallBack<List<Meal>> networkCallBack) {
         mealService.getMealsByFirstLetter(charFirstLetter).enqueue(new Callback<MealListResponse>() {
@@ -99,6 +100,7 @@ public class MealsRemoteDataSourceImpl implements MealsRemoteDataSoruce {
             }
         });
     }
+
     @Override
     public void makeNetworkCallFilterByIngredient(String ingredient, NetworkCallBack<List<Meal>> networkCallBack) {
         mealService.filterByIngredient(ingredient).enqueue(new Callback<MealListResponse>() {
@@ -110,6 +112,7 @@ public class MealsRemoteDataSourceImpl implements MealsRemoteDataSoruce {
                     networkCallBack.onFailureResult("No meals found with this ingredient");
                 }
             }
+
             @Override
             public void onFailure(Call<MealListResponse> call, Throwable t) {
                 networkCallBack.onFailureResult(t.getMessage());
@@ -125,9 +128,10 @@ public class MealsRemoteDataSourceImpl implements MealsRemoteDataSoruce {
                 if (response.isSuccessful() && response.body() != null) {
                     networkCallBack.onSuccessResult(response.body().getAllMeals());
                 } else {
-                    networkCallBack.onFailureResult("No meals found with this ingredient");
+                    networkCallBack.onFailureResult("No meals found with this category");
                 }
             }
+
             @Override
             public void onFailure(Call<MealListResponse> call, Throwable t) {
                 networkCallBack.onFailureResult(t.getMessage());
@@ -143,17 +147,14 @@ public class MealsRemoteDataSourceImpl implements MealsRemoteDataSoruce {
                 if (response.isSuccessful() && response.body() != null) {
                     networkCallBack.onSuccessResult(response.body().getAllMeals());
                 } else {
-                    networkCallBack.onFailureResult("No meals found with this ingredient");
+                    networkCallBack.onFailureResult("No meals found with this area");
                 }
             }
+
             @Override
             public void onFailure(Call<MealListResponse> call, Throwable t) {
                 networkCallBack.onFailureResult(t.getMessage());
             }
         });
     }
-
-
-
-
 }

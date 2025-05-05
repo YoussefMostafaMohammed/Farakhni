@@ -1,24 +1,24 @@
-// com/example/farakhni/freatures/FilterBy/FilterByModel.java
 package com.example.farakhni.freatures.FilterBy;
 
 import android.content.Context;
 import com.example.farakhni.data.repositories.MealRepositoryImpl;
+import com.example.farakhni.model.FavoriteMeal;
 import com.example.farakhni.model.Meal;
 
 public class FilterByModel implements FilterByContract.Model {
-    private final MealRepositoryImpl repo;
+    private final MealRepositoryImpl mealRepository;
 
-    public FilterByModel(Context ctx) {
-        this.repo = MealRepositoryImpl.getInstance(ctx);
+    public FilterByModel(Context context) {
+        this.mealRepository = MealRepositoryImpl.getInstance(context);
     }
 
     @Override
-    public void saveFavorite(Meal meal) {
-        repo.insertFavoriteMeal(meal);
-    }
-
-    @Override
-    public void deleteFavorite(Meal meal) {
-        repo.deleteFavoriteMeal(meal);
+    public void toggleFavorite(Meal meal) {
+        FavoriteMeal fav = new FavoriteMeal(meal);
+        if (meal.isFavorite()) {
+            mealRepository.insertFavoriteMeal(fav);
+        } else {
+            mealRepository.deleteFavoriteMeal(fav);
+        }
     }
 }

@@ -1,12 +1,14 @@
 package com.example.farakhni.data.DB;
 
-
 import androidx.lifecycle.LiveData;
-import com.example.farakhni.model.Meal;
+
+import com.example.farakhni.model.FavoriteMeal;
+
 import java.util.List;
 
 public interface FavoriteMealsLocalDataSource {
-    LiveData<List<Meal>> getFavoriteMeals();
-    void insertMeal(Meal meal);
-    void deleteMeal(Meal meal);
+    LiveData<List<FavoriteMeal>> getFavoriteMeals();
+    void insertMeal(FavoriteMeal meal);
+    void deleteMeal(FavoriteMeal meal);
+    boolean isFavorite(String mealId);
 }

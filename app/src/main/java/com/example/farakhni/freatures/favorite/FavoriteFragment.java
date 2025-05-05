@@ -15,12 +15,13 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.example.farakhni.R;
 import com.example.farakhni.common.MealAdapter;
+import com.example.farakhni.data.repositories.MealRepositoryImpl;
 import com.example.farakhni.databinding.FragmentFavoriteBinding;
+import com.example.farakhni.model.FavoriteMeal;
 import com.example.farakhni.model.Meal;
 
+import java.util.ArrayList;
 import java.util.List;
-
-import android.content.Intent;
 
 public class FavoriteFragment extends Fragment implements FavoriteContract.View {
     private FragmentFavoriteBinding binding;
@@ -38,33 +39,49 @@ public class FavoriteFragment extends Fragment implements FavoriteContract.View 
         binding.mealsList.setLayoutManager(
                 new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false)
         );
-        adapter = new MealAdapter(requireContext(), List.of());
+        adapter = new MealAdapter(requireContext(), new ArrayList<>());
         adapter.setOnMealClickListener(meal -> {
-            NavController nav = Navigation.findNavController((Activity)getContext(), R.id.nav_host_fragment_content_app_screen);
-            Bundle args = new Bundle();
-            args.putSerializable("arg_meal", meal);
-            nav.navigate(R.id.nav_meal_details, args);
+            if (requireContext() instanceof Activity) {
+                try {
+                    Bundle args = new Bundle();
+                    args.putSerializable("arg_meal", new FavoriteMeal(meal));
+                    NavController nav = Navigation.findNavController(
+                            (Activity) requireContext(),
+                            R.id.nav_host_fragment_content_app_screen);
+                    nav.navigate(R.id.nav_meal_details, args);
+                } catch (Exception e) {
+                    Toast.makeText(requireContext(), "Navigation error", Toast.LENGTH_SHORT).show();
+                }
+            }
         });
+
         adapter.setOnFavoriteToggleListener(meal -> {
-            presenter.removeFavorite(meal);
+            presenter.removeFavorite(new FavoriteMeal(meal));
             Toast.makeText(requireContext(),
-                    meal.getName() + (meal.isFavorite() ? " added" : " removed"),
+                    meal.getName() + " removed from favorites",
                     Toast.LENGTH_SHORT).show();
         });
+
         binding.mealsList.setAdapter(adapter);
         presenter.loadFavorites(getViewLifecycleOwner());
+
         return binding.getRoot();
     }
 
     @Override
     public void showFavorites(List<Meal> favorites) {
         adapter.setMealList(favorites);
-        adapter.setFavoriteMeals(favorites);
+        List<FavoriteMeal> favMeals = new ArrayList<>();
+        for (Meal meal : favorites) {
+            favMeals.add(new FavoriteMeal(meal));
+        }
+        adapter.setFavoriteMeals(favMeals);
     }
 
     @Override
     public void showError(String message) {
-        Toast.makeText(getContext(), "Error: " + message, Toast.LENGTH_SHORT).show();
+        Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
+        adapter.setMealList(new ArrayList<>());
     }
 
     @Override

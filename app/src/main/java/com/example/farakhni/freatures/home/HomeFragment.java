@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
@@ -24,6 +25,7 @@ import com.example.farakhni.data.repositories.MealRepositoryImpl;
 import com.example.farakhni.databinding.FragmentHomeBinding;
 import com.example.farakhni.model.Area;
 import com.example.farakhni.model.Category;
+import com.example.farakhni.model.FavoriteMeal;
 import com.example.farakhni.model.Ingredient;
 import com.example.farakhni.model.Meal;
 
@@ -42,30 +44,41 @@ public class HomeFragment extends Fragment implements HomeContract.View {
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentHomeBinding.inflate(inflater, container, false);
+
+        // Initialize adapters
         mealAdapter = new MealAdapter(requireContext(), new ArrayList<>());
         ingredientAdapter = new IngredientAdapter(requireContext(), new ArrayList<>());
         categoryAdapter = new CategoryAdapter(requireContext(), new ArrayList<>());
         areaAdapter = new AreaAdapter(requireContext(), new ArrayList<>());
-        MealRepositoryImpl mealRepository = MealRepositoryImpl.getInstance(requireContext());
 
+        MealRepositoryImpl mealRepo = MealRepositoryImpl.getInstance(requireContext());
+
+        // Handle favorite toggle from adapter
         mealAdapter.setOnFavoriteToggleListener(meal -> {
+            FavoriteMeal fav = new FavoriteMeal(meal);
             if (meal.isFavorite()) {
-                mealRepository.insertFavoriteMeal(meal);
+                mealRepo.insertFavoriteMeal(fav);
             } else {
-                mealRepository.deleteFavoriteMeal(meal);
+                mealRepo.deleteFavoriteMeal(fav);
             }
             Toast.makeText(requireContext(),
                     meal.getName() + (meal.isFavorite() ? " added" : " removed"),
                     Toast.LENGTH_SHORT).show();
         });
 
+        // Handle meal click navigation
         mealAdapter.setOnMealClickListener(meal -> {
-            NavController nav = Navigation.findNavController((Activity) getContext(), R.id.nav_host_fragment_content_app_screen);
-            Bundle args = new Bundle();
-            args.putSerializable("arg_meal", meal);
-            nav.navigate(R.id.nav_meal_details, args);
+            if (requireContext() instanceof Activity) {
+                Bundle args = new Bundle();
+                args.putSerializable("arg_meal", new FavoriteMeal(meal));
+                NavController nav = Navigation.findNavController(
+                        (Activity) requireContext(),
+                        R.id.nav_host_fragment_content_app_screen);
+                nav.navigate(R.id.nav_meal_details, args);
+            }
         });
 
+        // Setup RecyclerViews
         binding.randomMealRecyclerView.setLayoutManager(
                 new LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false));
         binding.randomMealRecyclerView.setAdapter(mealAdapter);
@@ -82,13 +95,21 @@ public class HomeFragment extends Fragment implements HomeContract.View {
                 new LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false));
         binding.areasList.setAdapter(areaAdapter);
 
-        mealRepository.getFavoriteMeals().observe(getViewLifecycleOwner(), favMeals -> {
+        // Observe favorites and update all adapters
+        mealRepo.getFavoriteMeals().observe(getViewLifecycleOwner(), favMeals -> {
             mealAdapter.setFavoriteMeals(favMeals);
+            ingredientAdapter.setFavoriteMeals(favMeals);
+            categoryAdapter.setFavoriteMeals(favMeals);
+            areaAdapter.setFavoriteMeals(favMeals);
         });
 
-        CategoryRepositoryImpl categoryRepository = CategoryRepositoryImpl.getInstance();
-        AreaRepositoryImpl areaRepository = AreaRepositoryImpl.getInstance();
-        presenter = new HomePresenter(new HomeModel(mealRepository, IngredientRepositoryImpl.getInstance(), categoryRepository, areaRepository));
+        // Load data through presenter
+        presenter = new HomePresenter(new HomeModel(
+                mealRepo,
+                IngredientRepositoryImpl.getInstance(),
+                CategoryRepositoryImpl.getInstance(),
+                AreaRepositoryImpl.getInstance()
+        ));
         presenter.attachView(this);
         presenter.loadHomeData();
 
@@ -121,9 +142,15 @@ public class HomeFragment extends Fragment implements HomeContract.View {
     }
 
     @Override
+    public void showLoading(boolean isLoading) {
+        // optional loading indicator
+    }
+
+    @Override
     public void onDestroyView() {
+        super.onDestroyView();
         presenter.detachView();
         binding = null;
-        super.onDestroyView();
     }
 }
+

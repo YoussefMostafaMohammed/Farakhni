@@ -1,13 +1,11 @@
-// com/example/farakhni/freatures/FilterBy/FilterByPresenter.java
 package com.example.farakhni.freatures.FilterBy;
 
-import androidx.annotation.Nullable;
 import com.example.farakhni.model.Meal;
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
 
 public class FilterByPresenter implements FilterByContract.Presenter {
-    @Nullable private FilterByContract.View view;
+    private FilterByContract.View view;
     private final FilterByContract.Model model;
 
     public FilterByPresenter(FilterByContract.Model model) {
@@ -15,8 +13,8 @@ public class FilterByPresenter implements FilterByContract.Presenter {
     }
 
     @Override
-    public void attachView(FilterByContract.View v) {
-        this.view = v;
+    public void attachView(FilterByContract.View view) {
+        this.view = view;
     }
 
     @Override
@@ -25,29 +23,17 @@ public class FilterByPresenter implements FilterByContract.Presenter {
     }
 
     @Override
-    public void loadMeals(Meal[] mealsArray) {
+    public void loadMeals(List<Meal> meals) {
         if (view == null) return;
-        if (mealsArray == null || mealsArray.length == 0) {
-            view.showError("No meals to display");
+        if (meals == null || meals.isEmpty()) {
+            view.showError("No meals provided");
         } else {
-            List<Meal> list = Arrays.asList(mealsArray);
-            view.showMeals(list);
+            view.showMeals(new ArrayList<>(meals));
         }
-    }
-
-    @Override
-    public void onMealSelected(Meal meal) {
-        if (view == null) return;
-        // Delegate navigation back to the View
-        // View will handle fragment navigation
     }
 
     @Override
     public void onFavoriteToggled(Meal meal) {
-        if (meal.isFavorite()) {
-            model.saveFavorite(meal);
-        } else {
-            model.deleteFavorite(meal);
-        }
+        model.toggleFavorite(meal);
     }
 }

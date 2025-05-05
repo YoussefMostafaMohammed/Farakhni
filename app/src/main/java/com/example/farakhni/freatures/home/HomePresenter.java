@@ -1,18 +1,19 @@
 package com.example.farakhni.freatures.home;
 
-import com.example.farakhni.data.network.NetworkCallBack;
 import com.example.farakhni.model.Area;
 import com.example.farakhni.model.Category;
 import com.example.farakhni.model.Ingredient;
 import com.example.farakhni.model.Meal;
 
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class HomePresenter implements HomeContract.Presenter {
     private HomeContract.View view;
-    private final HomeContract.Model model;
+    private final HomeModel model;
+    private final AtomicInteger loadingCount = new AtomicInteger(0);
 
-    public HomePresenter(HomeContract.Model model) {
+    public HomePresenter(HomeModel model) {
         this.model = model;
     }
 
@@ -28,130 +29,104 @@ public class HomePresenter implements HomeContract.Presenter {
 
     @Override
     public void loadHomeData() {
+        if (view == null) return;
 
-        model.getAllAreas(new NetworkCallBack<List<Area>>() {
+        model.getRandomMeal(new HomeModel.Callback<List<Meal>>() {
             @Override
-            public void onSuccessResult(List<Area> result) {
-                if(view!=null) view.showAreas(result);
+            public void onSuccess(List<Meal> result) {
+                if (view != null) {
+                    view.showRandomMeals(result);
+                    updateLoadingState(false);
+                }
             }
 
             @Override
-            public void onFailureResult(String failureMessage) {
-                if (view != null) view.showError(failureMessage);
+            public void onError(String message) {
+                if (view != null) {
+                    view.showError(message);
+                    updateLoadingState(false);
+                }
             }
 
             @Override
             public void onLoading() {
-
-            }
-
-            @Override
-            public void onNetworkError(String errorMessage) {
-
-            }
-
-            @Override
-            public void onEmptyData() {
-
-            }
-
-            @Override
-            public void onProgress(int progress) {
-
+                updateLoadingState(true);
             }
         });
 
-        model.getRandomMeal(new NetworkCallBack<List<Meal>>() {
+        model.getIngredients(new HomeModel.Callback<List<Ingredient>>() {
             @Override
-            public void onSuccessResult(List<Meal> result) {
-                if (view != null) view.showRandomMeals(result);
-            }
-            @Override
-            public void onFailureResult(String errorMessage) {
-                if (view != null) view.showError(errorMessage);
-            }
-
-            @Override
-            public void onLoading() {
-
+            public void onSuccess(List<Ingredient> result) {
+                if (view != null) {
+                    view.showIngredients(result);
+                    updateLoadingState(false);
+                }
             }
 
             @Override
-            public void onNetworkError(String errorMessage) {
-
-            }
-
-            @Override
-            public void onEmptyData() {
-
-            }
-
-            @Override
-            public void onProgress(int progress) {
-
-            }
-        });
-        model.getAllIngredients(new NetworkCallBack<List<Ingredient>>() {
-            @Override
-            public void onSuccessResult(List<Ingredient> result) {
-                if (view != null) view.showIngredients(result);
-            }
-            @Override
-            public void onFailureResult(String errorMessage) {
-                if (view != null) view.showError(errorMessage);
+            public void onError(String message) {
+                if (view != null) {
+                    view.showError(message);
+                    updateLoadingState(false);
+                }
             }
 
             @Override
             public void onLoading() {
-
-            }
-
-            @Override
-            public void onNetworkError(String errorMessage) {
-
-            }
-
-            @Override
-            public void onEmptyData() {
-
-            }
-
-            @Override
-            public void onProgress(int progress) {
-
+                updateLoadingState(true);
             }
         });
 
-        model.getAllCategories(new NetworkCallBack<List<Category>>() {
+        model.getCategories(new HomeModel.Callback<List<Category>>() {
             @Override
-            public void onSuccessResult(List<Category> result) {
-                if (view != null) view.showCategories(result);
+            public void onSuccess(List<Category> result) {
+                if (view != null) {
+                    view.showCategories(result);
+                    updateLoadingState(false);
+                }
             }
+
             @Override
-            public void onFailureResult(String errorMessage) {
-                if (view != null) view.showError(errorMessage);
+            public void onError(String message) {
+                if (view != null) {
+                    view.showError(message);
+                    updateLoadingState(false);
+                }
             }
 
             @Override
             public void onLoading() {
+                updateLoadingState(true);
+            }
+        });
 
+        model.getAreas(new HomeModel.Callback<List<Area>>() {
+            @Override
+            public void onSuccess(List<Area> result) {
+                if (view != null) {
+                    view.showAreas(result);
+                    updateLoadingState(false);
+                }
             }
 
             @Override
-            public void onNetworkError(String errorMessage) {
-
+            public void onError(String message) {
+                if (view != null) {
+                    view.showError(message);
+                    updateLoadingState(false);
+                }
             }
 
             @Override
-            public void onEmptyData() {
-
-            }
-
-            @Override
-            public void onProgress(int progress) {
-
+            public void onLoading() {
+                updateLoadingState(true);
             }
         });
     }
-}
 
+    private void updateLoadingState(boolean isLoading) {
+        if (view == null) return;
+        int count = isLoading ? loadingCount.incrementAndGet() : loadingCount.decrementAndGet();
+        view.showLoading(count > 0);
+    }
+}
