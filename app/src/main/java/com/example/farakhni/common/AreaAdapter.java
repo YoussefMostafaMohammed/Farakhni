@@ -1,5 +1,6 @@
 package com.example.farakhni.common;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
@@ -13,6 +14,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
@@ -100,6 +102,7 @@ public class AreaAdapter extends RecyclerView.Adapter<AreaAdapter.AreaViewHolder
         return new AreaViewHolder(view);
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     public void onBindViewHolder(@NonNull AreaViewHolder holder, int position) {
         Area area = areaList.get(position);
@@ -117,7 +120,7 @@ public class AreaAdapter extends RecyclerView.Adapter<AreaAdapter.AreaViewHolder
             holder.areaImage.setImageResource(R.drawable.app_logo);
         }
 
-        holder.areaImage.setOnClickListener(v -> {
+        holder.itemCard.setOnClickListener(v -> {
             mealRepository.filterByArea(areaName, new NetworkCallBack<List<Meal>>() {
                 @Override
                 public void onSuccessResult(List<Meal> meals) {
@@ -151,35 +154,31 @@ public class AreaAdapter extends RecyclerView.Adapter<AreaAdapter.AreaViewHolder
             });
         });
 
-        holder.itemView.setOnTouchListener((v, event) -> {
-            PopupWindow popup = null;
-            switch (event.getActionMasked()) {
-                case MotionEvent.ACTION_DOWN:
-                    View popupView = LayoutInflater.from(context)
-                            .inflate(R.layout.popup_layout, null, false);
-                    TextView desc = popupView.findViewById(R.id.popupIngredientDescription);
-                    desc.setText("This is a country ...");
+        holder.itemCard.setOnLongClickListener(v -> {
+            View popupView = LayoutInflater.from(context)
+                    .inflate(R.layout.popup_layout, null, false);
+            TextView desc = popupView.findViewById(R.id.popupIngredientDescription);
+            desc.setText("It is a Country.");
 
-                    popupView.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
-                    popup = new PopupWindow(
-                            popupView,
-                            popupView.getMeasuredWidth(),
-                            popupView.getMeasuredHeight(),
-                            true
-                    );
-                    popup.setOutsideTouchable(true);
-                    popup.showAsDropDown(v, 0, -v.getHeight() - popupView.getMeasuredHeight());
-                    return true;
-
-                case MotionEvent.ACTION_UP:
-                case MotionEvent.ACTION_CANCEL:
-                    if (popup != null && popup.isShowing()) {
-                        popup.dismiss();
-                    }
-                    return true;
-            }
-            return false;
+            // measure & show
+            popupView.measure(
+                    View.MeasureSpec.UNSPECIFIED,
+                    View.MeasureSpec.UNSPECIFIED
+            );
+            PopupWindow popup = new PopupWindow(
+                    popupView,
+                    popupView.getMeasuredWidth(),
+                    popupView.getMeasuredHeight(),
+                    true
+            );
+            popup.setOutsideTouchable(true);
+            popup.showAsDropDown(v,
+                    /* xOffset */ 0,
+                    /* yOffset */ -v.getHeight() - popupView.getMeasuredHeight()
+            );
+            return true;  // consume the long-press
         });
+
     }
 
     private void fetchDetailsAndNavigate(List<Meal> simpleMeals) {
@@ -263,11 +262,14 @@ public class AreaAdapter extends RecyclerView.Adapter<AreaAdapter.AreaViewHolder
     public static class AreaViewHolder extends RecyclerView.ViewHolder {
         ImageView areaImage;
         TextView areaName;
+        CardView itemCard;
 
         public AreaViewHolder(@NonNull View itemView) {
             super(itemView);
             areaImage = itemView.findViewById(R.id.itemImage);
             areaName = itemView.findViewById(R.id.itemName);
+            itemCard=itemView.findViewById(R.id.itemCard);
+
         }
     }
 }

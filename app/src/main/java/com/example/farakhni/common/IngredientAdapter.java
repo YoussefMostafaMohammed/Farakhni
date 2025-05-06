@@ -14,6 +14,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
@@ -81,18 +82,17 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.In
                 .error(R.drawable.app_logo)
                 .into(holder.ingredientImage);
 
-        holder.ingredientImage.setOnClickListener(v -> {
+        holder.itemCard.setOnClickListener(v -> {
             mealRepository.filterByIngredient(name, new NetworkCallBack<List<Meal>>() {
                 @Override
                 public void onSuccessResult(List<Meal> meals) {
                     if (meals.isEmpty()) {
                         Toast.makeText(context, "No meals for " + name, Toast.LENGTH_SHORT).show();
                     } else {
-                        navigateToIngredientFragment(meals);
-                        //fetchDetailsAndNavigate(meals);
+                        //navigateToIngredientFragment(meals);
+                        fetchDetailsAndNavigate(meals);
                     }
                 }
-
                 @Override
                 public void onFailureResult(String message) {
                     Toast.makeText(context, "Error: " + message, Toast.LENGTH_SHORT).show();
@@ -116,32 +116,33 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.In
             });
         });
 
-        holder.itemView.setOnTouchListener((v, event) -> {
-            PopupWindow popup = null;
-            if (event.getActionMasked() == MotionEvent.ACTION_DOWN) {
-                View popupView = LayoutInflater.from(context)
-                        .inflate(R.layout.popup_layout, null, false);
-                TextView desc = popupView.findViewById(R.id.popupIngredientDescription);
-                desc.setText(ingredient.getDescription() != null
-                        ? ingredient.getDescription()
-                        : "No description available.");
+        holder.itemCard.setOnLongClickListener(v -> {
+            View popupView = LayoutInflater.from(context)
+                    .inflate(R.layout.popup_layout, null, false);
+            TextView desc = popupView.findViewById(R.id.popupIngredientDescription);
+            desc.setText(
+                    ingredient.getDescription() != null
+                            ? ingredient.getDescription()
+                            : "No description available."
+            );
 
-                popupView.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
-                popup = new PopupWindow(popupView,
-                        popupView.getMeasuredWidth(),
-                        popupView.getMeasuredHeight(),
-                        true);
-                popup.setOutsideTouchable(true);
-                popup.showAsDropDown(v, 0, -v.getHeight() - popupView.getMeasuredHeight());
-                return true;
-            } else if (event.getActionMasked() == MotionEvent.ACTION_UP ||
-                    event.getActionMasked() == MotionEvent.ACTION_CANCEL) {
-                if (popup != null && popup.isShowing()) {
-                    popup.dismiss();
-                }
-                return true;
-            }
-            return false;
+            // measure & show
+            popupView.measure(
+                    View.MeasureSpec.UNSPECIFIED,
+                    View.MeasureSpec.UNSPECIFIED
+            );
+            PopupWindow popup = new PopupWindow(
+                    popupView,
+                    popupView.getMeasuredWidth(),
+                    popupView.getMeasuredHeight(),
+                    true
+            );
+            popup.setOutsideTouchable(true);
+            popup.showAsDropDown(v,
+                    /* xOffset */ 0,
+                    /* yOffset */ -v.getHeight() - popupView.getMeasuredHeight()
+            );
+            return true;  // consume the long-press
         });
     }
 
@@ -226,10 +227,12 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.In
     static class IngredientViewHolder extends RecyclerView.ViewHolder {
         ImageView ingredientImage;
         TextView ingredientInfo;
+        CardView itemCard;
         IngredientViewHolder(@NonNull View itemView) {
             super(itemView);
             ingredientImage = itemView.findViewById(R.id.itemImage);
             ingredientInfo = itemView.findViewById(R.id.itemName);
+            itemCard=itemView.findViewById(R.id.itemCard);
         }
     }
 }

@@ -73,11 +73,6 @@ public class MealDetailsFragment extends Fragment {
     private void setupMealDetails(FavoriteMeal meal) {
         binding.mealName.setText(meal.getName() != null ? meal.getName() : "Unknown Meal");
         binding.instructions.setText(meal.getInstructions() != null ? meal.getInstructions() : "No instructions available");
-
-        binding.calories.setText("N/A Calories");
-        binding.protein.setText("N/A Protein");
-        binding.carbs.setText("N/A Carbs");
-
         Glide.with(this)
                 .load(meal.getMealThumb())
                 .placeholder(R.drawable.app_logo)

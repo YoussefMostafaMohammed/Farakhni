@@ -30,6 +30,11 @@ public class PlannedMealsLocalDataSourceImpl implements PlannedMealsLocalDataSou
     }
 
     @Override
+    public LiveData<List<PlannedMeal>> getPlannedMealsForDate(String date) {
+        return plannedMealDao.getPlannedMealsForDate(date);
+    }
+
+    @Override
     public void insertPlannedMeal(PlannedMeal plannedMeal) {
         plannedMealDao.insertPlannedMeal(plannedMeal);
     }

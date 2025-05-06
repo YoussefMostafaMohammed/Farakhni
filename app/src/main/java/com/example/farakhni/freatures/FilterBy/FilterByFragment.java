@@ -12,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.Observer;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -112,8 +113,11 @@ public class FilterByFragment extends Fragment implements FilterByContract.View 
     @Override
     public void showMeals(List<Meal> meals) {
         adapter.setMealList(meals);
-        mealRepository.getFavoriteMeals().observe(getViewLifecycleOwner(), favMeals -> {
-            adapter.setFavoriteMeals(favMeals); // Now it's a real List<FavoriteMeal>
+        mealRepository.getFavoriteMeals().observe(getViewLifecycleOwner(), new Observer<List<FavoriteMeal>>() {
+            @Override
+            public void onChanged(List<FavoriteMeal> favoriteMeals) {
+                adapter.setFavoriteMeals(favoriteMeals);
+            }
         });
     }
 

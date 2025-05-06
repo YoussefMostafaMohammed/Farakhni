@@ -52,4 +52,18 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="menu_ingredientMeals">Fragment Meals</string>
     <string name="calendar_icon_description">Calendar Icon\n</string>
+    <string name="play_video">play video</string>
+    <string name="instructions_header">Instructions</string>
+    <string name="ingredients_header">Ingredients</string>
+    <string name="video_header">Video Tutorial</string>
+    <string name="logout">Logout</string>
+    <string name="search">Search</string>
+    <string name="favourite">Favorite</string>
+    <string name="calendar">Calendar</string>
+    <string name="country">Country</string>
+    <string name="area">Area</string>
+    <string name="ingredient">Ingredient</string>
+    <string name="all">All</string>
+    <string name="search_filters">Search</string>
+    <string name="search_results">Search Results</string>
 </resources>

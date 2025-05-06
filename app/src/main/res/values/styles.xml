@@ -1,25 +1,67 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <style name="ShapeAppearance.RoundedXLarge" parent="">
-        <item name="cornerFamily">rounded</item>
-        <item name="cornerSize">28dp</item>
-    </style>
 
-    <style name="ShapeAppearance.PillButton" parent="">
-        <item name="cornerFamily">rounded</item>
-        <item name="cornerSize">34dp</item>
-    </style>
+    <!-- Base application theme, now using MaterialComponents -->
+    <style name="AppTheme" parent="Theme.Material3.DayNight.NoActionBar">
+        <!-- Primary branding colors -->
+        <item name="colorPrimary">@color/primary</item>
+        <item name="colorOnPrimary">@color/on_primary</item>
+        <item name="colorOnSurfaceVariant">@color/on_surface_variant</item>
+        <item name="colorSurfaceVariant">@color/surface_variant</item>
+        <item name="colorSurface">@color/surface</item>
+        <item name="colorOnSurface">@color/text_primary</item>
+        <item name="colorErrorContainer">@color/error_container</item>
+        <item name="colorOnErrorContainer">@color/on_error_container</item>>
 
-    <!-- Overlay applied to the date picker to give it 12dp rounded corners -->
-    <style name="ThemeOverlay.Farakhni.DatePicker" parent="ThemeOverlay.MaterialComponents.MaterialCalendar">
-        <!-- Use your app’s primary surface colors -->
-        <item name="materialCalendarFullscreenTheme">@style/Theme.Farakhni</item>
-        <!-- Hook in a custom shape with 12dp corners -->
+        <!-- Outline / stroke colors -->
+        <item name="colorOutline">@color/outline</item>
+        <item name="colorOutlineVariant">@color/outline_variant</item>
+        <item name="colorPrimaryContainer">@color/primary_container</item>
+        <item name="colorOnPrimaryContainer">@color/on_primary</item>
+        <!-- Error color (if you use it) -->
+        <item name="colorError">@color/error</item>
+
+        <!-- Shapes: hook in your custom medium corner size -->
         <item name="shapeAppearanceMediumComponent">@style/ShapeAppearance.Farakhni.Medium</item>
     </style>
 
+    <!-- ShapeAppearance for 12dp rounded corners -->
     <style name="ShapeAppearance.Farakhni.Medium" parent="ShapeAppearance.MaterialComponents.MediumComponent">
         <item name="cornerFamily">rounded</item>
         <item name="cornerSize">12dp</item>
+    </style>
+
+    <!-- Overlay for the Material DatePicker -->
+    <style name="ThemeOverlay.Farakhni.DatePicker" parent="ThemeOverlay.MaterialComponents.MaterialCalendar">
+        <item name="materialCalendarFullscreenTheme">@style/AppTheme</item>
+        <item name="shapeAppearanceMediumComponent">@style/ShapeAppearance.Farakhni.Medium</item>
+    </style>
+
+
+    <!-- Overlay for CalendarView if used outside MaterialCalendar -->
+    <style name="ThemeOverlay.CalendarView" parent="ThemeOverlay.MaterialComponents.MaterialCalendar">
+        <item name="colorPrimary">@color/primary</item>
+        <item name="colorOnPrimary">@color/on_primary</item>
+        <item name="colorSurface">@color/surface_variant</item>
+        <item name="android:textColorPrimary">@color/text_primary</item>
+        <item name="android:textColorSecondary">@color/text_secondary</item>
+    </style>
+
+    <style name="TextAppearance.HeadlineMedium" parent="TextAppearance.Material3.HeadlineMedium">
+        <item name="android:textColor">?attr/colorOnSurface</item>
+        <item name="android:letterSpacing">0.02</item>
+    </style>
+
+    <style name="ShapeAppearance.Chip.Rounded" parent="ShapeAppearance.Material3.SmallComponent">
+        <item name="cornerSize">8dp</item>
+    </style>
+
+    <style name="FilterChipStyle" parent="Widget.Material3.Chip.Filter">
+        <item name="chipBackgroundColor">@color/filter_chip_background</item>
+        <item name="chipStrokeColor">?attr/colorOutline</item>
+        <item name="chipStrokeWidth">1dp</item>
+        <item name="android:textColor">?attr/colorOnSurface</item>
+        <item name="chipIconTint">?attr/colorPrimary</item>
+        <item name="android:checkable">true</item>
     </style>
 </resources>

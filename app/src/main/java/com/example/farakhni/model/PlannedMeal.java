@@ -21,9 +21,14 @@ public class PlannedMeal extends Meal implements Serializable {
         this.scheduledDate = "";
     }
 
+    public PlannedMeal(@NonNull String mealId, @NonNull String scheduledDate) {
+        this.id = mealId;
+        this.scheduledDate = scheduledDate;
+    }
+
     public PlannedMeal(Meal meal) {
         super();
-        this.id = meal.getId();
+        this.setId(meal.getId());
         this.setName(meal.getName());
         this.setCategory(meal.getCategory());
         this.setArea(meal.getArea());

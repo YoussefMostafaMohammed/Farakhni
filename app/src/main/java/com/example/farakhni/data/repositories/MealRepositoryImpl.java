@@ -167,6 +167,11 @@ public class MealRepositoryImpl implements MealRepository {
     }
 
     @Override
+    public LiveData<List<PlannedMeal>> getPlannedMealsForDate(String date) {
+        return plannedDataSource.getPlannedMealsForDate(date);
+    }
+
+    @Override
     public void insertPlannedMeal(PlannedMeal plannedMeal) {
         plannedDataSource.insertPlannedMeal(plannedMeal);
     }

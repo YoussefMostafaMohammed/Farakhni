@@ -22,6 +22,7 @@ public interface MealRepository {
     void deleteFavoriteMeal(FavoriteMeal meal);
     boolean isFavorite(String mealId);
     LiveData<List<PlannedMeal>> getAllPlannedMeals();
+    LiveData<List<PlannedMeal>> getPlannedMealsForDate(String date);
     void insertPlannedMeal(PlannedMeal plannedMeal);
     void deletePlannedMeal(PlannedMeal plannedMeal);
     boolean isMealPlanned(String mealId, String date);

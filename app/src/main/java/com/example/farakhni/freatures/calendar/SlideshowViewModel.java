@@ -1,4 +1,4 @@
-package com.example.farakhni.freatures.slideshow;
+package com.example.farakhni.freatures.calendar;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;

@@ -8,6 +8,7 @@ import java.util.List;
 
 public interface PlannedMealsLocalDataSource {
     LiveData<List<PlannedMeal>> getAllPlannedMeals();
+    LiveData<List<PlannedMeal>> getPlannedMealsForDate(String date);
     void insertPlannedMeal(PlannedMeal plannedMeal);
     void deletePlannedMeal(PlannedMeal plannedMeal);
     boolean isMealPlanned(String mealId, String date);

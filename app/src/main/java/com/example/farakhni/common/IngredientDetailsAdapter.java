@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.farakhni.R;
@@ -41,39 +42,33 @@ public class IngredientDetailsAdapter extends RecyclerView.Adapter<IngredientDet
         Glide.with(context)
                 .load(imageUrl)
                 .into(holder.ingredientImage);
-        holder.itemView.setOnTouchListener(new View.OnTouchListener() {
-            PopupWindow popup;
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                switch (event.getActionMasked()) {
-                    case MotionEvent.ACTION_DOWN:
-                        View popupView = LayoutInflater.from(context)
-                                .inflate(R.layout.popup_layout, null, false);
-                        TextView desc = popupView.findViewById(R.id.popupIngredientDescription);
-                        desc.setText(ingredient.getDescription() != null ? ingredient.getDescription() : "No description available.");
-                        popupView.measure(
-                                View.MeasureSpec.UNSPECIFIED,
-                                View.MeasureSpec.UNSPECIFIED
-                        );
-                        popup = new PopupWindow(
-                                popupView,
-                                popupView.getMeasuredWidth(),
-                                popupView.getMeasuredHeight(),
-                                true
-                        );
-                        popup.setOutsideTouchable(false);
-                        popup.setClippingEnabled(true);
-                        popup.showAsDropDown(v, 0, -v.getHeight() - popupView.getMeasuredHeight());
-                        return true;
-                    case MotionEvent.ACTION_UP:
-                    case MotionEvent.ACTION_CANCEL:
-                        if (popup != null && popup.isShowing()) {
-                            popup.dismiss();
-                        }
-                        return true;
-                }
-                return false;
-            }
+        holder.itemCard.setOnLongClickListener(v -> {
+            View popupView = LayoutInflater.from(context)
+                    .inflate(R.layout.popup_layout, null, false);
+            TextView desc = popupView.findViewById(R.id.popupIngredientDescription);
+            desc.setText(
+                    ingredient.getDescription() != null
+                            ? ingredient.getDescription()
+                            : "No description available."
+            );
+
+            // measure & show
+            popupView.measure(
+                    View.MeasureSpec.UNSPECIFIED,
+                    View.MeasureSpec.UNSPECIFIED
+            );
+            PopupWindow popup = new PopupWindow(
+                    popupView,
+                    popupView.getMeasuredWidth(),
+                    popupView.getMeasuredHeight(),
+                    true
+            );
+            popup.setOutsideTouchable(true);
+            popup.showAsDropDown(v,
+                    /* xOffset */ 0,
+                    /* yOffset */ -v.getHeight() - popupView.getMeasuredHeight()
+            );
+            return true;  // consume the long-press
         });
     }
 
@@ -86,12 +81,13 @@ public class IngredientDetailsAdapter extends RecyclerView.Adapter<IngredientDet
         ImageView ingredientImage;
         TextView ingredientName;
         TextView ingredientMeasure;
+        CardView itemCard;
         public IngredientDetailsViewHolder(@NonNull View itemView) {
             super(itemView);
             ingredientImage = itemView.findViewById(R.id.ingredientImage);
             ingredientName = itemView.findViewById(R.id.ingredientName);
             ingredientMeasure = itemView.findViewById(R.id.ingredientMeasure);
-
+            itemCard=itemView.findViewById(R.id.itemCard);
         }
     }
 }

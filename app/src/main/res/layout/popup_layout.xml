@@ -1,34 +1,22 @@
-<?xml version="1.0" encoding="utf-8"?>
 <com.google.android.material.card.MaterialCardView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    app:cardCornerRadius="8dp"
-    app:cardElevation="6dp"
-    app:cardUseCompatPadding="true"
-    app:cardPreventCornerOverlap="true"
-    app:strokeColor="#E0E0E0"
+    app:cardCornerRadius="16dp"
+    app:cardElevation="4dp"
+    app:strokeColor="?attr/colorOutline"
     app:strokeWidth="1dp"
-    android:background="@android:color/white"
+    android:background="?attr/colorSurface"
     android:padding="12dp">
 
-
-
-
-    <LinearLayout
+    <TextView
+        android:id="@+id/popupIngredientDescription"
         android:layout_width="275dp"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:gravity="start">
-        <TextView
-            android:id="@+id/popupIngredientDescription"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:maxWidth="300dp"
-            android:ellipsize="end"
-            android:maxLines="4"/>
-
-    </LinearLayout>
-
+        android:textColor="?attr/colorOnSurface"
+        android:textSize="14sp"
+        android:maxLines="4"
+        android:ellipsize="end"
+        android:padding="6dp"/>
 </com.google.android.material.card.MaterialCardView>

@@ -1,156 +1,200 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/scrollView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fillViewport="true"
-    android:padding="0dp"
-    android:clipToPadding="false">
+    android:background="?attr/colorSurface">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:padding="16dp"
-        android:spacing="16dp">
+        android:divider="@drawable/divider_vertical"
+        android:showDividers="middle"
+        android:dividerPadding="16dp">
 
-        <!-- Meal Image Card -->
+        <!-- Meal Image Section -->
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="280dp"
             app:cardCornerRadius="16dp"
-            app:cardElevation="8dp"
-            android:layout_marginBottom="16dp">
+            app:cardElevation="4dp"
+            app:strokeColor="?attr/colorOutline"
+            app:strokeWidth="1dp"
+            app:cardBackgroundColor="?attr/colorSurface">
 
             <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="280dp">
+                android:layout_height="match_parent">
 
+                <!-- Full-bleed image -->
                 <ImageView
                     android:id="@+id/mealImage"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:scaleType="centerCrop"
-                    android:contentDescription="@string/meal_image_description"
-                    android:src="@drawable/app_logo"
-                    android:clipToOutline="true" />
+                    android:contentDescription="@string/meal_image_description"/>
 
+                <!-- Dark gradient overlay -->
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:background="@drawable/gradient_overlay_dark" />
+                    android:background="@drawable/gradient_overlay_dark"/>
 
+                <!-- Title overlaid -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="16dp"
-                    android:layout_gravity="bottom">
+                    android:layout_gravity="bottom"
+                    android:padding="24dp"
+                    android:orientation="vertical">
 
                     <TextView
                         android:id="@+id/mealName"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Mix Salad Vegetables"
-                        android:textColor="#FFFFFF"
-                        android:textSize="22sp"
-                        android:textStyle="bold" />
-
-                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:layout_marginTop="8dp">
-
-                        <TextView
-                            android:id="@+id/calories"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="240 kcal"
-                            android:textColor="#FFEE58"
-                            android:textSize="14sp" />
-
-                        <TextView
-                            android:id="@+id/protein"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="19g Protein"
-                            android:textColor="#FFEB3B"
-                            android:textSize="14sp" />
-
-                        <TextView
-                            android:id="@+id/carbs"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="5g Carbs"
-                            android:textColor="#FFF176"
-                            android:textSize="14sp" />
-                    </LinearLayout>
+                        android:textColor="?attr/colorOnSurface"
+                        android:textSize="22sp"
+                        android:textStyle="bold"
+                        android:ellipsize="end"
+                        android:maxLines="2"/>
                 </LinearLayout>
             </FrameLayout>
         </com.google.android.material.card.MaterialCardView>
 
         <!-- Ingredients Section -->
-        <TextView
-            android:id="@+id/ingredientsHeader"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Ingredients"
-            android:textColor="#212121"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            android:layout_marginBottom="8dp" />
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/ingredientsList"
+        <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:clipToPadding="false"
-            android:paddingBottom="16dp" />
+            android:layout_marginTop="24dp"
+            app:cardCornerRadius="12dp"
+            app:cardElevation="2dp"
+            app:cardBackgroundColor="?attr/colorSurface"
+            app:strokeColor="?attr/colorOutline"
+            app:strokeWidth="1dp"
+            app:contentPadding="16dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/ingredientsHeader"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawableStart="@drawable/ic_ingredient"
+                    android:drawableTint="?attr/colorPrimary"
+                    android:drawablePadding="8dp"
+                    android:text="@string/ingredients_header"
+                    android:textColor="?attr/colorOnSurface"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:layout_marginBottom="12dp"/>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/ingredientsList"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
 
         <!-- Instructions Section -->
-        <TextView
-            android:id="@+id/instructionsHeader"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Instructions"
-            android:textColor="#212121"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            android:layout_marginTop="16dp"
-            android:layout_marginBottom="8dp" />
-
-        <TextView
-            android:id="@+id/instructions"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textColor="#424242"
-            android:textSize="16sp"
-            android:lineSpacingExtra="4dp" />
-
-        <!-- Embedded Video Section -->
-        <!-- In your layout XML -->
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:layout_marginBottom="16dp">
+            app:cardCornerRadius="12dp"
+            app:cardElevation="2dp"
+            app:cardBackgroundColor="?attr/colorSurface"
+            app:strokeColor="?attr/colorOutline"
+            app:strokeWidth="1dp"
+            app:contentPadding="16dp">
 
-            <FrameLayout
-                android:id="@+id/video_container"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="200dp">
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
 
-                <WebView
-                    android:id="@+id/videoWebView"
+                <TextView
+                    android:id="@+id/instructionsHeader"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"/>
+                    android:layout_height="wrap_content"
+                    android:drawableStart="@drawable/ic_instruction"
+                    android:drawableTint="?attr/colorPrimary"
+                    android:drawablePadding="8dp"
+                    android:text="@string/instructions_header"
+                    android:textColor="?attr/colorOnSurface"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:layout_marginBottom="12dp"/>
 
-            </FrameLayout>
+                <TextView
+                    android:id="@+id/instructions"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="?attr/colorOnSurfaceVariant"
+                    android:textSize="16sp"
+                    android:lineSpacingExtra="4dp"/>
+            </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
+
+        <!-- Video Section -->
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            app:cardCornerRadius="12dp"
+            app:cardElevation="2dp"
+            app:cardBackgroundColor="?attr/colorSurface"
+            app:strokeColor="?attr/colorOutline"
+            app:strokeWidth="1dp"
+            app:contentPadding="16dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/videoHeader"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawableStart="@drawable/ic_video"
+                    android:drawableTint="?attr/colorPrimary"
+                    android:drawablePadding="8dp"
+                    android:text="@string/video_header"
+                    android:textColor="?attr/colorOnSurface"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:layout_marginBottom="12dp"/>
+
+                <FrameLayout
+                    android:id="@+id/video_container"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    android:background="?attr/colorSurfaceVariant">
+
+                    <WebView
+                        android:id="@+id/videoWebView"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"/>
+
+                    <ImageView
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:layout_gravity="center"
+                        android:src="@drawable/ic_play_circle"
+                        android:contentDescription="@string/play_video"
+                        android:visibility="gone"/>
+                </FrameLayout>
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
     </LinearLayout>
 </androidx.core.widget.NestedScrollView>

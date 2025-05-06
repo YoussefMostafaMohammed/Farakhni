@@ -39,7 +39,7 @@ public class AppActivity extends AppCompatActivity implements AppContract.View {
         DrawerLayout drawer = binding.drawerLayout;
         NavigationView navView = binding.navView;
         mAppBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.nav_home, R.id.nav_gallery, R.id.nav_slideshow)
+                R.id.nav_home, R.id.nav_favorite, R.id.nav_calender,R.id.nav_search)
                 .setOpenableLayout(drawer).build();
 
         NavController navController = Navigation.findNavController(this,

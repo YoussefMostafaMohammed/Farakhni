@@ -1,5 +1,6 @@
 package com.example.farakhni.common;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
@@ -13,6 +14,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
@@ -65,6 +67,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
         return new CategoryViewHolder(view);
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     public void onBindViewHolder(@NonNull CategoryViewHolder holder, int position) {
         Category category = categoryList.get(position);
@@ -77,7 +80,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
                 .error(R.drawable.app_logo)
                 .into(holder.categoryImage);
 
-        holder.categoryImage.setOnClickListener(v -> {
+        holder.itemCard.setOnClickListener(v -> {
             mealRepository.filterByCategory(categoryName, new NetworkCallBack<List<Meal>>() {
                 @Override
                 public void onSuccessResult(List<Meal> meals) {
@@ -111,36 +114,33 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
             });
         });
 
-        holder.itemView.setOnTouchListener((v, event) -> {
-            PopupWindow popup = null;
-            switch (event.getActionMasked()) {
-                case MotionEvent.ACTION_DOWN:
-                    View popupView = LayoutInflater.from(context)
-                            .inflate(R.layout.popup_layout, null, false);
-                    TextView desc = popupView.findViewById(R.id.popupIngredientDescription);
-                    desc.setText(category.getCategoryDescription() != null
+        holder.itemCard.setOnLongClickListener(v -> {
+            View popupView = LayoutInflater.from(context)
+                    .inflate(R.layout.popup_layout, null, false);
+            TextView desc = popupView.findViewById(R.id.popupIngredientDescription);
+            desc.setText(
+                    category.getCategoryDescription() != null
                             ? category.getCategoryDescription()
-                            : "No description available.");
+                            : "No description available."
+            );
 
-                    popupView.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
-                    popup = new PopupWindow(
-                            popupView,
-                            popupView.getMeasuredWidth(),
-                            popupView.getMeasuredHeight(),
-                            true
-                    );
-                    popup.setOutsideTouchable(true);
-                    popup.showAsDropDown(v, 0, -v.getHeight() - popupView.getMeasuredHeight());
-                    return true;
-
-                case MotionEvent.ACTION_UP:
-                case MotionEvent.ACTION_CANCEL:
-                    if (popup != null && popup.isShowing()) {
-                        popup.dismiss();
-                    }
-                    return true;
-            }
-            return false;
+            // measure & show
+            popupView.measure(
+                    View.MeasureSpec.UNSPECIFIED,
+                    View.MeasureSpec.UNSPECIFIED
+            );
+            PopupWindow popup = new PopupWindow(
+                    popupView,
+                    popupView.getMeasuredWidth(),
+                    popupView.getMeasuredHeight(),
+                    true
+            );
+            popup.setOutsideTouchable(true);
+            popup.showAsDropDown(v,
+                    /* xOffset */ 0,
+                    /* yOffset */ -v.getHeight() - popupView.getMeasuredHeight()
+            );
+            return true;  // consume the long-press
         });
     }
 
@@ -226,11 +226,14 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
     public static class CategoryViewHolder extends RecyclerView.ViewHolder {
         ImageView categoryImage;
         TextView categoryName;
+        CardView itemCard;
+
 
         public CategoryViewHolder(@NonNull View itemView) {
             super(itemView);
             categoryImage = itemView.findViewById(R.id.itemImage);
             categoryName = itemView.findViewById(R.id.itemName);
+            itemCard=itemView.findViewById(R.id.itemCard);
         }
     }
 }

@@ -20,14 +20,14 @@
     </fragment>
 
     <fragment
-        android:id="@+id/nav_gallery"
+        android:id="@+id/nav_favorite"
         android:name="com.example.farakhni.freatures.favorite.FavoriteFragment"
         android:label="@string/menu_gallery"
         tools:layout="@layout/fragment_meals" />
 
     <fragment
-        android:id="@+id/nav_slideshow"
-        android:name="com.example.farakhni.freatures.slideshow.SlideshowFragment"
+        android:id="@+id/nav_calender"
+        android:name="com.example.farakhni.freatures.calendar.SlideshowFragment"
         android:label="@string/menu_slideshow"
         tools:layout="@layout/fragment_slideshow" />
 
@@ -47,6 +47,12 @@
         <argument
             android:name="arg_meal"
             app:argType="com.example.farakhni.model.FavoriteMeal" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_search"
+        android:name="com.example.farakhni.freatures.search.SearchFragment"
+        android:label="Search Meal">
     </fragment>
 
 </navigation>
