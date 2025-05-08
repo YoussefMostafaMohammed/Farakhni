@@ -1,12 +1,12 @@
 package com.example.farakhni.data.repositories;
 
 import androidx.lifecycle.LiveData;
-
+import com.example.farakhni.data.DB.FavoriteMealsLocalDataSource;
+import com.example.farakhni.data.DB.PlannedMealsLocalDataSource;
 import com.example.farakhni.data.network.NetworkCallBack;
 import com.example.farakhni.model.FavoriteMeal;
 import com.example.farakhni.model.Meal;
 import com.example.farakhni.model.PlannedMeal;
-
 import java.util.List;
 
 public interface MealRepository {
@@ -26,4 +26,6 @@ public interface MealRepository {
     void insertPlannedMeal(PlannedMeal plannedMeal);
     void deletePlannedMeal(PlannedMeal plannedMeal);
     boolean isMealPlanned(String mealId, String date);
+    void syncFavoriteMealsWithFirestore(FavoriteMealsLocalDataSource.OnSyncCompleteListener listener);
+    void syncPlannedMealsWithFirestore(PlannedMealsLocalDataSource.OnSyncCompleteListener listener);
 }

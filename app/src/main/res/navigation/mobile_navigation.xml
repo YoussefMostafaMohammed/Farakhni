@@ -27,9 +27,9 @@
 
     <fragment
         android:id="@+id/nav_calender"
-        android:name="com.example.farakhni.freatures.calendar.SlideshowFragment"
+        android:name="com.example.farakhni.freatures.calendar.CalendarFragment"
         android:label="@string/menu_slideshow"
-        tools:layout="@layout/fragment_slideshow" />
+        tools:layout="@layout/fragment_search" />
 
     <fragment
         android:id="@+id/nav_meals"
@@ -51,7 +51,7 @@
 
     <fragment
         android:id="@+id/nav_search"
-        android:name="com.example.farakhni.freatures.search.SearchFragment"
+        android:name="com.example.farakhni.freatures.Search.SearchFragment"
         android:label="Search Meal">
     </fragment>
 

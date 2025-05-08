@@ -57,7 +57,7 @@
             try {
                 SupportSQLiteDatabase db = getOpenHelper().getWritableDatabase();
                 String query = "PRAGMA wal_checkpoint(full)";
-                Cursor cursor = db.query(query, new String[0]); // Pass an empty array
+                Cursor cursor = db.query(query, new String[0]);
                 if (cursor != null) {
                     cursor.moveToFirst();
                     cursor.close();

@@ -9,18 +9,14 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.Observer;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.example.farakhni.R;
-import com.example.farakhni.common.MealAdapter;
+import com.example.farakhni.utils.MealAdapter;
 import com.example.farakhni.data.network.NetworkCallBack;
-import com.example.farakhni.data.repositories.MealRepository;
 import com.example.farakhni.data.repositories.MealRepositoryImpl;
 import com.example.farakhni.databinding.FragmentMealsBinding;
 import com.example.farakhni.model.FavoriteMeal;
@@ -53,7 +49,7 @@ public class FilterByFragment extends Fragment implements FilterByContract.View 
     }
 
     private void setupRecycler() {
-        adapter = new MealAdapter(requireContext(), new ArrayList<>());
+        adapter = new MealAdapter(requireContext(), new ArrayList<>(),false);
         adapter.setOnFavoriteToggleListener(meal -> {
             presenter.onFavoriteToggled(meal);
             Toast.makeText(requireContext(),
@@ -77,48 +73,36 @@ public class FilterByFragment extends Fragment implements FilterByContract.View 
 
                     @Override
                     public void onFailureResult(String failureMessage) {
-
+                        Toast.makeText(requireContext(), "Failed to load meal details", Toast.LENGTH_SHORT).show();
                     }
 
                     @Override
-                    public void onLoading() {
-
-                    }
+                    public void onLoading() {}
 
                     @Override
                     public void onNetworkError(String errorMessage) {
-
+                        Toast.makeText(requireContext(), "Network error", Toast.LENGTH_SHORT).show();
                     }
 
                     @Override
                     public void onEmptyData() {
-
+                        Toast.makeText(requireContext(), "No meal data found", Toast.LENGTH_SHORT).show();
                     }
 
                     @Override
-                    public void onProgress(int progress) {
-
-                    }
+                    public void onProgress(int progress) {}
                 });
             }
         });
 
-        binding.mealsList.setLayoutManager(
-                new LinearLayoutManager(requireContext())
-        );
-
+        binding.mealsList.setLayoutManager(new LinearLayoutManager(requireContext()));
         binding.mealsList.setAdapter(adapter);
     }
 
     @Override
     public void showMeals(List<Meal> meals) {
         adapter.setMealList(meals);
-        mealRepository.getFavoriteMeals().observe(getViewLifecycleOwner(), new Observer<List<FavoriteMeal>>() {
-            @Override
-            public void onChanged(List<FavoriteMeal> favoriteMeals) {
-                adapter.setFavoriteMeals(favoriteMeals);
-            }
-        });
+        mealRepository.getFavoriteMeals().observe(getViewLifecycleOwner(), adapter::setFavoriteMeals);
     }
 
     @Override

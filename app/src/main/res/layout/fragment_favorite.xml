@@ -6,17 +6,106 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fillViewport="true"
-    android:padding="16dp">
-    <androidx.constraintlayout.widget.ConstraintLayout
+    android:background="@drawable/gradient_background"
+    android:padding="20dp">
+
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <!-- Header -->
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="4dp"
+            app:cardBackgroundColor="@color/card_background"
+            app:strokeColor="@color/outline_light"
+            app:strokeWidth="1dp"
+            android:layout_marginBottom="16dp"
+            android:padding="16dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:padding="12dp">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/heartIcon"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:src="@drawable/ic_heart_filled"
+                    android:tint="@color/primary"
+                    android:contentDescription="@string/favorite_meals_header" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/favoritesHeader"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/favorite_meals_header"
+                    android:textColor="@color/text_primary"
+                    android:textSize="24sp"
+                    android:fontFamily="sans-serif-medium"
+                    android:textStyle="bold"
+                    android:layout_marginStart="12dp" />
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- RecyclerView for Favorite Meals -->
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/mealsList"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            android:nestedScrollingEnabled="false"
+            android:clipToPadding="false"
+            android:padding="8dp"
+            android:background="@color/background_light"
+            android:overScrollMode="never" />
+
+        <!-- Empty State -->
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/emptyStateContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="4dp"
+            app:cardBackgroundColor="@color/card_background"
+            app:strokeColor="@color/outline_light"
+            app:strokeWidth="1dp"
+            android:layout_marginTop="16dp"
+            android:visibility="gone">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:padding="24dp"/>
+
+                <com.airbnb.lottie.LottieAnimationView
+                    android:id="@+id/emptyStateAnimation"
+                    android:layout_width="140dp"
+                    android:layout_height="140dp"
+                    app:lottie_fileName="heartEmpty.json"
+                    app:lottie_loop="true"
+                    app:lottie_autoPlay="true" />
+
+                <TextView
+                    android:id="@+id/emptyStateText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/no_favorite_meals"
+                    android:textColor="@color/text_primary"
+                    android:textSize="18sp"
+                    android:fontFamily="sans-serif"
+                    android:layout_marginTop="20dp"
+                    android:textAlignment="center"
+                    android:lineSpacingExtra="4dp" />
+
+        </com.google.android.material.card.MaterialCardView>
+    </LinearLayout>
 </androidx.core.widget.NestedScrollView>

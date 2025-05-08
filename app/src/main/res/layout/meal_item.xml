@@ -15,7 +15,6 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="250dp">
-        <!-- Meal Image -->
         <ImageView
             android:id="@+id/mealImage"
             android:layout_width="match_parent"
@@ -41,7 +40,6 @@
             android:orientation="vertical"
             android:layout_margin="16dp">
 
-            <!-- Heart Icon (existing) -->
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/heartIcon"
                 android:layout_width="32dp"
@@ -52,9 +50,8 @@
                 android:foreground="?attr/selectableItemBackgroundBorderless"
                 android:contentDescription="@string/heart_icon_description" />
 
-            <!-- Calendar Icon (new) -->
             <androidx.appcompat.widget.AppCompatImageView
-                android:id="@+id/calendarIcon"
+                android:id="@+id/calendarIconAdd"
                 android:layout_width="32dp"
                 android:layout_height="32dp"
                 android:src="@drawable/calendar_add_on"
@@ -65,9 +62,20 @@
                 android:contentDescription="@string/calendar_icon_description"
                 />
 
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/calendarIconDelete"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:src="@drawable/calendar_delete_off"
+                android:layout_marginTop="8dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="@string/calendar_icon_description"
+                />
+
         </LinearLayout>
 
-        <!-- ... (remaining existing elements) -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

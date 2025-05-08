@@ -2,20 +2,18 @@ package com.example.farakhni.data.repositories;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-
 import androidx.lifecycle.LiveData;
-
+import com.example.farakhni.data.DB.FavoriteMealsLocalDataSource;
 import com.example.farakhni.data.DB.FavoriteMealsLocalDataSourceImpl;
+import com.example.farakhni.data.DB.PlannedMealsLocalDataSource;
 import com.example.farakhni.data.DB.PlannedMealsLocalDataSourceImpl;
 import com.example.farakhni.data.network.NetworkCallBack;
 import com.example.farakhni.data.network.meal.MealsRemoteDataSourceImpl;
 import com.example.farakhni.model.FavoriteMeal;
 import com.example.farakhni.model.Meal;
 import com.example.farakhni.model.PlannedMeal;
-
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-
 import java.lang.reflect.Type;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -184,5 +182,15 @@ public class MealRepositoryImpl implements MealRepository {
     @Override
     public boolean isMealPlanned(String mealId, String date) {
         return plannedDataSource.isMealPlanned(mealId, date);
+    }
+
+    @Override
+    public void syncFavoriteMealsWithFirestore(FavoriteMealsLocalDataSource.OnSyncCompleteListener listener) {
+        favoriteDataSource.syncFavoriteMealsWithFirestore( listener);
+    }
+
+    @Override
+    public void syncPlannedMealsWithFirestore(PlannedMealsLocalDataSource.OnSyncCompleteListener listener) {
+        plannedDataSource.syncPlannedMealsWithFirestore( listener);
     }
 }

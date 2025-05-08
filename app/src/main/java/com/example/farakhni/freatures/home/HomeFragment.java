@@ -1,6 +1,10 @@
 package com.example.farakhni.freatures.home;
 
 import android.app.Activity;
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.Network;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,10 +18,10 @@ import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.example.farakhni.R;
-import com.example.farakhni.common.AreaAdapter;
-import com.example.farakhni.common.CategoryAdapter;
-import com.example.farakhni.common.IngredientAdapter;
-import com.example.farakhni.common.MealAdapter;
+import com.example.farakhni.utils.AreaAdapter;
+import com.example.farakhni.utils.CategoryAdapter;
+import com.example.farakhni.utils.IngredientAdapter;
+import com.example.farakhni.utils.MealAdapter;
 import com.example.farakhni.data.repositories.AreaRepositoryImpl;
 import com.example.farakhni.data.repositories.CategoryRepositoryImpl;
 import com.example.farakhni.data.repositories.IngredientRepositoryImpl;
@@ -39,79 +43,104 @@ public class HomeFragment extends Fragment implements HomeContract.View {
     private IngredientAdapter ingredientAdapter;
     private CategoryAdapter categoryAdapter;
     private AreaAdapter areaAdapter;
+    private final ConnectivityManager.NetworkCallback networkCallback = new ConnectivityManager.NetworkCallback() {
+        @Override
+        public void onAvailable(@NonNull Network network) {
+            requireActivity().runOnUiThread(() -> {
+                binding.lottieNoConnection.setVisibility(View.GONE);
+                binding.mainContent.setVisibility(View.VISIBLE);
+                presenter.loadHomeData();  // reload if needed
+            });
+        }
+
+        @Override
+        public void onLost(@NonNull Network network) {
+            requireActivity().runOnUiThread(() -> {
+                binding.lottieNoConnection.setVisibility(View.VISIBLE);
+                binding.mainContent.setVisibility(View.GONE);
+                Toast.makeText(requireContext(), "No internet connection", Toast.LENGTH_SHORT).show();
+            });
+        }
+    };
+    private boolean isConnected() {
+        ConnectivityManager cm = (ConnectivityManager) requireContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = cm.getActiveNetworkInfo();
+        return networkInfo != null && networkInfo.isConnected();
+    }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentHomeBinding.inflate(inflater, container, false);
+        if (!isConnected()) {
+            binding.lottieNoConnection.setVisibility(View.VISIBLE);
+            binding.mainContent.setVisibility(View.GONE);
+        } else {
 
-        // Initialize adapters
-        mealAdapter = new MealAdapter(requireContext(), new ArrayList<>());
-        ingredientAdapter = new IngredientAdapter(requireContext(), new ArrayList<>());
-        categoryAdapter = new CategoryAdapter(requireContext(), new ArrayList<>());
-        areaAdapter = new AreaAdapter(requireContext(), new ArrayList<>());
+            mealAdapter = new MealAdapter(requireContext(), new ArrayList<>(),false);
+            ingredientAdapter = new IngredientAdapter(requireContext(), new ArrayList<>());
+            categoryAdapter = new CategoryAdapter(requireContext(), new ArrayList<>());
+            areaAdapter = new AreaAdapter(requireContext(), new ArrayList<>());
+            ConnectivityManager cm = (ConnectivityManager) requireContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+            cm.registerDefaultNetworkCallback(networkCallback);
+            MealRepositoryImpl mealRepo = MealRepositoryImpl.getInstance(requireContext());
 
-        MealRepositoryImpl mealRepo = MealRepositoryImpl.getInstance(requireContext());
+            mealAdapter.setOnFavoriteToggleListener(meal -> {
+                FavoriteMeal fav = new FavoriteMeal(meal);
+                if (meal.isFavorite()) {
+                    mealRepo.insertFavoriteMeal(fav);
+                } else {
+                    mealRepo.deleteFavoriteMeal(fav);
+                }
+                Toast.makeText(requireContext(),
+                        meal.getName() + (meal.isFavorite() ? " added" : " removed"),
+                        Toast.LENGTH_SHORT).show();
+            });
 
-        // Handle favorite toggle from adapter
-        mealAdapter.setOnFavoriteToggleListener(meal -> {
-            FavoriteMeal fav = new FavoriteMeal(meal);
-            if (meal.isFavorite()) {
-                mealRepo.insertFavoriteMeal(fav);
-            } else {
-                mealRepo.deleteFavoriteMeal(fav);
-            }
-            Toast.makeText(requireContext(),
-                    meal.getName() + (meal.isFavorite() ? " added" : " removed"),
-                    Toast.LENGTH_SHORT).show();
-        });
+            mealAdapter.setOnMealClickListener(meal -> {
+                if (requireContext() instanceof Activity) {
+                    Bundle args = new Bundle();
+                    args.putSerializable("arg_meal", new FavoriteMeal(meal));
+                    NavController nav = Navigation.findNavController(
+                            (Activity) requireContext(),
+                            R.id.nav_host_fragment_content_app_screen);
+                    nav.navigate(R.id.nav_meal_details, args);
+                }
+            });
 
-        // Handle meal click navigation
-        mealAdapter.setOnMealClickListener(meal -> {
-            if (requireContext() instanceof Activity) {
-                Bundle args = new Bundle();
-                args.putSerializable("arg_meal", new FavoriteMeal(meal));
-                NavController nav = Navigation.findNavController(
-                        (Activity) requireContext(),
-                        R.id.nav_host_fragment_content_app_screen);
-                nav.navigate(R.id.nav_meal_details, args);
-            }
-        });
+            binding.randomMealRecyclerView.setLayoutManager(
+                    new LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false));
+            binding.randomMealRecyclerView.setAdapter(mealAdapter);
 
-        // Setup RecyclerViews
-        binding.randomMealRecyclerView.setLayoutManager(
-                new LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false));
-        binding.randomMealRecyclerView.setAdapter(mealAdapter);
+            binding.ingredientsList.setLayoutManager(
+                    new LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false));
+            binding.ingredientsList.setAdapter(ingredientAdapter);
 
-        binding.ingredientsList.setLayoutManager(
-                new LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false));
-        binding.ingredientsList.setAdapter(ingredientAdapter);
+            binding.categoriesList.setLayoutManager(
+                    new LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false));
+            binding.categoriesList.setAdapter(categoryAdapter);
 
-        binding.categoriesList.setLayoutManager(
-                new LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false));
-        binding.categoriesList.setAdapter(categoryAdapter);
+            binding.areasList.setLayoutManager(
+                    new LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false));
+            binding.areasList.setAdapter(areaAdapter);
 
-        binding.areasList.setLayoutManager(
-                new LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false));
-        binding.areasList.setAdapter(areaAdapter);
+            mealRepo.getFavoriteMeals().observe(getViewLifecycleOwner(), favMeals -> {
+                mealAdapter.setFavoriteMeals(favMeals);
+                ingredientAdapter.setFavoriteMeals(favMeals);
+                categoryAdapter.setFavoriteMeals(favMeals);
+                areaAdapter.setFavoriteMeals(favMeals);
+            });
 
-        // Observe favorites and update all adapters
-        mealRepo.getFavoriteMeals().observe(getViewLifecycleOwner(), favMeals -> {
-            mealAdapter.setFavoriteMeals(favMeals);
-            ingredientAdapter.setFavoriteMeals(favMeals);
-            categoryAdapter.setFavoriteMeals(favMeals);
-            areaAdapter.setFavoriteMeals(favMeals);
-        });
+            presenter = new HomePresenter(new HomeModel(
+                    mealRepo,
+                    IngredientRepositoryImpl.getInstance(),
+                    CategoryRepositoryImpl.getInstance(),
+                    AreaRepositoryImpl.getInstance()
+            ));
+            presenter.attachView(this);
+            presenter.loadHomeData();
 
-        // Load data through presenter
-        presenter = new HomePresenter(new HomeModel(
-                mealRepo,
-                IngredientRepositoryImpl.getInstance(),
-                CategoryRepositoryImpl.getInstance(),
-                AreaRepositoryImpl.getInstance()
-        ));
-        presenter.attachView(this);
-        presenter.loadHomeData();
+        }
 
         return binding.getRoot();
     }
@@ -143,12 +172,14 @@ public class HomeFragment extends Fragment implements HomeContract.View {
 
     @Override
     public void showLoading(boolean isLoading) {
-        // optional loading indicator
+        // Optional loading indicator
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+        ConnectivityManager cm = (ConnectivityManager) requireContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+        cm.unregisterNetworkCallback(networkCallback);
         presenter.detachView();
         binding = null;
     }

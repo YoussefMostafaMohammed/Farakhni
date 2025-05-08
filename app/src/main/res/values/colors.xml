@@ -11,6 +11,9 @@
     <color name="surface_variant">#FFE8F5E9</color>
     <color name="on_surface">#FF1B1F1B</color>
 
+        <color name="background_light">#F5F7FA</color>
+        <color name="card_background">#FFFFFF</color>
+        <color name="outline_light">#E0E4E9</color>
     <color name="error_container">#FFD9D9</color>
     <color name="on_error_container">#BA1A1A</color>
     <!-- Text Colors -->

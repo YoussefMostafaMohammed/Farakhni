@@ -8,6 +8,8 @@ public interface LoginContract {
     interface View {
         void showProgress();
         void hideProgress();
+        void showError(String errorMessage);
+        void showMessage(String message);
         void onLoginSuccess(FirebaseUser user);
         void onLoginFailure(String errorMessage);
         void launchGoogleSignInIntent();
@@ -26,6 +28,9 @@ public interface LoginContract {
         void verifyEmail(String email);
         void sendPasswordResetEmail(String email);
         void updatePassword(String currentPassword, String newPassword);
+        void showError(String errorMessage);
+        void showMessage(String message);
+        void cancelOperations();
         void onDestroy();
     }
 
@@ -34,9 +39,8 @@ public interface LoginContract {
         void signInWithGoogle(String idToken, OnLoginListener listener);
         void verifyEmail(String email, OnEmailVerificationListener listener);
         void sendPasswordResetEmail(String email, OnResetPasswordListener listener);
-        void updatePassword(String currentPassword,
-                            String newPassword,
-                            OnUpdatePasswordListener listener);
+        void updatePassword(String currentPassword, String newPassword, OnUpdatePasswordListener listener);
+
         interface OnLoginListener {
             void onLoginSuccess(FirebaseUser user);
             void onLoginFailure(Exception e);

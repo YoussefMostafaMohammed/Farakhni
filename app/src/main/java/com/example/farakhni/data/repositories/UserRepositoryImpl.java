@@ -1,6 +1,5 @@
 package com.example.farakhni.data.repositories;
 
-
 import androidx.lifecycle.LiveData;
 import com.example.farakhni.data.DB.UserLocalDataSource;
 import com.example.farakhni.model.User;
@@ -13,8 +12,7 @@ public class UserRepositoryImpl implements UserRepository {
         this.localDataSource = localDataSource;
     }
 
-    public static synchronized UserRepositoryImpl getInstance(
-            UserLocalDataSource localDataSource) {
+    public static synchronized UserRepositoryImpl getInstance(UserLocalDataSource localDataSource) {
         if (instance == null) {
             instance = new UserRepositoryImpl(localDataSource);
         }
@@ -29,5 +27,10 @@ public class UserRepositoryImpl implements UserRepository {
     @Override
     public LiveData<User> getUserById(String userId) {
         return localDataSource.getUserById(userId);
+    }
+
+    @Override
+    public void syncUserWithFirestore(UserLocalDataSource.OnSyncCompleteListener listener) {
+        localDataSource.syncUserWithFirestore(listener);
     }
 }

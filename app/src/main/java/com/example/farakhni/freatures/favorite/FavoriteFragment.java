@@ -14,8 +14,7 @@ import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.example.farakhni.R;
-import com.example.farakhni.common.MealAdapter;
-import com.example.farakhni.data.repositories.MealRepositoryImpl;
+import com.example.farakhni.utils.MealAdapter;
 import com.example.farakhni.databinding.FragmentFavoriteBinding;
 import com.example.farakhni.model.FavoriteMeal;
 import com.example.farakhni.model.Meal;
@@ -39,7 +38,7 @@ public class FavoriteFragment extends Fragment implements FavoriteContract.View 
         binding.mealsList.setLayoutManager(
                 new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false)
         );
-        adapter = new MealAdapter(requireContext(), new ArrayList<>());
+        adapter = new MealAdapter(requireContext(), new ArrayList<>(),false);
         adapter.setOnMealClickListener(meal -> {
             if (requireContext() instanceof Activity) {
                 try {

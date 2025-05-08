@@ -4,7 +4,9 @@ import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Meal implements Serializable {
 
@@ -37,51 +39,53 @@ public class Meal implements Serializable {
 
     private boolean isFavorite;
     private boolean isScheduled;
+    private long lastModified;
 
-    @SerializedName("strIngredient1") private String strIngredient1;
-    @SerializedName("strIngredient2") private String strIngredient2;
-    @SerializedName("strIngredient3") private String strIngredient3;
-    @SerializedName("strIngredient4") private String strIngredient4;
-    @SerializedName("strIngredient5") private String strIngredient5;
-    @SerializedName("strIngredient6") private String strIngredient6;
-    @SerializedName("strIngredient7") private String strIngredient7;
-    @SerializedName("strIngredient8") private String strIngredient8;
-    @SerializedName("strIngredient9") private String strIngredient9;
-    @SerializedName("strIngredient10") private String strIngredient10;
-    @SerializedName("strIngredient11") private String strIngredient11;
-    @SerializedName("strIngredient12") private String strIngredient12;
-    @SerializedName("strIngredient13") private String strIngredient13;
-    @SerializedName("strIngredient14") private String strIngredient14;
-    @SerializedName("strIngredient15") private String strIngredient15;
-    @SerializedName("strIngredient16") private String strIngredient16;
-    @SerializedName("strIngredient17") private String strIngredient17;
-    @SerializedName("strIngredient18") private String strIngredient18;
-    @SerializedName("strIngredient19") private String strIngredient19;
-    @SerializedName("strIngredient20") private String strIngredient20;
+    @SerializedName("strIngredient1") public String strIngredient1;
+    @SerializedName("strIngredient2") public String strIngredient2;
+    @SerializedName("strIngredient3") public String strIngredient3;
+    @SerializedName("strIngredient4") public String strIngredient4;
+    @SerializedName("strIngredient5") public String strIngredient5;
+    @SerializedName("strIngredient6") public String strIngredient6;
+    @SerializedName("strIngredient7") public String strIngredient7;
+    @SerializedName("strIngredient8") public String strIngredient8;
+    @SerializedName("strIngredient9") public String strIngredient9;
+    @SerializedName("strIngredient10") public String strIngredient10;
+    @SerializedName("strIngredient11") public String strIngredient11;
+    @SerializedName("strIngredient12") public String strIngredient12;
+    @SerializedName("strIngredient13") public String strIngredient13;
+    @SerializedName("strIngredient14") public String strIngredient14;
+    @SerializedName("strIngredient15") public String strIngredient15;
+    @SerializedName("strIngredient16") public String strIngredient16;
+    @SerializedName("strIngredient17") public String strIngredient17;
+    @SerializedName("strIngredient18") public String strIngredient18;
+    @SerializedName("strIngredient19") public String strIngredient19;
+    @SerializedName("strIngredient20") public String strIngredient20;
 
-    @SerializedName("strMeasure1") private String strMeasure1;
-    @SerializedName("strMeasure2") private String strMeasure2;
-    @SerializedName("strMeasure3") private String strMeasure3;
-    @SerializedName("strMeasure4") private String strMeasure4;
-    @SerializedName("strMeasure5") private String strMeasure5;
-    @SerializedName("strMeasure6") private String strMeasure6;
-    @SerializedName("strMeasure7") private String strMeasure7;
-    @SerializedName("strMeasure8") private String strMeasure8;
-    @SerializedName("strMeasure9") private String strMeasure9;
-    @SerializedName("strMeasure10") private String strMeasure10;
-    @SerializedName("strMeasure11") private String strMeasure11;
-    @SerializedName("strMeasure12") private String strMeasure12;
-    @SerializedName("strMeasure13") private String strMeasure13;
-    @SerializedName("strMeasure14") private String strMeasure14;
-    @SerializedName("strMeasure15") private String strMeasure15;
-    @SerializedName("strMeasure16") private String strMeasure16;
-    @SerializedName("strMeasure17") private String strMeasure17;
-    @SerializedName("strMeasure18") private String strMeasure18;
-    @SerializedName("strMeasure19") private String strMeasure19;
-    @SerializedName("strMeasure20") private String strMeasure20;
+    @SerializedName("strMeasure1") public String strMeasure1;
+    @SerializedName("strMeasure2") public String strMeasure2;
+    @SerializedName("strMeasure3") public String strMeasure3;
+    @SerializedName("strMeasure4") public String strMeasure4;
+    @SerializedName("strMeasure5") public String strMeasure5;
+    @SerializedName("strMeasure6") public String strMeasure6;
+    @SerializedName("strMeasure7") public String strMeasure7;
+    @SerializedName("strMeasure8") public String strMeasure8;
+    @SerializedName("strMeasure9") public String strMeasure9;
+    @SerializedName("strMeasure10") public String strMeasure10;
+    @SerializedName("strMeasure11") public String strMeasure11;
+    @SerializedName("strMeasure12") public String strMeasure12;
+    @SerializedName("strMeasure13") public String strMeasure13;
+    @SerializedName("strMeasure14") public String strMeasure14;
+    @SerializedName("strMeasure15") public String strMeasure15;
+    @SerializedName("strMeasure16") public String strMeasure16;
+    @SerializedName("strMeasure17") public String strMeasure17;
+    @SerializedName("strMeasure18") public String strMeasure18;
+    @SerializedName("strMeasure19") public String strMeasure19;
+    @SerializedName("strMeasure20") public String strMeasure20;
 
     public Meal() {
         this.id = "";
+        this.lastModified = System.currentTimeMillis();
     }
 
     public Meal(FavoriteMeal favMeal) {
@@ -136,12 +140,11 @@ public class Meal implements Serializable {
         this.setStrMeasure20(favMeal.getStrMeasure20());
         this.setFavorite(favMeal.isFavorite());
         this.setScheduled(favMeal.isScheduled());
+        this.lastModified = System.currentTimeMillis();
     }
 
-
-
     public Meal(PlannedMeal plannedMeal) {
-        this.id = plannedMeal.getId();
+        this.id = plannedMeal.getMealId();
         this.setName(plannedMeal.getName());
         this.setCategory(plannedMeal.getCategory());
         this.setArea(plannedMeal.getArea());
@@ -192,6 +195,7 @@ public class Meal implements Serializable {
         this.setStrMeasure20(plannedMeal.getStrMeasure20());
         this.setFavorite(plannedMeal.isFavorite());
         this.setScheduled(plannedMeal.isScheduled());
+        this.lastModified = System.currentTimeMillis();
     }
 
     public String getId() { return id; }
@@ -226,6 +230,9 @@ public class Meal implements Serializable {
 
     public boolean isScheduled() { return isScheduled; }
     public void setScheduled(boolean scheduled) { isScheduled = scheduled; }
+
+    public long getLastModified() { return lastModified; }
+    public void setLastModified(long lastModified) { this.lastModified = lastModified; }
 
     public String getStrIngredient1() { return strIngredient1; }
     public void setStrIngredient1(String strIngredient1) { this.strIngredient1 = strIngredient1; }
@@ -297,7 +304,7 @@ public class Meal implements Serializable {
     public String getStrMeasure14() { return strMeasure14; }
     public void setStrMeasure14(String strMeasure14) { this.strMeasure14 = strMeasure14; }
     public String getStrMeasure15() { return strMeasure15; }
-    public void setStrMeasure15(String strMeasure15) { this.strMeasure15 = strMeasure15; }
+    public void setStrMeasure15(String strMealastModifiedsure15) { this.strMeasure15 = strMeasure15; }
     public String getStrMeasure16() { return strMeasure16; }
     public void setStrMeasure16(String strMeasure16) { this.strMeasure16 = strMeasure16; }
     public String getStrMeasure17() { return strMeasure17; }
@@ -313,8 +320,8 @@ public class Meal implements Serializable {
         List<Ingredient> list = new ArrayList<>();
         for (int i = 1; i <= 20; i++) {
             try {
-                String ingField    = (String) Meal.class.getDeclaredField("strIngredient" + i).get(this);
-                String measField   = (String) Meal.class.getDeclaredField("strMeasure"    + i).get(this);
+                String ingField = (String) Meal.class.getDeclaredField("strIngredient" + i).get(this);
+                String measField = (String) Meal.class.getDeclaredField("strMeasure" + i).get(this);
 
                 if (ingField != null && !ingField.trim().isEmpty()) {
                     Ingredient ing = new Ingredient();
@@ -327,5 +334,57 @@ public class Meal implements Serializable {
             }
         }
         return list;
+    }
+
+    public Map<String, Object> toMap() {
+        Map<String, Object> map = new HashMap<>();
+        map.put("idMeal", id);
+        map.put("strMeal", name);
+        map.put("strCategory", category);
+        map.put("strArea", area);
+        map.put("strInstructions", instructions);
+        map.put("strMealThumb", mealThumb);
+        map.put("strTags", tags);
+        map.put("strYoutube", youtube);
+        map.put("strSource", source);
+        map.put("isFavorite", isFavorite);
+        map.put("isScheduled", isScheduled);
+        map.put("lastModified", lastModified);
+        for (int i = 1; i <= 20; i++) {
+            try {
+                String ingField = (String) Meal.class.getDeclaredField("strIngredient" + i).get(this);
+                String measField = (String) Meal.class.getDeclaredField("strMeasure" + i).get(this);
+                map.put("strIngredient" + i, ingField != null ? ingField : "");
+                map.put("strMeasure" + i, measField != null ? measField : "");
+            } catch (NoSuchFieldException | IllegalAccessException e) {
+                e.printStackTrace();
+            }
+        }
+        return map;
+    }
+
+    public static Meal fromMap(Map<String, Object> map) {
+        Meal meal = new Meal();
+        meal.setId((String) map.get("idMeal"));
+        meal.setName((String) map.get("strMeal"));
+        meal.setCategory((String) map.get("strCategory"));
+        meal.setArea((String) map.get("strArea"));
+        meal.setInstructions((String) map.get("strInstructions"));
+        meal.setMealThumb((String) map.get("strMealThumb"));
+        meal.setTags((String) map.get("strTags"));
+        meal.setYoutube((String) map.get("strYoutube"));
+        meal.setSource((String) map.get("strSource"));
+        meal.setFavorite(map.get("isFavorite") != null ? (Boolean) map.get("isFavorite") : false);
+        meal.setScheduled(map.get("isScheduled") != null ? (Boolean) map.get("isScheduled") : false);
+        meal.setLastModified(map.get("lastModified") != null ? ((Long) map.get("lastModified")) : System.currentTimeMillis());
+        for (int i = 1; i <= 20; i++) {
+            try {
+                Meal.class.getDeclaredField("strIngredient" + i).set(meal, map.get("strIngredient" + i));
+                Meal.class.getDeclaredField("strMeasure" + i).set(meal, map.get("strMeasure" + i));
+            } catch (NoSuchFieldException | IllegalAccessException e) {
+                e.printStackTrace();
+            }
+        }
+        return meal;
     }
 }

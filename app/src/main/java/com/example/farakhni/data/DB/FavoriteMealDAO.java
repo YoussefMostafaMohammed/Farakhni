@@ -6,7 +6,9 @@ import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
+
 import com.example.farakhni.model.FavoriteMeal;
+
 import java.util.List;
 
 @Dao
@@ -22,4 +24,7 @@ public interface FavoriteMealDAO {
 
     @Query("SELECT EXISTS(SELECT 1 FROM favorite_meals_table WHERE id = :mealId)")
     boolean isFavorite(String mealId);
+
+    @Query("DELETE FROM favorite_meals_table")
+    void deleteAllFavoriteMeals();
 }

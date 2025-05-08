@@ -1,6 +1,5 @@
 package com.example.farakhni.data.DB;
 
-import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
@@ -11,7 +10,11 @@ import com.example.farakhni.model.User;
 @Dao
 public interface UserDAO {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    public void insertUser(User user);
+    void insertUser(User user);
+
     @Query("SELECT * FROM user_table WHERE userId = :userId")
-    public User getUserById(String userId);
+    User getUserById(String userId);
+
+    @Query("DELETE FROM user_table WHERE userId = :userId")
+    void deleteUserById(String userId);
 }

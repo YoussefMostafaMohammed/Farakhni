@@ -12,7 +12,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.farakhni.R;
 import com.example.farakhni.freatures.auth.login.LoginContract;
 import com.example.farakhni.freatures.auth.login.LoginPresenter;
-import com.example.farakhni.freatures.auth.login.view.LoginScreen;
+import com.example.farakhni.freatures.auth.login.view.LoginActivity;
 import com.google.firebase.auth.FirebaseUser;
 
 public class ChangePasswordScreen extends AppCompatActivity implements LoginContract.View {
@@ -38,7 +38,7 @@ public class ChangePasswordScreen extends AppCompatActivity implements LoginCont
         btnBackToLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(ChangePasswordScreen.this, LoginScreen.class);
+                Intent intent = new Intent(ChangePasswordScreen.this, LoginActivity.class);
                 startActivity(intent);
                 finish();
             }
@@ -60,6 +60,16 @@ public class ChangePasswordScreen extends AppCompatActivity implements LoginCont
 
     @Override
     public void hideProgress() {
+
+    }
+
+    @Override
+    public void showError(String errorMessage) {
+
+    }
+
+    @Override
+    public void showMessage(String message) {
 
     }
 

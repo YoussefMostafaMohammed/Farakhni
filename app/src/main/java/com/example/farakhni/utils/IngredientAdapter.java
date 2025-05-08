@@ -1,11 +1,10 @@
-package com.example.farakhni.common;
+package com.example.farakhni.utils;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -24,65 +23,30 @@ import com.example.farakhni.R;
 import com.example.farakhni.data.network.NetworkCallBack;
 import com.example.farakhni.data.repositories.MealRepository;
 import com.example.farakhni.data.repositories.MealRepositoryImpl;
-import com.example.farakhni.model.Area;
 import com.example.farakhni.model.FavoriteMeal;
+import com.example.farakhni.model.Ingredient;
 import com.example.farakhni.model.Meal;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
-public class AreaAdapter extends RecyclerView.Adapter<AreaAdapter.AreaViewHolder> {
+public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.IngredientViewHolder> {
     private final Context context;
-    private final List<Area> areaList;
+    private final List<Ingredient> ingredientList;
     private final MealRepository mealRepository;
     private final List<FavoriteMeal> favoriteMeals;
-    private final Map<String, String> areaToCountryCodeMap = new HashMap<String, String>() {{
-        put("American", "US");
-        put("British", "GB");
-        put("Canadian", "CA");
-        put("Chinese", "CN");
-        put("Croatian", "HR");
-        put("Dutch", "NL");
-        put("Egyptian", "EG");
-        put("French", "FR");
-        put("Greek", "GR");
-        put("Indian", "IN");
-        put("Irish", "IE");
-        put("Italian", "IT");
-        put("Jamaican", "JM");
-        put("Japanese", "JP");
-        put("Kenyan", "KE");
-        put("Malaysian", "MY");
-        put("Mexican", "MX");
-        put("Moroccan", "MA");
-        put("Polish", "PL");
-        put("Portuguese", "PT");
-        put("Russian", "RU");
-        put("Spanish", "ES");
-        put("Thai", "TH");
-        put("Tunisian", "TN");
-        put("Turkish", "TR");
-        put("Vietnamese", "VN");
-    }};
 
-    private String getFlagUrlForArea(String areaName) {
-        String code = areaToCountryCodeMap.get(areaName);
-        return code != null ? "https://flagcdn.com/w320/" + code.toLowerCase() + ".png" : null;
-    }
-
-    public AreaAdapter(Context context, List<Area> areaList) {
+    public IngredientAdapter(Context context, List<Ingredient> list) {
         this.context = context;
-        this.areaList = areaList != null ? new ArrayList<>(areaList) : new ArrayList<>();
+        this.ingredientList = list != null ? new ArrayList<>(list) : new ArrayList<>();
         this.mealRepository = MealRepositoryImpl.getInstance(context);
         this.favoriteMeals = new ArrayList<>();
     }
 
-    public void updateAreas(List<Area> newAreas) {
-        areaList.clear();
-        if (newAreas != null) {
-            areaList.addAll(newAreas);
+    public void setIngredientList(List<Ingredient> newList) {
+        ingredientList.clear();
+        if (newList != null) {
+            ingredientList.addAll(newList);
         }
         notifyDataSetChanged();
     }
@@ -97,40 +61,37 @@ public class AreaAdapter extends RecyclerView.Adapter<AreaAdapter.AreaViewHolder
 
     @NonNull
     @Override
-    public AreaViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.card_item, parent, false);
-        return new AreaViewHolder(view);
+    public IngredientViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View v = LayoutInflater.from(context)
+                .inflate(R.layout.card_item, parent, false);
+        return new IngredientViewHolder(v);
     }
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
-    public void onBindViewHolder(@NonNull AreaViewHolder holder, int position) {
-        Area area = areaList.get(position);
-        String areaName = area.getArea();
-        holder.areaName.setText(areaName != null ? areaName : "Unknown Area");
+    public void onBindViewHolder(@NonNull IngredientViewHolder holder, int position) {
+        Ingredient ingredient = ingredientList.get(position);
+        String name = ingredient.getIngredient();
+        holder.ingredientInfo.setText(name != null ? name : "Unknown Ingredient");
 
-        String flagUrl = getFlagUrlForArea(areaName);
-        if (flagUrl != null) {
-            Glide.with(context)
-                    .load(flagUrl)
-                    .placeholder(R.drawable.app_logo)
-                    .error(R.drawable.app_logo)
-                    .into(holder.areaImage);
-        } else {
-            holder.areaImage.setImageResource(R.drawable.app_logo);
-        }
+        String url = "https://www.themealdb.com/images/ingredients/" + name + "-Small.png";
+        Glide.with(context)
+                .load(url)
+                .placeholder(R.drawable.app_logo)
+                .error(R.drawable.app_logo)
+                .into(holder.ingredientImage);
 
         holder.itemCard.setOnClickListener(v -> {
-            mealRepository.filterByArea(areaName, new NetworkCallBack<List<Meal>>() {
+            mealRepository.filterByIngredient(name, new NetworkCallBack<List<Meal>>() {
                 @Override
                 public void onSuccessResult(List<Meal> meals) {
                     if (meals.isEmpty()) {
-                        Toast.makeText(context, "No meals for " + areaName, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context, "No meals for " + name, Toast.LENGTH_SHORT).show();
                     } else {
+                        //navigateToIngredientFragment(meals);
                         fetchDetailsAndNavigate(meals);
                     }
                 }
-
                 @Override
                 public void onFailureResult(String message) {
                     Toast.makeText(context, "Error: " + message, Toast.LENGTH_SHORT).show();
@@ -158,7 +119,11 @@ public class AreaAdapter extends RecyclerView.Adapter<AreaAdapter.AreaViewHolder
             View popupView = LayoutInflater.from(context)
                     .inflate(R.layout.popup_layout, null, false);
             TextView desc = popupView.findViewById(R.id.popupIngredientDescription);
-            desc.setText("It is a Country.");
+            desc.setText(
+                    ingredient.getDescription() != null
+                            ? ingredient.getDescription()
+                            : "No description available."
+            );
 
             // measure & show
             popupView.measure(
@@ -178,18 +143,18 @@ public class AreaAdapter extends RecyclerView.Adapter<AreaAdapter.AreaViewHolder
             );
             return true;  // consume the long-press
         });
-
     }
 
     private void fetchDetailsAndNavigate(List<Meal> simpleMeals) {
-        List<FavoriteMeal> fullMeals = new ArrayList<>();
+        List<Meal> fullMeals = new ArrayList<>();
         int total = simpleMeals.size();
+
         for (Meal m : simpleMeals) {
             mealRepository.getMealById(m.getId(), new NetworkCallBack<List<Meal>>() {
                 @Override
                 public void onSuccessResult(List<Meal> detailed) {
                     if (!detailed.isEmpty()) {
-                        FavoriteMeal detailedMeal = new FavoriteMeal(detailed.get(0));
+                        Meal detailedMeal = detailed.get(0);
                         for (FavoriteMeal favMeal : favoriteMeals) {
                             if (favMeal.getId().equals(detailedMeal.getId())) {
                                 detailedMeal.setFavorite(true);
@@ -199,7 +164,7 @@ public class AreaAdapter extends RecyclerView.Adapter<AreaAdapter.AreaViewHolder
                         synchronized (fullMeals) {
                             fullMeals.add(detailedMeal);
                             if (fullMeals.size() == total) {
-                                navigateToAreaFragment(fullMeals);
+                                navigateToIngredientFragment(fullMeals);
                             }
                         }
                     }
@@ -209,7 +174,7 @@ public class AreaAdapter extends RecyclerView.Adapter<AreaAdapter.AreaViewHolder
                 public void onFailureResult(String message) {
                     synchronized (fullMeals) {
                         if (fullMeals.size() == total) {
-                            navigateToAreaFragment(fullMeals);
+                            navigateToIngredientFragment(fullMeals);
                         }
                     }
                 }
@@ -221,7 +186,7 @@ public class AreaAdapter extends RecyclerView.Adapter<AreaAdapter.AreaViewHolder
                 public void onNetworkError(String errorMessage) {
                     synchronized (fullMeals) {
                         if (fullMeals.size() == total) {
-                            navigateToAreaFragment(fullMeals);
+                            navigateToIngredientFragment(fullMeals);
                         }
                     }
                 }
@@ -230,7 +195,7 @@ public class AreaAdapter extends RecyclerView.Adapter<AreaAdapter.AreaViewHolder
                 public void onEmptyData() {
                     synchronized (fullMeals) {
                         if (fullMeals.size() == total) {
-                            navigateToAreaFragment(fullMeals);
+                            navigateToIngredientFragment(fullMeals);
                         }
                     }
                 }
@@ -241,35 +206,32 @@ public class AreaAdapter extends RecyclerView.Adapter<AreaAdapter.AreaViewHolder
         }
     }
 
-    private void navigateToAreaFragment(List<FavoriteMeal> meals) {
-        if (!(context instanceof Activity)) return;
-        try {
-            Bundle bundle = new Bundle();
-            bundle.putSerializable("meals", meals.toArray(new FavoriteMeal[0]));
-            NavController navController = Navigation.findNavController((Activity) context,
-                    R.id.nav_host_fragment_content_app_screen);
-            navController.navigate(R.id.nav_meals, bundle);
-        } catch (Exception e) {
-            Toast.makeText(context, "Navigation error", Toast.LENGTH_SHORT).show();
-        }
+    private void navigateToIngredientFragment(List<Meal> meals) {
+        Bundle bundle = new Bundle();
+        Meal[] mealsArray = meals.toArray(new Meal[0]);
+        bundle.putSerializable("meals", mealsArray);
+        NavController nav = Navigation.findNavController(
+                (Activity) context,
+                R.id.nav_host_fragment_content_app_screen
+        );
+        nav.navigate(R.id.nav_meals, bundle);
     }
+
 
     @Override
     public int getItemCount() {
-        return areaList.size();
+        return ingredientList.size();
     }
 
-    public static class AreaViewHolder extends RecyclerView.ViewHolder {
-        ImageView areaImage;
-        TextView areaName;
+    static class IngredientViewHolder extends RecyclerView.ViewHolder {
+        ImageView ingredientImage;
+        TextView ingredientInfo;
         CardView itemCard;
-
-        public AreaViewHolder(@NonNull View itemView) {
+        IngredientViewHolder(@NonNull View itemView) {
             super(itemView);
-            areaImage = itemView.findViewById(R.id.itemImage);
-            areaName = itemView.findViewById(R.id.itemName);
+            ingredientImage = itemView.findViewById(R.id.itemImage);
+            ingredientInfo = itemView.findViewById(R.id.itemName);
             itemCard=itemView.findViewById(R.id.itemCard);
-
         }
     }
 }
