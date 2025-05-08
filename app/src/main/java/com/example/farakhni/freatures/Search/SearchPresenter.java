@@ -95,13 +95,15 @@ public class SearchPresenter implements SearchContract.Presenter {
         model.getMealsByName(query, new NetworkCallBack<List<Meal>>() {
             @Override
             public void onSuccessResult(List<Meal> meals) {
+                if(meals!=null){
                 if (meals.isEmpty()) {
                     view.showMeals(new ArrayList<>());
                     view.hideProgressBar();
-                    view.showMessage("No meals found");
+                    view.showMessage("Can't find meal");
                 } else {
                     fetchFullMealsAndDisplay(meals);
                 }
+            }
             }
 
             @Override
@@ -123,7 +125,7 @@ public class SearchPresenter implements SearchContract.Presenter {
             public void onEmptyData() {
                 view.showMeals(new ArrayList<>());
                 view.hideProgressBar();
-                view.showMessage("No meals found");
+                view.showMessage("Can't find meal");
             }
 
             @Override
