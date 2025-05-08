@@ -337,15 +337,16 @@ public class SearchPresenter implements SearchContract.Presenter {
             model.getMealById(m.getId(), new NetworkCallBack<List<Meal>>() {
                 @Override
                 public void onSuccessResult(List<Meal> result) {
-                    if (!result.isEmpty()) {
-                        fullMeals.add(result.get(0));
-                    }
-                    if (counter.incrementAndGet() == total) {
-                        view.showMeals(fullMeals);
-                        view.hideProgressBar();
+                    if (result != null) {
+                        if (!result.isEmpty()) {
+                            fullMeals.add(result.get(0));
+                        }
+                        if (counter.incrementAndGet() == total) {
+                            view.showMeals(fullMeals);
+                            view.hideProgressBar();
+                        }
                     }
                 }
-
                 @Override
                 public void onFailureResult(String message) {
                     if (counter.incrementAndGet() == total) {
