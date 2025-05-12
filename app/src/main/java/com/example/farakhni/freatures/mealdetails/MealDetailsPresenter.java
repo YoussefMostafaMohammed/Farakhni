@@ -104,12 +104,6 @@ public class MealDetailsPresenter implements MealDetailsContract.Presenter {
     @Override
     public void onDeleteMealClicked() {
         MealDetailsContract.View view = viewRef.get();
-        if (view == null || meal == null) return;
-
-        String today = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
-        model.deletePlannedMeal(meal.getId(), meal.getName(), today);
-        view.setScheduleStatus(false);
-        view.showMessage(meal.getName() + " removed from plan");
     }
 
     @Override

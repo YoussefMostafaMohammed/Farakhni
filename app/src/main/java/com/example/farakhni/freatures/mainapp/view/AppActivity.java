@@ -2,8 +2,20 @@ package com.example.farakhni.freatures.mainapp.view;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
+import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
+import androidx.core.content.ContextCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
+import androidx.navigation.ui.AppBarConfiguration;
+import androidx.navigation.ui.NavigationUI;
 
 import com.example.farakhni.R;
 import com.example.farakhni.welcome.WelcomeScreen;
@@ -12,22 +24,18 @@ import com.example.farakhni.databinding.ActivityAppScreenBinding;
 import com.example.farakhni.freatures.mainapp.AppContract;
 import com.example.farakhni.freatures.mainapp.model.AppModel;
 import com.example.farakhni.freatures.mainapp.presenter.AppPresenter;
-import com.google.android.material.snackbar.Snackbar;
-import androidx.appcompat.app.AppCompatDelegate;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
-import androidx.navigation.ui.AppBarConfiguration;
-import androidx.navigation.ui.NavigationUI;
+import com.google.android.material.button.MaterialButton;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 public class AppActivity extends AppCompatActivity implements AppContract.View {
+    private static final String TAG = "AppActivity";
     private ActivityAppScreenBinding binding;
     private AppContract.Presenter presenter;
     private AppBarConfiguration mAppBarConfiguration;
+    private MaterialButton logoutButton;
+    private FirebaseAuth.AuthStateListener authStateListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,10 +43,8 @@ public class AppActivity extends AppCompatActivity implements AppContract.View {
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
         binding = ActivityAppScreenBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-
         presenter = new AppPresenter(new AppModel(this));
         presenter.attachView(this);
-
         setSupportActionBar(binding.appBarAppScreen.toolbar);
 
         DrawerLayout drawer = binding.drawerLayout;
@@ -53,7 +59,8 @@ public class AppActivity extends AppCompatActivity implements AppContract.View {
         NavigationUI.setupWithNavController(navView, navController);
 
         // Set up logout button
-        navView.findViewById(R.id.logoutButton).setOnClickListener(v -> presenter.onLogoutClicked());
+        logoutButton = navView.findViewById(R.id.logoutButton);
+        logoutButton.setOnClickListener(v -> presenter.onLogoutClicked());
 
         // Restrict navigation for guest users
         Menu menu = navView.getMenu();
@@ -75,11 +82,57 @@ public class AppActivity extends AppCompatActivity implements AppContract.View {
             }
         });
 
+        // Set up auth state listener for dynamic updates
+        authStateListener = firebaseAuth -> {
+            FirebaseUser user = firebaseAuth.getCurrentUser();
+            updateUI(user);
+        };
+        FirebaseAuth.getInstance().addAuthStateListener(authStateListener);
+
+        // Initial UI setup
+        updateUI(currentUser);
+    }
+
+    private void updateUI(FirebaseUser currentUser) {
+        // Update logout button
         if (currentUser != null) {
+            logoutButton.setText("Logout");
+            logoutButton.setBackgroundTintList(ContextCompat.getColorStateList(this, R.color.error_container));
+            logoutButton.setStrokeColorResource(R.color.outline);
+            logoutButton.setStrokeWidth(1);
+            logoutButton.setTextColor(ContextCompat.getColor(this, R.color.on_error_container));
+            logoutButton.setIconTint(ContextCompat.getColorStateList(this, R.color.on_error_container));
             presenter.onNavigationReady(currentUser.getUid());
         } else {
+            logoutButton.setText("Login");
+            logoutButton.setBackgroundTintList(ContextCompat.getColorStateList(this, R.color.primary_container));
+            logoutButton.setStrokeColorResource(R.color.outline);
+            logoutButton.setStrokeWidth(1);
+            logoutButton.setTextColor(ContextCompat.getColor(this, R.color.on_primary));
+            logoutButton.setIconTint(ContextCompat.getColorStateList(this, R.color.on_primary));
             presenter.onNavigationReady(null);
         }
+        // Update username
+        setUsername(currentUser);
+    }
+
+    private void setUsername(FirebaseUser currentUser) {
+        NavigationView navigationView = binding.navView;
+        View headerView = navigationView.getHeaderView(0);
+        TextView userNameTextView = headerView.findViewById(R.id.userName);
+
+        String username;
+        if (currentUser != null) {
+            username = currentUser.getDisplayName();
+            if (username == null || username.isEmpty()) {
+                username = currentUser.getEmail() != null ? currentUser.getEmail().split("@")[0] : "User";
+            }
+        } else {
+            username = "Guest";
+        }
+
+        Log.d(TAG, "Setting username: " + username);
+        userNameTextView.setText(getString(R.string.Farakhni, username));
     }
 
     @Override
@@ -101,8 +154,6 @@ public class AppActivity extends AppCompatActivity implements AppContract.View {
         // Nothing extra needed
     }
 
-
-
     @Override
     public void showSyncError(String errorMessage) {
         Toast.makeText(this, "Sync error: " + errorMessage, Toast.LENGTH_SHORT).show();
@@ -110,10 +161,7 @@ public class AppActivity extends AppCompatActivity implements AppContract.View {
 
     @Override
     public void navigateToLoginScreen() {
-        // Sign out from Firebase
         FirebaseAuth.getInstance().signOut();
-
-        // Navigate to WelcomeScreen
         Intent intent = new Intent(this, WelcomeScreen.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
@@ -128,6 +176,9 @@ public class AppActivity extends AppCompatActivity implements AppContract.View {
 
     @Override
     protected void onDestroy() {
+        if (authStateListener != null) {
+            FirebaseAuth.getInstance().removeAuthStateListener(authStateListener);
+        }
         presenter.detachView();
         super.onDestroy();
     }

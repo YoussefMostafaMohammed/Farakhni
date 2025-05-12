@@ -1,15 +1,23 @@
 package com.example.farakhni.freatures.calendar;
 
+import static androidx.core.content.ContentProviderCompat.requireContext;
+
+import android.app.Activity;
 import android.content.Context;
+import android.os.Bundle;
 import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.farakhni.R;
+import com.example.farakhni.model.FavoriteMeal;
 import com.example.farakhni.model.Meal;
 import com.example.farakhni.model.PlannedMeal;
 import com.example.farakhni.utils.MealAdapter;
@@ -45,6 +53,30 @@ public class CalendarPresenter implements CalendarContract.Presenter {
         adapter = new MealAdapter(context, new ArrayList<>(), true);
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
         recyclerView.setAdapter(adapter);
+        adapter.setOnCalendarClickListener(new MealAdapter.OnCalendarClickListener() {
+            @Override
+            public void onCalendarIconAddClicked(Meal meal, long dateEpochMillis) {
+                onAddMeal(meal, currentDate, owner);
+            }
+
+            @Override
+            public void onCalendarIconDeleteClicked(Meal meal) {
+                onDeleteMeal(meal, currentDate);
+            }
+        });
+
+
+        adapter.setOnMealClickListener(meal -> {
+            if (context instanceof Activity) {
+                Bundle args = new Bundle();
+                args.putSerializable("arg_meal", new FavoriteMeal(meal));
+                NavController nav = Navigation.findNavController(
+                        (Activity) context,
+                        R.id.nav_host_fragment_content_app_screen);
+                nav.navigate(R.id.nav_meal_details, args);
+            }
+        });
+
         adapter.setOnCalendarClickListener(new MealAdapter.OnCalendarClickListener() {
             @Override
             public void onCalendarIconAddClicked(Meal meal, long dateEpochMillis) {

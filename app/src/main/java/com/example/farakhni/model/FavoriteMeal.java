@@ -26,7 +26,7 @@ public class FavoriteMeal extends Meal implements Serializable {
 
     public FavoriteMeal(Meal meal) {
         super();
-        this.id = meal.getId();
+        this.setId(meal.getId());
         this.setName(meal.getName());
         this.setCategory(meal.getCategory());
         this.setArea(meal.getArea());

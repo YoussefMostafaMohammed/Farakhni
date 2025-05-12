@@ -43,25 +43,31 @@ public class HomeFragment extends Fragment implements HomeContract.View {
     private IngredientAdapter ingredientAdapter;
     private CategoryAdapter categoryAdapter;
     private AreaAdapter areaAdapter;
+    private boolean isNetworkCallbackRegistered = false;
     private final ConnectivityManager.NetworkCallback networkCallback = new ConnectivityManager.NetworkCallback() {
         @Override
         public void onAvailable(@NonNull Network network) {
             requireActivity().runOnUiThread(() -> {
-                binding.lottieNoConnection.setVisibility(View.GONE);
-                binding.mainContent.setVisibility(View.VISIBLE);
-                presenter.loadHomeData();  // reload if needed
+                if (binding != null) {
+                    binding.lottieNoConnection.setVisibility(View.GONE);
+                    binding.mainContent.setVisibility(View.VISIBLE);
+                    presenter.loadHomeData();
+                }
             });
         }
 
         @Override
         public void onLost(@NonNull Network network) {
             requireActivity().runOnUiThread(() -> {
-                binding.lottieNoConnection.setVisibility(View.VISIBLE);
-                binding.mainContent.setVisibility(View.GONE);
-                Toast.makeText(requireContext(), "No internet connection", Toast.LENGTH_SHORT).show();
+                if (binding != null) {
+                    binding.lottieNoConnection.setVisibility(View.VISIBLE);
+                    binding.mainContent.setVisibility(View.GONE);
+                    Toast.makeText(requireContext(), "No internet connection", Toast.LENGTH_SHORT).show();
+                }
             });
         }
     };
+
     private boolean isConnected() {
         ConnectivityManager cm = (ConnectivityManager) requireContext().getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = cm.getActiveNetworkInfo();
@@ -72,78 +78,86 @@ public class HomeFragment extends Fragment implements HomeContract.View {
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentHomeBinding.inflate(inflater, container, false);
-        if (!isConnected()) {
+
+        mealAdapter = new MealAdapter(requireContext(), new ArrayList<>(), false);
+        ingredientAdapter = new IngredientAdapter(requireContext(), new ArrayList<>());
+        categoryAdapter = new CategoryAdapter(requireContext(), new ArrayList<>());
+        areaAdapter = new AreaAdapter(requireContext(), new ArrayList<>());
+
+        // Setup RecyclerViews
+        binding.randomMealRecyclerView.setLayoutManager(
+                new LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false));
+        binding.randomMealRecyclerView.setAdapter(mealAdapter);
+        binding.ingredientsList.setLayoutManager(
+                new LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false));
+        binding.ingredientsList.setAdapter(ingredientAdapter);
+
+        binding.categoriesList.setLayoutManager(
+                new LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false));
+        binding.categoriesList.setAdapter(categoryAdapter);
+
+        binding.areasList.setLayoutManager(
+                new LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false));
+        binding.areasList.setAdapter(areaAdapter);
+
+        // Repositories & presenter
+        MealRepositoryImpl mealRepo = MealRepositoryImpl.getInstance(requireContext());
+
+        presenter = new HomePresenter(new HomeModel(
+                mealRepo,
+                IngredientRepositoryImpl.getInstance(),
+                CategoryRepositoryImpl.getInstance(),
+                AreaRepositoryImpl.getInstance()
+        ));
+        presenter.attachView(this);
+
+        // Set up observer for favorites
+        mealRepo.getFavoriteMeals().observe(getViewLifecycleOwner(), favMeals -> {
+            mealAdapter.setFavoriteMeals(favMeals);
+            ingredientAdapter.setFavoriteMeals(favMeals);
+            categoryAdapter.setFavoriteMeals(favMeals);
+            areaAdapter.setFavoriteMeals(favMeals);
+        });
+
+        // Click listeners
+        mealAdapter.setOnFavoriteToggleListener(meal -> {
+            FavoriteMeal fav = new FavoriteMeal(meal);
+            if (meal.isFavorite()) {
+                mealRepo.insertFavoriteMeal(fav);
+            } else {
+                mealRepo.deleteFavoriteMeal(fav);
+            }
+            Toast.makeText(requireContext(),
+                    meal.getName() + (meal.isFavorite() ? " added" : " removed"),
+                    Toast.LENGTH_SHORT).show();
+        });
+
+        mealAdapter.setOnMealClickListener(meal -> {
+            if (requireContext() instanceof Activity) {
+                Bundle args = new Bundle();
+                args.putSerializable("arg_meal", new FavoriteMeal(meal));
+                NavController nav = Navigation.findNavController(
+                        (Activity) requireContext(),
+                        R.id.nav_host_fragment_content_app_screen);
+                nav.navigate(R.id.nav_meal_details, args);
+            }
+        });
+
+        // Internet connectivity check
+        if (isConnected()) {
+            binding.lottieNoConnection.setVisibility(View.GONE);
+            binding.mainContent.setVisibility(View.VISIBLE);
+            presenter.loadHomeData();
+        } else {
             binding.lottieNoConnection.setVisibility(View.VISIBLE);
             binding.mainContent.setVisibility(View.GONE);
-        } else {
-
-            mealAdapter = new MealAdapter(requireContext(), new ArrayList<>(),false);
-            ingredientAdapter = new IngredientAdapter(requireContext(), new ArrayList<>());
-            categoryAdapter = new CategoryAdapter(requireContext(), new ArrayList<>());
-            areaAdapter = new AreaAdapter(requireContext(), new ArrayList<>());
-            ConnectivityManager cm = (ConnectivityManager) requireContext().getSystemService(Context.CONNECTIVITY_SERVICE);
-            cm.registerDefaultNetworkCallback(networkCallback);
-            MealRepositoryImpl mealRepo = MealRepositoryImpl.getInstance(requireContext());
-
-            mealAdapter.setOnFavoriteToggleListener(meal -> {
-                FavoriteMeal fav = new FavoriteMeal(meal);
-                if (meal.isFavorite()) {
-                    mealRepo.insertFavoriteMeal(fav);
-                } else {
-                    mealRepo.deleteFavoriteMeal(fav);
-                }
-                Toast.makeText(requireContext(),
-                        meal.getName() + (meal.isFavorite() ? " added" : " removed"),
-                        Toast.LENGTH_SHORT).show();
-            });
-
-            mealAdapter.setOnMealClickListener(meal -> {
-                if (requireContext() instanceof Activity) {
-                    Bundle args = new Bundle();
-                    args.putSerializable("arg_meal", new FavoriteMeal(meal));
-                    NavController nav = Navigation.findNavController(
-                            (Activity) requireContext(),
-                            R.id.nav_host_fragment_content_app_screen);
-                    nav.navigate(R.id.nav_meal_details, args);
-                }
-            });
-
-            binding.randomMealRecyclerView.setLayoutManager(
-                    new LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false));
-            binding.randomMealRecyclerView.setAdapter(mealAdapter);
-
-            binding.ingredientsList.setLayoutManager(
-                    new LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false));
-            binding.ingredientsList.setAdapter(ingredientAdapter);
-
-            binding.categoriesList.setLayoutManager(
-                    new LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false));
-            binding.categoriesList.setAdapter(categoryAdapter);
-
-            binding.areasList.setLayoutManager(
-                    new LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false));
-            binding.areasList.setAdapter(areaAdapter);
-
-            mealRepo.getFavoriteMeals().observe(getViewLifecycleOwner(), favMeals -> {
-                mealAdapter.setFavoriteMeals(favMeals);
-                ingredientAdapter.setFavoriteMeals(favMeals);
-                categoryAdapter.setFavoriteMeals(favMeals);
-                areaAdapter.setFavoriteMeals(favMeals);
-            });
-
-            presenter = new HomePresenter(new HomeModel(
-                    mealRepo,
-                    IngredientRepositoryImpl.getInstance(),
-                    CategoryRepositoryImpl.getInstance(),
-                    AreaRepositoryImpl.getInstance()
-            ));
-            presenter.attachView(this);
-            presenter.loadHomeData();
-
         }
-
+        ConnectivityManager cm = (ConnectivityManager) requireContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+        cm.registerDefaultNetworkCallback(networkCallback);
+        isNetworkCallbackRegistered = true;
         return binding.getRoot();
     }
+
 
     @Override
     public void showRandomMeals(List<Meal> meals) {
@@ -171,16 +185,17 @@ public class HomeFragment extends Fragment implements HomeContract.View {
     }
 
     @Override
-    public void showLoading(boolean isLoading) {
-        // Optional loading indicator
-    }
-
-    @Override
     public void onDestroyView() {
         super.onDestroyView();
         ConnectivityManager cm = (ConnectivityManager) requireContext().getSystemService(Context.CONNECTIVITY_SERVICE);
-        cm.unregisterNetworkCallback(networkCallback);
-        presenter.detachView();
+        if (isNetworkCallbackRegistered) {
+            cm.unregisterNetworkCallback(networkCallback);
+            isNetworkCallbackRegistered = false;
+        }
+        if (presenter != null) {
+            presenter.detachView();
+        }
         binding = null;
     }
+
 }

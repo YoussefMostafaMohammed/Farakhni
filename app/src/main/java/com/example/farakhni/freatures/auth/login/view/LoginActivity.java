@@ -29,7 +29,6 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
     private TextView editEmail;
     private TextView editPassword;
     private Button txtForgotPassword;
-    private ProgressBar progressBar;
     private LoginContract.Presenter presenter;
     private UserRepositoryImpl userRepository;
     private MealRepositoryImpl mealRepository;
@@ -44,7 +43,6 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
         editEmail = findViewById(R.id.editEmail);
         editPassword = findViewById(R.id.editPassword);
         txtForgotPassword = findViewById(R.id.txtForgotPassword);
-        progressBar = findViewById(R.id.progressBar);
         presenter = new LoginPresenter(this);
         userRepository = UserRepositoryImpl.getInstance(
                 com.example.farakhni.data.DB.UserLocalDataSourceImpl.getInstance(this));
@@ -70,13 +68,11 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
 
     @Override
     public void showProgress() {
-        progressBar.setVisibility(View.VISIBLE);
         btnLogin.setEnabled(false);
     }
 
     @Override
     public void hideProgress() {
-        progressBar.setVisibility(View.GONE);
         btnLogin.setEnabled(true);
     }
 

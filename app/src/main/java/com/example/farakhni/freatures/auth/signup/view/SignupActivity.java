@@ -23,7 +23,6 @@ public class SignupActivity extends AppCompatActivity implements SignUpContract.
     private TextView editSignupEmail;
     private TextView editSignupPassword;
     private TextView editConfirmPassword;
-    private ProgressBar progressBar;
     private SignUpContract.Presenter presenter;
 
     @Override
@@ -37,7 +36,6 @@ public class SignupActivity extends AppCompatActivity implements SignUpContract.
         editSignupEmail = findViewById(R.id.editSignupEmail);
         editSignupPassword = findViewById(R.id.editSignupPassword);
         editConfirmPassword = findViewById(R.id.editConfirmPassword);
-        progressBar = findViewById(R.id.progressBar);
         presenter = new SignUpPresenter(this);
 
         btnSignup.setOnClickListener(v -> {
@@ -57,13 +55,11 @@ public class SignupActivity extends AppCompatActivity implements SignUpContract.
 
     @Override
     public void showProgress() {
-        progressBar.setVisibility(View.VISIBLE);
         findViewById(R.id.btnSignup).setEnabled(false);
     }
 
     @Override
     public void hideProgress() {
-        progressBar.setVisibility(View.GONE);
         findViewById(R.id.btnSignup).setEnabled(true);
     }
 

@@ -1,12 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/splash_root"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-    <ImageView
-        android:id="@+id/iv_splash_gif"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:scaleType="centerCrop"/>
+    android:layout_height="match_parent"
+    android:background="?attr/colorSurface"
+    android:gravity="center">
+
+    <!-- MaterialCardView for background styling -->
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="275dp"
+        android:layout_height="275dp"
+        app:cardCornerRadius="24dp"
+        app:cardElevation="8dp"
+        app:strokeColor="?attr/colorOutline"
+        app:strokeWidth="1dp"
+        app:cardBackgroundColor="?attr/colorSurfaceVariant"
+        android:layout_gravity="center">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <!-- Centered splash animation -->
+            <ImageView
+                android:id="@+id/iv_splash_gif"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop"
+                android:contentDescription="@string/app_name" />
+        </FrameLayout>
+    </com.google.android.material.card.MaterialCardView>
+
+    <!-- Optional App Name Text -->
+    <TextView
+        android:id="@+id/tv_app_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|center_horizontal"
+        android:layout_marginBottom="48dp"
+        android:text="@string/app_name"
+        android:textColor="?attr/colorOnSurfaceVariant"
+        android:textSize="18sp"
+        android:fontFamily="sans-serif-medium" />
 </FrameLayout>
-
-

@@ -24,7 +24,6 @@
             android:clipToOutline="true"
             android:outlineProvider="background"
             android:contentDescription="@string/meal_image_description" />
-        <!-- Gradient Overlay for Text Readability -->
         <View
             android:layout_width="match_parent"
             android:layout_height="match_parent"

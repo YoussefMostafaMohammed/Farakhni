@@ -89,7 +89,7 @@ public class Meal implements Serializable {
     }
 
     public Meal(FavoriteMeal favMeal) {
-        this.id = favMeal.getId();
+        this.setId(favMeal.getId());
         this.setName(favMeal.getName());
         this.setCategory(favMeal.getCategory());
         this.setArea(favMeal.getArea());
@@ -144,7 +144,7 @@ public class Meal implements Serializable {
     }
 
     public Meal(PlannedMeal plannedMeal) {
-        this.id = plannedMeal.getMealId();
+        this.setId(plannedMeal.getId());
         this.setName(plannedMeal.getName());
         this.setCategory(plannedMeal.getCategory());
         this.setArea(plannedMeal.getArea());

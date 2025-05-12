@@ -17,6 +17,10 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class SearchPresenter implements SearchContract.Presenter {
     private WeakReference<SearchContract.View> viewRef;
     private final SearchContract.Model model;
+    private String currentFilter = FILTER_ALL; // Track the active filter
+    private List<Ingredient> cachedIngredients = new ArrayList<>(); // Cache for ingredients
+    private List<Area> cachedAreas = new ArrayList<>(); // Cache for areas
+    private List<Category> cachedCategories = new ArrayList<>(); // Cache for categories
     private static final String FILTER_ALL = "all";
     private static final String FILTER_INGREDIENT = "ingredient";
     private static final String FILTER_CATEGORY = "category";
@@ -35,6 +39,9 @@ public class SearchPresenter implements SearchContract.Presenter {
     @Override
     public void detachView() {
         viewRef.clear();
+        cachedIngredients.clear();
+        cachedAreas.clear();
+        cachedCategories.clear();
     }
 
     @Override
@@ -87,50 +94,205 @@ public class SearchPresenter implements SearchContract.Presenter {
 
         query = query.trim();
         if (query.isEmpty()) {
-            view.showMeals(new ArrayList<>());
+            if (currentFilter.equals(FILTER_INGREDIENT)) {
+                view.showIngredients(cachedIngredients);
+            } else if (currentFilter.equals(FILTER_CATEGORY)) {
+                view.showCategories(cachedCategories);
+            } else if (currentFilter.equals(FILTER_COUNTRY)) {
+                view.showAreas(cachedAreas);
+            } else if (currentFilter.equals(FILTER_ALL)) {
+                view.showMeals(new ArrayList<>());
+            }
+            view.hideProgressBar();
             return;
         }
 
         view.showProgressBar();
-        model.getMealsByName(query, new NetworkCallBack<List<Meal>>() {
-            @Override
-            public void onSuccessResult(List<Meal> meals) {
-                if(meals!=null){
-                if (meals.isEmpty()) {
+        if (currentFilter.equals(FILTER_INGREDIENT)) {
+            if (!cachedIngredients.isEmpty()) {
+                List<Ingredient> filtered = model.filterIngredients(cachedIngredients, query);
+                view.showIngredients(filtered);
+                view.hideProgressBar();
+                if (filtered.isEmpty()) {
+                    view.showMessage("No ingredients found");
+                }
+            } else {
+                String finalQuery2 = query;
+                model.getAllIngredients(new NetworkCallBack<List<Ingredient>>() {
+                    @Override
+                    public void onSuccessResult(List<Ingredient> result) {
+                        cachedIngredients = result;
+                        List<Ingredient> filtered = model.filterIngredients(result, finalQuery2);
+                        view.showIngredients(filtered);
+                        view.hideProgressBar();
+                        if (filtered.isEmpty()) {
+                            view.showMessage("No ingredients found");
+                        }
+                    }
+
+                    @Override
+                    public void onFailureResult(String message) {
+                        view.hideProgressBar();
+                        view.showError("Failed to load ingredients: " + message);
+                    }
+
+                    @Override
+                    public void onLoading() {}
+
+                    @Override
+                    public void onNetworkError(String errorMessage) {
+                        view.hideProgressBar();
+                        view.showError("Network error: " + errorMessage);
+                    }
+
+                    @Override
+                    public void onEmptyData() {
+                        view.showIngredients(new ArrayList<>());
+                        view.hideProgressBar();
+                        view.showMessage("No ingredients found");
+                    }
+
+                    @Override
+                    public void onProgress(int progress) {}
+                });
+            }
+        } else if (currentFilter.equals(FILTER_CATEGORY)) {
+            if (!cachedCategories.isEmpty()) {
+                List<Category> filtered = model.filterCategories(cachedCategories, query);
+                view.showCategories(filtered);
+                view.hideProgressBar();
+                if (filtered.isEmpty()) {
+                    view.showMessage("No categories found");
+                }
+            } else {
+                String finalQuery1 = query;
+                model.getAllCategories(new NetworkCallBack<List<Category>>() {
+                    @Override
+                    public void onSuccessResult(List<Category> result) {
+                        cachedCategories = result;
+                        List<Category> filtered = model.filterCategories(result, finalQuery1);
+                        view.showCategories(filtered);
+                        view.hideProgressBar();
+                        if (filtered.isEmpty()) {
+                            view.showMessage("No categories found");
+                        }
+                    }
+
+                    @Override
+                    public void onFailureResult(String message) {
+                        view.hideProgressBar();
+                        view.showError("Failed to load categories: " + message);
+                    }
+
+                    @Override
+                    public void onLoading() {}
+
+                    @Override
+                    public void onNetworkError(String errorMessage) {
+                        view.hideProgressBar();
+                        view.showError("Network error: " + errorMessage);
+                    }
+
+                    @Override
+                    public void onEmptyData() {
+                        view.showCategories(new ArrayList<>());
+                        view.hideProgressBar();
+                        view.showMessage("No categories found");
+                    }
+
+                    @Override
+                    public void onProgress(int progress) {}
+                });
+            }
+        } else if (currentFilter.equals(FILTER_COUNTRY)) {
+            if (!cachedAreas.isEmpty()) {
+                List<Area> filtered = model.filterAreas(cachedAreas, query);
+                view.showAreas(filtered);
+                view.hideProgressBar();
+                if (filtered.isEmpty()) {
+                    view.showMessage("No areas found");
+                }
+            } else {
+                String finalQuery = query;
+                model.getAllAreas(new NetworkCallBack<List<Area>>() {
+                    @Override
+                    public void onSuccessResult(List<Area> result) {
+                        cachedAreas = result;
+                        List<Area> filtered = model.filterAreas(result, finalQuery);
+                        view.showAreas(filtered);
+                        view.hideProgressBar();
+                        if (filtered.isEmpty()) {
+                            view.showMessage("No areas found");
+                        }
+                    }
+
+                    @Override
+                    public void onFailureResult(String message) {
+                        view.hideProgressBar();
+                        view.showError("Failed to load areas: " + message);
+                    }
+
+                    @Override
+                    public void onLoading() {}
+
+                    @Override
+                    public void onNetworkError(String errorMessage) {
+                        view.hideProgressBar();
+                        view.showError("Network error: " + errorMessage);
+                    }
+
+                    @Override
+                    public void onEmptyData() {
+                        view.showAreas(new ArrayList<>());
+                        view.hideProgressBar();
+                        view.showMessage("No areas found");
+                    }
+
+                    @Override
+                    public void onProgress(int progress) {}
+                });
+            }
+        } else if (currentFilter.equals(FILTER_ALL)) {
+            model.getMealsByName(query, new NetworkCallBack<List<Meal>>() {
+                @Override
+                public void onSuccessResult(List<Meal> meals) {
+                    if (meals != null) {
+                        if (meals.isEmpty()) {
+                            view.showMeals(new ArrayList<>());
+                            view.hideProgressBar();
+                            view.showMessage("Can't find meal");
+                        } else {
+                            fetchFullMealsAndDisplay(meals);
+                        }
+                    }
+                }
+
+                @Override
+                public void onFailureResult(String message) {
+                    view.hideProgressBar();
+                    view.showError("Search failed: " + message);
+                }
+
+                @Override
+                public void onLoading() {}
+
+                @Override
+                public void onNetworkError(String errorMessage) {
+                    view.hideProgressBar();
+                    view.showError("Network error: " + errorMessage);
+                }
+
+                @Override
+                public void onEmptyData() {
                     view.showMeals(new ArrayList<>());
                     view.hideProgressBar();
                     view.showMessage("Can't find meal");
-                } else {
-                    fetchFullMealsAndDisplay(meals);
                 }
-            }
-            }
 
-            @Override
-            public void onFailureResult(String message) {
-                view.hideProgressBar();
-                view.showError("Search failed: " + message);
-            }
-
-            @Override
-            public void onLoading() {}
-
-            @Override
-            public void onNetworkError(String errorMessage) {
-                view.hideProgressBar();
-                view.showError("Network error: " + errorMessage);
-            }
-
-            @Override
-            public void onEmptyData() {
-                view.showMeals(new ArrayList<>());
-                view.hideProgressBar();
-                view.showMessage("Can't find meal");
-            }
-
-            @Override
-            public void onProgress(int progress) {}
-        });
+                @Override
+                public void onProgress(int progress) {}
+            });
+        }
     }
 
     @Override
@@ -138,6 +300,7 @@ public class SearchPresenter implements SearchContract.Presenter {
         SearchContract.View view = viewRef.get();
         if (view == null) return;
 
+        currentFilter = filterType; // Update the current filter
         view.showProgressBar();
         switch (filterType) {
             case FILTER_ALL:
@@ -177,11 +340,12 @@ public class SearchPresenter implements SearchContract.Presenter {
                 break;
             case FILTER_INGREDIENT:
                 view.setIngredientAdapter();
+                cachedIngredients.clear(); // Clear cache to refresh
                 model.getAllIngredients(new NetworkCallBack<List<Ingredient>>() {
                     @Override
                     public void onSuccessResult(List<Ingredient> result) {
-                        List<Ingredient> filtered = model.filterIngredients(result, "");
-                        view.showIngredients(filtered);
+                        cachedIngredients = result;
+                        view.showIngredients(result);
                         view.hideProgressBar();
                     }
 
@@ -213,11 +377,12 @@ public class SearchPresenter implements SearchContract.Presenter {
                 break;
             case FILTER_CATEGORY:
                 view.setCategoryAdapter();
+                cachedCategories.clear(); // Clear cache to refresh
                 model.getAllCategories(new NetworkCallBack<List<Category>>() {
                     @Override
                     public void onSuccessResult(List<Category> result) {
-                        List<Category> filtered = model.filterCategories(result, "");
-                        view.showCategories(filtered);
+                        cachedCategories = result;
+                        view.showCategories(result);
                         view.hideProgressBar();
                     }
 
@@ -249,11 +414,12 @@ public class SearchPresenter implements SearchContract.Presenter {
                 break;
             case FILTER_COUNTRY:
                 view.setAreaAdapter();
+                cachedAreas.clear(); // Clear cache to refresh
                 model.getAllAreas(new NetworkCallBack<List<Area>>() {
                     @Override
                     public void onSuccessResult(List<Area> result) {
-                        List<Area> filtered = model.filterAreas(result, "");
-                        view.showAreas(filtered);
+                        cachedAreas = result;
+                        view.showAreas(result);
                         view.hideProgressBar();
                     }
 
@@ -337,16 +503,15 @@ public class SearchPresenter implements SearchContract.Presenter {
             model.getMealById(m.getId(), new NetworkCallBack<List<Meal>>() {
                 @Override
                 public void onSuccessResult(List<Meal> result) {
-                    if (result != null) {
-                        if (!result.isEmpty()) {
-                            fullMeals.add(result.get(0));
-                        }
-                        if (counter.incrementAndGet() == total) {
-                            view.showMeals(fullMeals);
-                            view.hideProgressBar();
-                        }
+                    if (result != null && !result.isEmpty()) {
+                        fullMeals.add(result.get(0));
+                    }
+                    if (counter.incrementAndGet() == total) {
+                        view.showMeals(fullMeals);
+                        view.hideProgressBar();
                     }
                 }
+
                 @Override
                 public void onFailureResult(String message) {
                     if (counter.incrementAndGet() == total) {

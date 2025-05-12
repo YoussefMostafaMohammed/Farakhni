@@ -143,14 +143,13 @@ public class MealDetailsFragment extends Fragment implements MealDetailsContract
 
     @Override
     public void setScheduleStatus(boolean isScheduled) {
-        binding.calendarIconAdd.setSelected(isScheduled);
-        binding.calendarIconDelete.setVisibility(isScheduled ? View.VISIBLE : View.GONE);
+        binding.calendarIconDelete.setVisibility(View.GONE);
         binding.calendarIconAdd.setOnClickListener(v -> presenter.onPlanMealClicked());
-        binding.calendarIconDelete.setOnClickListener(v -> presenter.onDeleteMealClicked());
     }
 
     @Override
     public void showDatePicker() {
+        binding.calendarIconAdd.setSelected(true);
         Calendar cal = Calendar.getInstance();
         cal.set(Calendar.HOUR_OF_DAY, 0);
         cal.set(Calendar.MINUTE, 0);

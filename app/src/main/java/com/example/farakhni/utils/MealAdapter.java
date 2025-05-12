@@ -121,8 +121,6 @@ public class MealAdapter extends RecyclerView.Adapter<MealAdapter.MealViewHolder
                 .placeholder(R.drawable.app_logo)
                 .error(R.drawable.app_logo)
                 .into(holder.mealImage);
-
-        // Favorite
         boolean isFav = favoriteMealIds.contains(meal.getId());
         meal.setFavorite(isFav);
         holder.heartIcon.setSelected(isFav);
@@ -150,7 +148,6 @@ public class MealAdapter extends RecyclerView.Adapter<MealAdapter.MealViewHolder
                         Toast.LENGTH_SHORT).show();
                 return;
             }
-            // Toggle favorite
             boolean newFav = !meal.isFavorite();
             meal.setFavorite(newFav);
             favoriteMealIds.remove(meal.getId());
@@ -163,7 +160,6 @@ public class MealAdapter extends RecyclerView.Adapter<MealAdapter.MealViewHolder
             if (favoriteToggleListener != null) {
                 favoriteToggleListener.onFavoriteToggled(meal);
             }
-            // Re-bind this item so calendar icon keeps correct tint
             notifyItemChanged(holder.getAdapterPosition());
         });
 

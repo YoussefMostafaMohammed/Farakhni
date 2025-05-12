@@ -14,7 +14,6 @@ public interface HomeContract {
         void showCategories(List<Category> categories);
         void showAreas(List<Area> areas);
         void showError(String message);
-        void showLoading(boolean isLoading);
     }
 
     interface Presenter {

@@ -114,12 +114,10 @@ public class SearchFragment extends Fragment implements SearchContract.View {
 
     @Override
     public void showProgressBar() {
-        binding.progressBar.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void hideProgressBar() {
-        binding.progressBar.setVisibility(View.GONE);
     }
 
     @Override

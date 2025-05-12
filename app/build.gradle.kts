@@ -56,6 +56,7 @@ dependencies {
     implementation("com.google.firebase:firebase-firestore-ktx")  // Use KTX version
     implementation("com.google.android.gms:play-services-auth:21.1.0")  // Updated version
 
+    implementation("com.google.firebase:firebase-analytics:22.4.0")
     // Room
     implementation("androidx.room:room-runtime:2.7.1")
     annotationProcessor("androidx.room:room-compiler:2.7.1")
@@ -81,5 +82,7 @@ dependencies {
 
     // Json
     implementation("com.google.code.gson:gson:2.10.1")
+    implementation("com.google.firebase:firebase-firestore:25.1.4")
+    implementation("com.airbnb.android:lottie:6.3.0")
 
 }
